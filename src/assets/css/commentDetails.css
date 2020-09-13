@@ -1,0 +1,155 @@
+label{
+    font-size: 14px;
+    padding-top: 5px;
+}
+
+.MultiFilterArea1{
+    /* width: 80%; */
+    /* height: 40px; */
+    /* padding: 1%; */
+    margin-top: 20px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    /* border-bottom: 1px solid rgb(207, 207, 207); */
+}
+.manageTagDiv button{
+    all: unset;    
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.925);
+    border: 1px solid rgb(167, 167, 167);
+    box-shadow: 1px 1px 1px 1px #dfdfdf8f;
+}
+.manageTagDiv img{
+    width: 20px;
+    height: 20px;
+}
+
+.filterP1{
+    display: inline;
+}
+
+.labelchoose1{
+    display: inline-block;
+    /* width: 40px; */
+}
+
+.tagInput{
+    width: 40px;
+    margin-right: 5px;
+    padding: 2px;
+    text-align: center;
+    border: none;
+}
+
+.manageTagDiv{
+    display: inline-block;
+}
+
+.manageConditionDiv{
+    display: inline-block;
+    margin-left: 5%;
+}
+
+.none{
+    background-color: #00808C;
+    color: white;
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 0px #adadad;
+}
+.ing{
+    background-color: rgba(0, 128, 140, 0.274);
+    text-shadow: 0.5px 0.5px #adadad;
+    color: white;
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 0px #adadad;
+}
+.done{
+    background-color: rgb(190, 190, 190);
+    color: rgb(218, 0, 0);
+    padding: 7px;
+    border-radius: 3px;
+}
+
+.none,.ing{
+    -webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	transition: all 0.1s;
+}
+.none:active, .manageTagDiv button:active, .ing:active{
+    -webkit-box-shadow: 2px 2px 0px #adadad;
+    -moz-box-shadow: 2px 2px 0px #adadad;
+    box-shadow: 1px 1px 0px #adadad;
+    position:relative;
+    top:1px;
+    left:1px;
+}
+
+.manageReplyDiv{
+    display: inline-block;
+    margin-left: 5%;
+}
+.reply{
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+}
+.score, .info, .time{
+    display: inline-block;
+    font-size: 14px;
+    color: gray;
+    margin-right: 3%;
+}
+.score{
+    display: inline-block;
+    font-size: 14px;
+    color: gray;
+    margin-left: 18%;
+}
+.score span, .info span, .time span{
+    color: black;
+    font-size: 16px;
+}
+.time{
+    position: absolute;
+    margin: 12px;
+    padding-bottom: 5px;
+    right: 0;
+    vertical-align: bottom;
+}
+.dataMainArea{
+    height: 50vh;
+    background-color: #fff;
+    border: 0.5px solid rgb(207, 207, 207);
+    border-radius: 10px;
+    /* padding-top: 10px; */
+    padding: 1%;
+    line-height: 25px;
+    z-index: 100;
+}
+
+.address{
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 14px;
+    color: gray;
+}
+
+.address p{
+    display: inline-block;
+    margin-right: 20px;
+}
+.manageTagDiv button:hover{
+    cursor: pointer;
+    background-color: rgba(149, 188, 255, 0.425);
+}
+.labelArea{
+    position: relative;
+}
+.labelchoose2{
+    /* position: relative; */
+    display: none;
+    float: left;
+    /* margin: 30px 5px 20px 20px; */
+}

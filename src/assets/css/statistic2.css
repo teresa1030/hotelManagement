@@ -1,0 +1,47 @@
+.content{
+    background-color: #fff;
+}
+
+.RealTime{
+    background-color: rgb(159, 178, 241);
+    height: 250px;
+}
+.RealTime li{
+    display: inline-block;
+}
+.RealTime li span{
+    color: #8E8DB7;
+    font-size: 16px;
+    margin-left: 15px;
+}
+.RealTime li p{
+    color: black;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-left: 15px;
+}
+.RealTime div{
+    width: 150px;
+    margin: 10px;
+    border: 0.5px solid rgb(238, 238, 238);
+    padding: 20px 4%;
+}
+.statisticTop{
+    background-color: rgb(191, 245, 199);
+    height: 500px;
+}
+.statisticTop .main,.map,.Rank{
+    float: left;
+    margin-right: 2%;
+}
+
+.statisticCenter{
+    background-color: rgb(176, 207, 247);
+    height: 500px;
+}
+
+.statisticBottom{
+    background-color: rgb(240, 234, 158);
+    height: 500px;
+}

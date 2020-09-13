@@ -1,0 +1,386 @@
+<template>
+  <div class="content">
+    <div class="breadcrumb">
+      <a class="breadcrumb-item" href="#">首頁</a>
+      <a class="breadcrumb-item" href="#">帳號管理</a>
+      <a href="#">帳號列表</a>
+      <div class="clear"></div>
+    </div>
+    <div class="page">帳號列表</div>
+    <div class="clear"></div>
+
+    <div class="vueGoodTable" >
+      <div class="addUser" id="addNewUser">
+        <span class="addAccount" >新增帳號</span>
+        <button class="closeAdd" v-on:click="close()" > X </button>
+        <div class="clear"></div>
+        <div class="input">
+          <input  type="text" v-model="newAccount.employeeNumber" > <span>*員工編號&nbsp;:&nbsp;</span>  
+          <!-- &nbsp; 不換行空格 -->
+          <div class="clear"></div>
+          <input  type="text" v-model="newAccount.email" ><span>信箱&nbsp;:&nbsp;</span>
+          <div class="clear"></div>
+          <input  type="text" v-model="newAccount.password" ><span>*密碼&nbsp;: &nbsp;</span>
+          <div class="clear"></div>
+        </div>
+        <div class="input">
+          <input  type="text" v-model="newAccount.department" ><span>所屬單位&nbsp;: &nbsp;</span>
+          <div class="clear"></div>
+          <input  type="text" v-model="newAccount.employeeLimit" ><span>*員工權限&nbsp;: &nbsp;</span>
+          <div class="clear"></div>
+          <input  type="text" v-model="newAccount.userName" ><span>*姓名&nbsp;: &nbsp;</span>
+          <div class="clear"></div>
+        </div>
+        
+        <div class="clear"></div>
+        <button class="functionButton" id="tableActionsBtn" v-on:click="close()" >取消</button>
+      <button class="functionButton" type="submit" method="post" v-on:click="createAccount()">確認</button>
+      
+      
+      </div>
+      <vue-good-table class="el-table" styleClass="vgt-table striped" :columns="columns" :rows="accountList" 
+        max-height="500px" :fixed-header="true" :search-options="{ enabled: true }" text-align="center"
+        @on-selected-rows-change="selectionChanged" :select-options="{ enabled: true }" @on-cell-click="linkAccountDetial" >
+        <div slot="table-actions">      
+          <span>所屬單位</span>
+          <select v-model="chooseDepartment" class="selectBox" v-on:click="selection()" >
+            <option chooseDepartment>請選擇</option>
+            <option>資訊部</option>  
+            <option>行銷部</option>
+          </select>
+          <span>員工權限</span>
+          <select v-model="chooseLimit" class="selectBox" v-on:click="selection()">
+            <option chooseLimit>請選擇</option>
+            <option>後台管理者</option>
+            <option>主管使用者</option>
+            <option>一般使用者</option>
+          </select>
+          <button class="functionButton"  v-on:click="deleteAccount()">刪除</button>
+          <button class="functionButton"  v-on:click="open()" >新增</button>
+        </div>
+      </vue-good-table>
+      <div class="clear"></div>
+      <!-- <button v-on:click="logout()">Log out</button> -->
+  </div>
+  <div class="clear"></div>
+</div>
+   
+  
+</template>
+
+<script>
+import axios from 'axios';
+export default { 
+  name: 'accountList',
+  components: {
+  'vue-good-table': require('vue-good-table').VueGoodTable,
+  },
+  data () {
+    return {
+      hotels:[],
+      chooseDepartment:"請選擇",
+      chooseLimit:"請選擇",
+      checkedAccount:[],
+      // checkedAccount:勾選的，accountList:最後要顯示的
+      accountList:[],
+      newAccount:{
+        department: "",
+        employeeNumber: "",
+        employeeLimit: "",
+        email: "",
+        userName: "",
+        password: "",
+        lastLoginDate: "",
+        lastLoginTime: "",
+        firstLogin:true
+      },
+      columns:[
+        {
+          label:'所屬單位',
+          field:'department'
+        },
+        {
+          label:'員工編號',
+          field:'employeeNumber'
+        },
+        {
+          label:'姓名',
+          field:'userName'
+        },
+        {
+          label:'信箱',
+          field:'email'
+        },
+        {
+          label:'權限等級',
+          field:'employeeLimit'
+        },
+        {
+          label:'上次登入時間',
+          field:'lastLoginDate'
+        }
+      ],
+      rowSelection: []
+    }  
+  },
+  mounted(){
+    let self = this
+    // var r = 0;
+    axios.get('/api/account')
+    .then((response) => {
+      //console.log(response.data);
+      self.hotels = response.data;
+      self.accountList=self.hotels;
+      //self.accountList=self.hotels;
+
+      // self.id=response.data.id;
+      // self.name=response.data.name;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    
+  },
+  methods:{
+    selectionChanged(params){
+      let k;
+      let self = this;
+      this.checkedAccount=[];
+      this.rowSelection = params.selectedRows;
+      for(k=0;k<self.rowSelection.length;k++){
+        this.checkedAccount.push(this.rowSelection[k]._id)
+        console.log(this.checkedAccount);
+       // console.log(this.checkedAccount._id);
+      }
+
+    },
+    linkAccountDetial(params){
+      let nowAccount = params.row;
+      console.log(nowAccount._id);
+      this.$router.push(({ path: `/accountDetial/${nowAccount._id}` }))
+    },
+    deleteAccount:function(){
+      let k;
+      let self = this;
+      for(k=0;k<self.checkedAccount.length;k++){
+        //console.log("id:"+self.checkedAccount[k])
+        //var check = new String(self.checkedAccount[k]);
+        let check = self.checkedAccount[k];
+        //console.log(typeof(check));
+        //找陣列裡的物件中的值
+        var index = self.hotels.findIndex( s => s._id == check )
+        console.log(index);
+        self.hotels.splice(index,1);
+        console.log("delete:"+self.checkedAccount[k]);
+        axios.delete('http://localhost:8080/api/account/'+self.checkedAccount[k])
+        .then((response) => {
+          self.checkedAccount=[];   
+         // console.log("delete successed:");    
+         // console.log(this.checkedAccount);
+         });
+      }      
+      //window.location.reload(); 網頁重新整理
+    },
+    createAccount:function(){
+      let newUser = this.newAccount;
+      console.log(newUser);
+      axios.post('http://localhost:8080/api/account',newUser) 
+      .then((response) => {
+         // this.accountList.push(newUser);
+          this.hotels.push(newUser);
+         // this.searchResults.push(newUser);
+         console.log(response)        
+     }).catch((error) => {
+          console.log(error);
+    });  
+      this.close();
+      
+    },
+      selection:function(){
+      let j;
+       //console.log("begineselection:"+this.accountList)
+      this.accountList=[];
+      for(j=0;j<this.hotels.length;j++){
+        if(this.hotels[j].department==this.chooseDepartment && this.hotels[j].employeeLimit==this.chooseLimit){
+          this.accountList.push(this.hotels[j])
+        }else if(this.hotels[j].department==this.chooseDepartment && this.chooseLimit=="請選擇"){
+          this.accountList.push(this.hotels[j])
+        }else if(this.chooseDepartment=="請選擇"&& this.hotels[j].employeeLimit==this.chooseLimit){
+          this.accountList.push(this.hotels[j])
+        }else if(this.chooseDepartment=="請選擇" && this.chooseLimit=="請選擇"){
+          this.accountList.push(this.hotels[j])
+        }
+        //console.log("inFor:accountList:"+this.accountList)
+      }
+      //console.log("accountList:"+this.accountList)
+      //return this.accountList;     
+    },
+    close:function(){
+      this.newAccount={};
+      document.getElementById("addNewUser").style.visibility="hidden";
+      console.log("close")
+    },
+    open:function(){
+      document.getElementById("addNewUser").style.visibility="visible";
+      console.log("open")
+    },
+    logout(){
+    localStorage.removeItem('token');
+    this.$router.push('/login');
+    } 
+  }
+  // compoted:{
+  //   countID:function(){
+  //     let i;
+  //     this.maxID=this.hotels[0].id;
+  //     for(i=0;i<this.hotels.length;i++){
+  //       if(this.hotels[i].id > this.maxID){
+  //         this.maxID=this.hotels[i].id;
+  //       }
+  //     }
+  //     return this.maxID;
+  //     console.log(this.maxID);
+  //   }
+  // }
+
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.content{
+    background-color: #F7F7F7;
+    padding-top: 40px;
+    height: 100vh;
+    padding-left: 7%;
+    padding-bottom: 50px;
+    /* position: relative;  */
+}
+.breadcrumb{
+    margin-top: 10px;
+}
+.breadcrumb a{  
+    float: left;
+    font-size: 16px;
+    color: black;
+}
+.breadcrumb-item::after{
+    content: "\00a0 >\00a0 ";
+    color: black;
+}
+.page{
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 30px;  
+    margin-right: 20%;
+}
+/* function */
+.function{
+  margin-right: 10%;
+  margin-top: 30px;
+  font-size: 16px;
+  line-height: 21px;
+}
+.selectBox{  
+  margin-right: 50px;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 120px;
+  height: 25px;
+  border-radius: 3px;
+  border-color: #707070;
+  font-family: "微軟正黑體";
+}
+.inputBox{
+  float: right;
+  width: 150px;
+  height: 23px;
+  border: #707070 solid 1px;
+  padding:0px;
+  border-radius: 3px;
+  font-family: "微軟正黑體";
+  margin-left: 70px;
+}
+.functionButton{
+  float: right;
+  width: 55px;
+  height: 22px;
+  cursor:pointer;
+  background-color: #E6E6E6;
+  border: #828282 solid 0.5px ;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #8C8C8C;
+  margin-left: 10px;
+  margin-right: 15px;
+  margin-top: 5px;
+  font-family: "微軟正黑體";
+  box-shadow: 0px 3px 6px #00000029;
+}
+.accountList  td{
+  padding: 0px 5px;
+  border-top:#656565 solid 1.5px ;
+  line-height: 24px;
+  text-align: center;
+  vertical-align: middle;
+}
+.accountList a{
+  padding: 5px 0px;
+  display: block;
+  color:black;
+}
+.accountList  tr:hover a{
+  /* background-color: #656565; */
+  color: red;
+}
+.vueGoodTable{
+  width: 90%;
+  margin-top: 20px;
+  position: relative;
+}
+/* increasing User */
+.addUser{
+  margin-left: 150px;
+  margin-top: 50px;
+  width: 898px;
+  height: 446px;
+  background-color: #FFFFFFE8;
+  position: absolute;
+  z-index: 1;
+}
+#addNewUser{
+  /* display: none; */
+  visibility:hidden;
+}
+.addAccount{
+  float: left;
+  margin-left: 30px;
+  margin-top: 20px;
+  font-size: 23px;
+}
+.closeAdd{
+  float: right;
+  cursor:pointer;
+  background-color: #FFFFFFE8;
+  border:none ;
+  font-size: 25px;
+  margin-right: 30px;
+  margin-top: 18px;
+}
+.input{
+  float: right;
+  margin-top: 60px;
+  margin-right: 140px;
+}
+.input input{
+  margin-bottom: 60px;
+  float:right;
+}
+.input span{
+  float:right;
+}
+#tableActionsBtn{
+  margin-right: 330px;
+  margin-left: 100px;
+}
+</style>

@@ -1,0 +1,145 @@
+
+.statisticMain{
+    width: 87%;
+}
+
+.statisticFilter{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.statisticReal{
+    width: 80%;
+    height: 90px;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.statisticReal p{
+    font-size: 20px;
+    padding: 20px 30px;
+}
+.statisticReal span{
+    padding: 10px 30px;
+}
+.statisticReal .rankArea{
+    float: right;
+    width: 40%;
+    height: 90px;
+}
+.statisticReal .rankArea span{
+    all: unset;
+    position: absolute;
+    float: left;
+    margin: 15px 20px;
+    font-size: 55px;
+}
+.staAccordComment{
+    background-color: #6995B1;
+}
+.staAccordDay{
+    background-color: #E19947;
+}
+.staAccordYear{
+    background-color: #69B16E;
+}
+.staAccordComment, .staAccordDay, .staAccordYear{
+    float: left;
+    width: 27%;
+    height: 90px;
+    margin-right: 27px;
+    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+.statisticALL{
+    margin-top: 5px;
+    width: 100%;
+}
+.statisticALL li{
+    display: inline-block;
+}
+.statisticALL li span{
+    color: #8E8DB7;
+    font-size: 16px;
+    margin-left: 15px;
+}
+.statisticALL li p{
+    color: black;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-left: 15px;
+}
+.statisticALL div{
+    width: 150px;
+    margin: 10px;
+    border: 0.5px solid rgb(238, 238, 238);
+    padding: 20px 4%;
+}
+.statisticRank{
+    float: left;
+    width: 66%;
+    margin-top: 5px;
+}
+.statisticComment{
+    float: left;
+    width: 30%;
+    margin-top: 5px;
+    border-radius: 3px;
+    padding: 1%;
+    margin-left: 1.5%;
+}
+.statistic{
+    float: left;
+    width: 54%;
+    margin-top: 10px;
+}
+
+.statisticService{
+    float: left;
+    width: 44%;
+    margin-top: 10px;
+    margin-left: 1.5%;
+}
+
+.statisticWeb, .statisticWeb1{
+    float: left;
+    width: 28%;
+    margin-top: 10px;
+    border-radius: 3px;
+    padding: 1%;
+}
+.statisticWeb{
+    margin-right: 2.3%;
+}
+.statisticALL div, .statisticComment, .statisticRank, .statistic, .statisticService, .statisticWeb, .statisticWeb1, .statisticMonthRank{
+    background-color: #fff;
+    border: 0.5px solid rgb(228, 228, 228);
+    box-shadow: 1px 1px 1px 1px rgba(197, 197, 197, 0.1);
+    -webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	transition: transform all 1s;
+}
+.allP{
+    width: 95%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 10px;
+    padding: 20px 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    /* border-bottom: 1px solid rgb(180, 180, 180); */
+}
+.allP1{
+    padding: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.statisticWeb:hover, .statisticWeb1:hover, .statisticComment:hover, .statisticRank:hover, .statistic:hover, .statisticService:hover{
+    transform: translateY(-2px);
+}

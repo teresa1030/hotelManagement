@@ -1,0 +1,107 @@
+.content{
+    /* background-color: #fff; */
+    /* padding-top: 10px; */
+    width: 100%;
+}
+
+.RealTime{
+    width: 100%;
+    background-color: rgb(11, 66, 122, 0.46);
+    /* height: 250px; */
+    height: 11vw;
+}
+.RealTime p{
+    color: white;
+    font-size: 18px;
+    padding: 0.5% 2%;
+}
+.RealTime ul{
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+    /* margin-left: 2%; */
+    /* padding-left: 2.5%; */
+    /* margin-left: 1%; */
+}
+.RealTime li{
+    display: inline-flex;
+    justify-content:space-around;
+}
+
+.RealTime li span, .main li span{
+    color: #8E8DB7;
+    font-size: 16px;
+    margin-left: 15px;
+}
+.RealTime li p, .main li p{
+    color: black;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-left: 15px;
+}
+.RealTime div, .main div{
+    width: 75%;
+    height: 5vw;
+    border: 0.5px solid rgb(238, 238, 238);
+    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.1);
+    padding: 5%;
+    border-radius: 2px;
+    background-color: #fff;
+}
+.main ul{
+    width: 80%;
+}
+.main ul li{
+    margin-top: 10px;
+}
+.flex-1{
+    flex: 1;
+}
+.flex-2{
+    width: 20%;
+}
+.statisticTop, .statisticCenter, .statisticBottom{
+    /* background-color: rgb(191, 245, 199); */
+    display: flex;
+    height: 23vw;
+    padding-left: 2%;
+}
+
+.statisticTop .main, .statisticTop .map, .statisticTop .Rank, .statisticCenter .statisticComment, .statisticCenter .statistic, .statisticCenter .statisticService, .statisticBottom .statisticWeb, .statisticBottom .statisticWeb1{
+    display: inline-flex;
+    margin-right: 1%;
+}
+
+.statisticComment, .statisticRank, .statistic, .statisticService, .statisticWeb, .statisticWeb1{
+    margin-top: 10px;
+    background-color: #fff;
+    border: 0.5px solid rgb(228, 228, 228);
+    box-shadow: 1px 1px 1px 1px rgba(197, 197, 197, 0.1);
+    -webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	transition: transform all 1s;
+}
+.statisticRank, .statisticService div, .statistic div, .statisticWeb div, .statisticWeb1 div, .statisticComment div{
+    width: 100%;
+}
+
+.allP{
+    width: 95%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 10px;
+    padding: 20px 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.allP1{
+    padding: 20px 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.clear{
+    clear: both;
+}
