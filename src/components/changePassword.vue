@@ -6,10 +6,10 @@
             <h1>登入成功!!請修改密碼!!</h1>
             <form v-on:submit.prevent="confirm">   
                 <label>新密碼&nbsp;:&nbsp;</label>
-                <input type="password" v-model="passWord" required>
+                <input type="password" v-model="password" required>
                 <div class="clear"></div>
                 <label>再次輸入&nbsp;:&nbsp;</label>
-                <input type="password" v-model="passWord2" required>
+                <input type="password" v-model="password2" required>
                 <div class="clear"></div>
                 <button type="submit">確&nbsp;認</button>
             </form>
@@ -24,8 +24,8 @@ export default {
     name: 'changePassword',
     data () {
     return {
-        passWord: '',
-        passWord2: '',
+        password: '',
+        password2: '',
         accountInfo:[],
         logingAccount:{},
         userID:""
@@ -52,8 +52,9 @@ export default {
                     if( this.userID==this.accountInfo[i]._id ){
                         this.logingAccount = this.accountInfo[i];
                         this.logingAccount.password = this.password;
+                        this.logingAccount.firstLogin = false;
                         this.updateAccount();
-                        this.$router.push('/accountList');
+                        
                         break;
                     }
                 }
@@ -72,11 +73,20 @@ export default {
         updateAccount:function(){
             let updateUser = this.logingAccount;
             let id = this.logingAccount._id;
-            axios.put('http://localhost:8080/api/account/'+id,updateUser) 
+            axios.put('/api/account/'+id,updateUser) 
             .then((response) => {
                 //this.userAccountDetail=updateUser;
                 //寫在mounted的如果數據改會自動更著改且不會重新整理
-                console.log(response)        
+                console.log(response)    
+                this.$fire({
+                    title: "Successful !!",
+                    text: "成功修改密碼",
+                    type: "success",
+                }).then(r => {
+                    //console.log(r.value);
+                    this.$router.push('/accountList');
+                });
+                            
             }).catch((error) => {
                 console.log(error);
             });  

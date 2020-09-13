@@ -36,7 +36,7 @@
                 
                 <ul class="menu">
                     <li><router-link :to="'../accountList'">帳號管理</router-link></li>
-                    <li><a href="#">評論管理</a></li>
+                    <li><router-link :to="'../commentList'">評論管理</router-link></li>
                     <li><a href="#">統計結果</a></li>
                     <li><a href="#" >競爭對手</a></li>
                     <li><a href="#">歷史紀錄</a></li>

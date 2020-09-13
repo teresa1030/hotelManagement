@@ -22,8 +22,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'commentList',
-      component: commentList
+      name: 'login',
+      component: login
     },
     {
       path: '/accountList',
@@ -90,6 +90,11 @@ export default new Router({
       path: '/statistic/:time',
       name: 'statistic',
       component: statistic
-    }
+    },
+    {
+      path: '/commentList',
+      name: 'commentList',
+      component: commentList
+    },
   ]
 })

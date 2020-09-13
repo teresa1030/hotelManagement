@@ -57,7 +57,7 @@ export default {
                         this.$router.push({ name: 'changePassword'});
                         break;
                     }else{
-                        this.$router.push({ name: 'accountList'});
+                        this.$router.push({ name: 'commentList'});
                         break;
                     } //決定登入後要導到哪一頁
                 } else if( i == this.accountInfo.length-1){    
