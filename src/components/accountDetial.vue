@@ -1,12 +1,10 @@
 <template>
-  <div class="content">
-    <div class="breadcrumb">
-      <a class="breadcrumb-item" href="#">首頁</a>
-      <a class="breadcrumb-item" href="#">帳號管理</a>
-      <a href="#">個人資料</a>
-      <div class="clear"></div>
-    </div>
-    <div class="page">個人資料</div>
+  <div>
+      <div class="contentCenter">
+        <div class="page">
+          <span>帳號詳細內容</span>
+        </div>
+      </div>
 <!-- route {{"route.params:"+this.$route.params.userID}} -->
 <!-- userID {{"userID:"+userID}} -->
 <!-- <ul>
@@ -19,42 +17,42 @@
 </ul>
  <button class="" type="submit" method="post" v-on:click="updateAccount()" >更新</button> -->
 
-  <div class="detail">
-    <div class="leftContent">
-      <a href="#"><img src="https://fakeimg.pl/125x125/" alt=""></a>
+    <div class="detail">
+      <div class="leftContent">
+        <a href="#"><img src="https://fakeimg.pl/125x125/" alt=""></a>
+      </div>
+      <div class="rightContent">
+        <h2>個人資料</h2>
+        <!-- <input type="button" id="personal" v-on:click="editPersonal()" value="編輯"> -->
+        <button id="personal" v-on:click="editPersonal()" >編輯</button>
+        <div class="clear"></div>
+        <div class="personalDetail">
+          <ul>
+            <li>所屬單位&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.department" id="department" ></li>
+            <li>姓名&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.userName" id="userName"></li>
+            <li>員工編號&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.employeeNumber" id="employeeNumber"></li>
+          </ul>
+        </div>
+        <h2>聯絡資訊</h2>
+        <button v-on:click="editContactInfo()" id="contact">編輯</button>
+        <div class="clear"></div>
+        <div class="contactInfo">
+          <ul>
+            <li>手機&nbsp;:&nbsp;<input type="text" readonly="readonly" id="phone"></li>
+            <li>信箱&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.email" id="email"></li>
+          </ul>
+        </div>
+        <h2>隱私權</h2>
+        <div class="clear"></div>
+        <div class="private">
+          <ul>
+            <li>權限&nbsp;:&nbsp;<input type="text" readonly="readonly" :value="userAccountDetail.employeeLimit"></li>
+            <li>密碼&nbsp;:&nbsp;<input type="password" readonly="readonly" :value="userAccountDetail.password"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="clear"></div>
     </div>
-    <div class="rightContent">
-      <h2>個人資料</h2>
-      <!-- <input type="button" id="personal" v-on:click="editPersonal()" value="編輯"> -->
-      <button id="personal" v-on:click="editPersonal()" >編輯</button>
-      <div class="clear"></div>
-      <div class="personalDetail">
-        <ul>
-          <li>所屬單位&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.department" id="department" ></li>
-          <li>姓名&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.userName" id="userName"></li>
-          <li>員工編號&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.employeeNumber" id="employeeNumber"></li>
-        </ul>
-      </div>
-      <h2>聯絡資訊</h2>
-      <button v-on:click="editContactInfo()" id="contact">編輯</button>
-      <div class="clear"></div>
-      <div class="contactInfo">
-        <ul>
-          <li>手機&nbsp;:&nbsp;<input type="text" readonly="readonly" id="phone"></li>
-          <li>信箱&nbsp;:&nbsp;<input type="text" readonly="readonly" v-model="userAccountDetail.email" id="email"></li>
-        </ul>
-      </div>
-      <h2>隱私權</h2>
-      <div class="clear"></div>
-      <div class="private">
-        <ul>
-          <li>權限&nbsp;:&nbsp;<input type="text" readonly="readonly" :value="userAccountDetail.employeeLimit"></li>
-          <li>密碼&nbsp;:&nbsp;<input type="password" readonly="readonly" :value="userAccountDetail.password"></li>
-        </ul>
-      </div>
-    </div>
-    <div class="clear"></div>
-  </div>
   </div>
 </template>
 

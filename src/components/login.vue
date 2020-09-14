@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div>
         <div class="page">
             <img class="photo" src="https://fakeimg.pl/100x100/" alt="">
             <div class="clear"></div>
@@ -118,22 +118,18 @@ export default {
 }
 </script>
 <style scoped>
-.content{
-    background-color: #E9E5E5;
-    height: 100vh;
-    padding-top: 60px;
+.personalInfo{
+    display: none;
 }
 .page{
-    margin: auto;
-    background-color: #FFFFFF;
-    width: 440px;
-    height: 520px;
-    border: 0.5px solid #707070 ;
+    width: 50%;
+    height: 500px;
     border-radius:10px;
+    margin-left: 20%;
 }
 .page img{
     float: left;
-    margin: 40px 0 40px 168px;
+    margin: 40px 0 40px 43%;
 }
 .page h1{
     font-size: 28px;
@@ -161,7 +157,7 @@ export default {
 }
 .link{
     text-decoration:underline;
-    margin-left: 110px;
+    margin-left: 33%;
     float: left;
     margin-top: 5px;
     color: #707070;

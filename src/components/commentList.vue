@@ -1,23 +1,5 @@
-<template lang="html">
-  <div class="wrap">
-    <!-- BASIC -->
-    
-    <!-- 內容 -->
-    <div class="content">
-      <div class="contentTop">
-        <div class="breadcrumb">
-          <a class="breadcrumb-item" href="#">首頁</a>
-          <a class="breadcrumb-item" href="/commentlist">評論管理</a>
-          <a href="#">評論列表</a>
-          <div class="clear"></div>
-        </div>
-        <div class="identity">
-          <img class="photo" src="https://fakeimg.pl/15x15/" alt="">
-          <p>後台管理員</p>
-          <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-      </div>
+<template>
+  <div>
       <div class="contentCenter">
         <div class="page">
           <span>評論列表</span>
@@ -26,12 +8,10 @@
           <button class="editButton" @click="editFUn"><img src="../assets/icon/edit.png"><span class="editSpan">編輯</span></button>
           <div class="edit">
             <p>編輯評論狀態</p>
-            <!--  @change="editCondition" -->
             <el-select placeholder="評論狀態設定" class="editButton" v-model="conditionModify">
               <el-option v-for="item in conditions" :key="item.value" :value="item.field"></el-option>
             </el-select>
             <p>編輯回覆狀態</p>
-            <!--  @change="editReply"  -->
             <el-select placeholder="回覆狀態設定" class="editButton" v-model="replyModify">
               <el-option v-for="item in replys" :key="item.value" :value="item.field"></el-option>
             </el-select>
@@ -127,17 +107,16 @@
             </div>
             <div class="clear"></div>
           </div>
-          <vue-good-table ref="commentdataTable" class="el-table" styleClass="vgt-table striped" :rows="commentData"  :columns="columns"
-                            @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }" :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}">
+          <vue-good-table ref="commentdataTable"  class="el-table" styleClass="vgt-table striped" :rows="commentData"  :columns="columns" @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }" :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}">
             <template slot="table-row" slot-scope="props">
               <template v-if="props.column.field === 'condition'">
                 <span v-if="props.row.condition === '未處理'">
                   <el-button class="none" @click="conditionUpdate(props.row._id)">{{props.row.condition}}</el-button>
                 </span>
-                <span v-if="props.row.condition === '處理中'">
+                <span v-else-if="props.row.condition === '處理中'">
                   <el-button class="ing" @click="conditionUpdate(props.row._id)">{{props.row.condition}}</el-button>
                 </span>
-                <span v-if="props.row.condition === '已完成'">
+                <span v-else-if="props.row.condition === '已完成'">
                   <el-button class="done" disabled="disabled">{{props.row.condition}}</el-button>
                 </span>
               </template>
@@ -151,19 +130,7 @@
           </vue-good-table>
           <div class="clear"></div>
         </div>
-        <!--資料內容還沒改、想修改要放哪、search變只有下邊框、selection無邊框-->
-        <!-- <input type="range" v-model="scorechoose" min="0" max="10"> -->
       </div>
-    </div>
-    <div class="footer">
-      <ul class="phoneMenu">
-        <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-        <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-        <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-        <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-      </ul>
-      <div class="clear"></div>
-    </div>
   </div>
 </template>
 <script>

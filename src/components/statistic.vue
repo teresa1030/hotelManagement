@@ -1,24 +1,4 @@
 <template lang="html">
-  <div class="wrap">
-      <!-- <div class="header"> -->
-        <!-- <div class="headerContent">
-          <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x10/" alt=""></a>
-          <img class="companyImg" src="https://fakeimg.pl/40x40/" alt="">
-          <div class="title">旅館評論管理系統</div>
-            <img class="photo" src="https://fakeimg.pl/40x40/" alt="">
-            <div class="identity">後台管理員</div>
-                <ul class="menu">
-                    <li><a href="#">帳號管理</a></li>
-                    <li><a href="#">評論管理</a></li>
-                    <li><a href="#">統計結果</a></li>
-                    <li><a href="#" >競爭對手</a></li>
-                    <li><a href="#">歷史紀錄</a></li>
-                    <li><a id="logout" href="#">登出</a></li>
-                </ul>
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div> -->
-      <!-- </div> -->
       <div class="content">
         <div class="RealTime">
           <p>即時</p>
@@ -142,7 +122,6 @@
         </div>
         <div class="clear"></div>
       </div>
-    </div>
 </template>
 
 <script>
@@ -236,7 +215,7 @@ export default {
   },
   mounted () {
     let self = this
-    axios.get('/statistic').then(response => {
+    axios.get('/api/statistic').then(response => {
       self.statisticData = response.data
       self.fillData()
       self.ServiceData()
@@ -244,7 +223,7 @@ export default {
     }).catch((error) => {
       console.log(error)
     })
-    axios.get('/statistic/' + self.time).then(response => {
+    axios.get('/api/statistic/' + self.time).then(response => {
       self.statisticRank = response.data
       self.RankData()
       self.commentData()

@@ -1,14 +1,10 @@
 <template>
-  <div class="content">
-    <div class="breadcrumb">
-      <a class="breadcrumb-item" href="#">首頁</a>
-      <a class="breadcrumb-item" href="#">帳號管理</a>
-      <a href="#">帳號列表</a>
-      <div class="clear"></div>
-    </div>
-    <div class="page">帳號列表</div>
-    <div class="clear"></div>
-
+  <div class="insideContent">
+      <div class="contentCenter">
+        <div class="page">
+          <span>帳號列表</span>
+        </div>
+      </div>
     <div class="vueGoodTable" >
       <div class="addUser" id="addNewUser">
         <span class="addAccount" >新增帳號</span>
@@ -61,11 +57,9 @@
       </vue-good-table>
       <div class="clear"></div>
       <!-- <button v-on:click="logout()">Log out</button> -->
+    </div>
+    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
-</div>
-   
-  
 </template>
 
 <script>
@@ -248,32 +242,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.content{
-    background-color: #F7F7F7;
-    padding-top: 40px;
-    height: 100vh;
-    padding-left: 7%;
-    padding-bottom: 50px;
-    /* position: relative;  */
-}
-.breadcrumb{
-    margin-top: 10px;
-}
-.breadcrumb a{  
-    float: left;
-    font-size: 16px;
-    color: black;
-}
-.breadcrumb-item::after{
-    content: "\00a0 >\00a0 ";
-    color: black;
-}
-.page{
-    font-size: 25px;
-    font-weight: bold;
-    margin-top: 30px;  
-    margin-right: 20%;
-}
+
+
 /* function */
 .function{
   margin-right: 10%;
@@ -334,8 +304,9 @@ export default {
   color: red;
 }
 .vueGoodTable{
-  width: 90%;
-  margin-top: 20px;
+  width: 97%;
+  margin-left: 20px;
+  /* margin-top: 20px; */
   position: relative;
 }
 /* increasing User */

@@ -1,106 +1,152 @@
 <template>
   <div id="app" class="warp">
     <div class="header">
-            <div class="headerContent">
-                <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x10/" alt=""></a>
-                <img class="companyImg" src="https://fakeimg.pl/50x50/" alt="">
-                <div class="title">旅館評論管理系統</div>
-                <div class="personalInfo">
-                    <img class="photo" src="https://fakeimg.pl/50x50/" alt="" v-on:click="personalState()">
-                    <div class="identity">後台管理員</div>
-                </div>
-                <div class="loginingInfo" id="logining">
-                    
-                    <div class="nameEmail">
-                        <img src="https://fakeimg.pl/50x50/" alt="">
-                        <ul>
-                            <li>XXX</li>
-                            <li>a1063343@gmail.com</li>
-                        </ul>
-                        <div class="clear"></div>     
-                    </div>
-                    <div class="personalMenu">
-                            <ul>
-                                <li><img src="https://fakeimg.pl/20x20/" alt="">個人資料</li>
-                                <li><img src="https://fakeimg.pl/20x20/" alt="">歷史紀錄</li>
-                                <li><img src="https://fakeimg.pl/20x20/" alt=""><button  v-on:click="logout()" >登出</button></li>
-                            </ul>
-                        </div>
-                    <div class="clear"></div>
-                </div>
-                <div class="logoutInfo" id="logoutInfo">
-                    <img class="photo" src="https://fakeimg.pl/50x50/" alt="">
-                    <div class="clear"></div>
-                    <button  v-on:click="login()" >登入</button>
-                </div>
-                
-                <ul class="menu">
-                    <li><router-link :to="'../accountList'">帳號管理</router-link></li>
-                    <li><router-link :to="'../commentList'">評論管理</router-link></li>
-                    <li><a href="#">統計結果</a></li>
-                    <li><a href="#" >競爭對手</a></li>
-                    <li><a href="#">歷史紀錄</a></li>
-                    <li><a id="logout" href="#">登出</a></li>
+        <div class="headerContent">
+            <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x15/" alt=""></a>
+            <!-- <img class="companyImg" src="https://fakeimg.pl/50x50/" alt=""> -->
+            <div class="company">
+                <p class="title">旅館評論管理系統</p>
+                <div class="clear"></div>
+            </div>
+            <div class="menu">
+                <p>功能列</p>
+                <ul>
+                    <li><router-link :to="{ name: 'accountList'}"><img src="https://fakeimg.pl/15x15/" alt="">帳號管理</router-link></li>
+                    <li><router-link :to="{ name: 'commentList', params: { companyID: companyID }}"><img src="https://fakeimg.pl/15x15/" alt="">評論管理</router-link></li>
+                    <li><router-link :to="{ name: 'statistic' }"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
+                    <li><router-link :to="{ name: 'competition', params: { companyID: companyID }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
+                    <li><a href="#"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</a></li>
                 </ul>
-                    
                 <div class="clear"></div>
             </div>
             <div class="clear"></div>
         </div>
         <div class="clear"></div>
-    <router-view></router-view>
-    <div class="footer">
-            <ul class="phoneMenu">
-                <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-                <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-                <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-                <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-            </ul>
+    </div>
+    <div class="content">
+      <div class="contentTop">
+        <div class="breadcrumb">
+          <a class="breadcrumb-item" href="#">首頁</a>
+          <a class="breadcrumb-item" href="/commentlist">評論管理</a>
+          <a href="#">評論列表</a>
+          <div class="clear"></div>
+        </div>
+        <div class="personalInfo">
+            <img class="photo" src="https://fakeimg.pl/20x20/" alt="" v-on:click="personalState()">
+            <p>後台管理員</p>
             <div class="clear"></div>
         </div>
+        <div class="loginingInfo" id="logining">
+            <div class="nameEmail">
+                <img src="https://fakeimg.pl/50x50/" alt="">
+                <ul>
+                    <li>XXX</li>
+                    <li>a1063343@gmail.com</li>
+                </ul>
+                <div class="clear"></div>     
+            </div>
+            <div class="personalMenu">
+                <ul>
+                    <li><img src="https://fakeimg.pl/20x20/" alt="">個人資料</li>
+                    <li><img src="https://fakeimg.pl/20x20/" alt="">歷史紀錄</li>
+                    <li><img src="https://fakeimg.pl/20x20/" alt=""><button  v-on:click="logout()" >登出</button></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="logoutInfo" id="logoutInfo">
+            <img class="photo" src="https://fakeimg.pl/50x50/" alt="">
+            <div class="clear"></div>
+            <button  v-on:click="login()" >登入</button>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <router-view></router-view>
+    </div>
+    <div class="footer">
+        <ul class="phoneMenu">
+            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
+            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
+            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
+            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
   </div>
 </template>
 
 <script>
+import $ from '../node_modules/jquery'
 export default {
   name: 'App',
   data(){
     return {
-        userID:""
+        userID:"",
+        companyID: 'A'
     }
   },
   methods:{
-    openPersonalInfo:function(){
-        document.getElementById("logining").style.visibility="visible";
-    },
-    closePersonalInfo:function(){
-        document.getElementById("logining").style.visibility="hidden";
+    // openPersonalInfo:function(){
+    //     document.getElementById("logining").style.visibility="visible";
+    // },
+    // closePersonalInfo:function(){
+    //     document.getElementById("logining").style.visibility="hidden";
+    // },
+    editWindow: function(){
+        event.stopPropagation()
+        $('#logining').toggle('slow')
+        $(document).click(function (event) {
+        var area = $('#logining') // 設定目標區域
+        if (!area.is(event.target) && area.has(event.target).length === 0) {
+                // $('#divTop').slideUp('slow');  //滑動消失
+            $('#logining').hide(1000) // 淡出消失
+            }
+        })
     },
     logout:function(){
-        this.closePersonalInfo();
+        $('#logining').hide(1000) // 淡出消失
         localStorage.removeItem('token');
         this.$router.push('/login');
     },
     login:function(){
         this.$router.push('/login');
-        document.getElementById("logoutInfo").style.visibility="hidden";
+        $('#logining').hide(1000) // 淡出消失
     },
     personalState:function(){
         if( localStorage.getItem('token') ){
             var loging = JSON.parse(localStorage.getItem('token'));
             this.userID = loging.id;
             console.log(this.userID);
-            if(document.getElementById("logining").style.visibility=="visible"){
-                this.closePersonalInfo();
-            }else{
-                this.openPersonalInfo();
-            }
+
+            event.stopPropagation()
+            $('#logining').toggle('slow')
+            $(document).click(function (event) {
+            var area = $('#logining') // 設定目標區域
+            if (!area.is(event.target) && area.has(event.target).length === 0) {
+                // $('#divTop').slideUp('slow');  //滑動消失
+                $('#logining').hide(1000) // 淡出消失
+                }
+            })
+            // if(document.getElementById("logining").style.visibility=="visible"){
+            //     this.closePersonalInfo();
+            // }else{
+            //     this.openPersonalInfo();
+            // }
         }else{
-            if(document.getElementById("logoutInfo").style.visibility=="visible"){
-                document.getElementById("logoutInfo").style.visibility="hidden";
-            }else{
-                document.getElementById("logoutInfo").style.visibility="visible";
-            }
+            event.stopPropagation()
+            $('#logoutInfo').toggle('slow')
+            $(document).click(function (event) {
+            var area = $('#logoutInfo') // 設定目標區域
+            if (!area.is(event.target) && area.has(event.target).length === 0) {
+                // $('#divTop').slideUp('slow');  //滑動消失
+                $('#logoutInfo').hide(1000) // 淡出消失
+                }
+            })
+            // if(document.getElementById("logoutInfo").style.visibility=="visible"){
+            //     document.getElementById("logoutInfo").style.visibility="hidden";
+            // }else{
+            //     document.getElementById("logoutInfo").style.visibility="visible";
+            // }
         }
     }
 
@@ -161,14 +207,14 @@ a{
     width: 100%;
     margin: auto;
     font-family: 微軟正黑體;  
-    
+    background-color: #F7F7F7;
+    overflow-x: hidden;
 }
-.clear{
-    clear: both;
-}
+
 .header{
-    height: 60px;
-    box-shadow:3px 3px 5px 6px black;
+    width: 10.5%;
+    height: 100vh;
+    float: left;
 }
 
 .footer{
@@ -176,54 +222,59 @@ a{
 }
 /* hrader */
 .headerContent{
-    width: 100%;
+    height: 100vh;
     position: fixed;
     top: 0;
-    display: block;
-    background-color: #226A4D;
+    padding-right: 5px;
+    background-color: rgb(47, 58, 76);
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.2);
     color: white;
-    z-index: 2;
 }
+
+.company{
+    /* margin-top: 25px; */
+    padding-top: 20px;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
 .companyImg{
     float: left;
-    margin-left: 100px;
-    margin-top: 15px;
-    margin-bottom: 13px;
+    margin-bottom: 10px;
 }
+
 .title{
     float: left;
-    padding-left: 20px;
-    padding-top: 25px;
-    font-size: 25px;
-}
-.photo{
-    cursor: pointer;
-    float: right;
-    margin-right: 100px;
     margin-top: 15px;
-    margin-bottom: 13px;
+    font-size: 18px;
 }
-.identity{
-    color: red;
-    float: right;
-    margin-top: 35px;
-    margin-right: 20px;
-    font-size: 20px;
-}
+
 .menu{
-    float: right;  
-    margin-top: 35px;
-    margin-right: 30px;
+    margin-top: 25px;
+    margin-left: 15px;
+    font-size: 16px;
 }
 .menu li{
-    float: left;
-    margin-right: 20px;
+    padding: 15px 20px;
+    margin: 20px 0px;
 }
 .menu li a{
     font-size: 16px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     color: white;
     display: block;
+}
+.menu p{
+    font-size: 14x;
+    color: #A89090;
+}
+.menu img{
+    margin-right: 3px;
+}
+.menu li:hover{
+    cursor: pointer;
+    background-color: rgb(182, 96, 96);
 }
 .showMenu{
     display: none;
@@ -231,10 +282,82 @@ a{
 #logout{
     display: none;
 }
+
+/* Content */
+.content{
+    float: left;
+    width: 89.5%;
+    height: 100vh;
+    background-color: #F7F7F7;
+}
+
+.contentTop{
+    width: 100%;
+    padding: 1% 0%;
+    box-shadow: 1px 0.5px 2px 0.5px rgba(0, 0, 0, 0.096);
+    background-color: #fff;
+}
+
+.breadcrumb{
+    float: left;
+    width: 70%;
+    margin-left: 20px;
+}
+.breadcrumb a{  
+    display: inline;
+    /* float: left; */
+    font-size: 14px;
+    color: black;
+}
+
+.breadcrumb-item::after{
+    content: "\00a0 >\00a0 ";
+    color: black;
+}
+.personalInfo{
+    float: right;
+    padding-right: 30px;
+    /* margin-right: 5%; */
+}
+.personalInfo p{
+    float: right;
+    margin-right: 10px;
+}
+.photo{
+    float: right;
+    /* margin-top: 10px; */
+}
+
+.el-table th,.el-table td{
+    text-align: center;
+}
+
+.phoneMenu{
+    display: none;
+}
+.page{
+    font-size: 24px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 20px;  
+}
+
+/* 不是basic但comment共用 */
+.dataArea{
+    position: relative;
+    float: left;
+    width: 97%;
+    margin-left: 20px;
+    overflow: hidden;
+}
+
+
 /* footer */
 .phoneMenu{
     display: none;
 }
+
+/* 這裡改版過還沒重寫!!!! */
 @media (max-width: 768px){
     .page{
         font-size: 18px;
@@ -338,16 +461,20 @@ a{
     background-color: #fff;
     padding-top: 20px;
     font-size: 16px;
-    top: 80px;
+    top: 7%;
+    right: 2%;
     color:  black;
-    right:100px;
     position: absolute;
     width: 260px;
     height: 260px;
     border: #CAC7C7 solid 0.5px;
+    border-radius: 5px;
+    box-shadow: 1px 2px 2px 1px #a0a0a02f;
+    z-index: 100;
 }
 #logining{
-    visibility: hidden;
+    /* visibility: hidden; */
+    display: none;
 }
 .loginingInfo .nameEmail{
     padding-bottom: 20px;
@@ -389,8 +516,12 @@ a{
     border: #CAC7C7 solid 0.5px;
 }
 #logoutInfo{
-    visibility: hidden;
+    /* visibility: hidden; */
+    display: none;
+
 }
 
-
+.clear{
+    clear: both;
+}
 </style>

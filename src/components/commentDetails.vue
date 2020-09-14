@@ -1,47 +1,5 @@
-<template lang="html">
-  <div class="wrap">
-    <!-- BASIC -->
-    <div class="header">
-      <div class="headerContent">
-        <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x15/" alt=""></a>
-        <div class="company">
-          <!-- <img class="companyImg" src="https://fakeimg.pl/30x30/" alt=""> -->
-          <p class="title">旅館評論管理系統</p>
-          <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-        <div class="menu">
-          <p>功能列</p>
-          <ul>
-            <li><a href="#"><img src="https://fakeimg.pl/15x15/" alt="">帳號管理</a></li>
-            <!-- , params: { companyID: companyID } -->
-            <li><router-link :to="{ name: 'commentList', params: { companyID: companyID }}"><img src="https://fakeimg.pl/15x15/" alt="">評論管理</router-link></li>
-            <!-- , params: { companyID: companyID } -->
-            <li><router-link :to="{ name: 'statistic' }"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
-            <li><router-link :to="{ name: 'competition', params: { companyID: companyID }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
-            <li><a href="#"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</a></li>
-          </ul>
-          <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <div class="clear"></div>
-    </div>
-    <div class="content">
-      <div class="contentTop">
-        <div class="breadcrumb">
-          <a class="breadcrumb-item" href="#">首頁</a>
-          <a class="breadcrumb-item" href="/commentlist">評論管理</a>
-          <a href="#">評論列表</a>
-          <div class="clear"></div>
-        </div>
-        <div class="identity">
-          <img class="photo" src="https://fakeimg.pl/15x15/" alt="">
-          <p>後台管理員</p>
-          <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-      </div>
+<template>
+  <div>
       <div class="contentCenter">
         <div class="page">
           <span>評論詳細內容</span>
@@ -108,7 +66,7 @@
         <div class="address">
             <p class="addressPeople">處理者：XXX</p>
             <p class="addresstime">處理時間：2020/08/08</p>
-          </div>
+        </div>
         <div class="clear"></div>
       </div>
         <!-- <div class="filter-left" >
@@ -125,16 +83,6 @@
             <el-button @click="submitCancled" class="addButton">取消</el-button>
           </div>
         </div> -->
-      </div>
-      <div class="footer">
-        <ul class="phoneMenu">
-            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-            <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
-        </ul>
-        <div class="clear"></div>
-      </div>
   </div>
 </template>
 
@@ -184,7 +132,7 @@ export default {
   },
   mounted () {
     let self = this
-    axios.get('/comment/' + self.commentDetailsID).then(response => {
+    axios.get('/api/comment/' + self.commentDetailsID).then(response => {
       self.commentData = response.data
       self.newComment = response.data
       for (var i in self.resourceName) {
@@ -195,7 +143,7 @@ export default {
     }).catch((error) => {
       console.log(error)
     })
-    axios.get('/labelchoose').then(response => {
+    axios.get('/api/labelchoose').then(response => {
       self.labelchoose = response.data
     }).catch((error) => {
       console.log(error)
