@@ -6,6 +6,7 @@ const labelchoose = require('../models/labelSchema')
 const company = require('../models/companySchema')
 const statistic = require('../models/statisticSchema')
 const statisticRank = require('../models/statisticRankSchema')
+const q = ''
 
 router.get("/account",(req,res) =>{
     accountData.find({}).sort({update_at: -1}).then(accounts =>{
@@ -191,7 +192,7 @@ router.get('/labelchoose', (req, res) => {
 })
 
 router.get('/comment/:collection', (req, res) => {
-  const q = require('../models/' + req.params.collection + 'Schema')
+  q = require('../models/' + req.params.collection + 'Schema')
   q.find({})
     .sort({update_at: -1})
     .then(commentDatas => {
@@ -202,9 +203,9 @@ router.get('/comment/:collection', (req, res) => {
     })
 })
 
-router.get('/comment/:_id', (req, res) => {
-  // console.log(req.params._id)
-  commentData.findOne({
+router.get('/comment/' + q + ':_id', (req, res) => {
+  q = require('../models/' + req.params.collection + 'Schema')
+  q.findOne({
     _id: req.params._id
   })
     .then(commentDatas => {
@@ -215,8 +216,9 @@ router.get('/comment/:_id', (req, res) => {
     })
 })
 
-router.put('/comment/:_id', (req, res) => {
-  commentData.findOneAndUpdate(
+router.put('/comment/' +q + ':_id', (req, res) => {
+  q = require('../models/' + req.params.collection + 'Schema')
+  q.findOneAndUpdate(
     { _id: req.params._id },
     {
       $set: {

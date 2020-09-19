@@ -154,17 +154,17 @@ export default {
       oneTag: '',
       oneTagData: [],
       columns: [
-        {
-          label: '部門',
-          field: 'relateDep'
-        },
+        // {
+        //   label: '部門',
+        //   field: 'relateDep'
+        // },
         {
           label: '狀態',
           field: 'condition'
         },
         {
           label: '時間',
-          field: 'time'
+          field: 'times.comment'
         },
         {
           label: '評論',
@@ -172,7 +172,7 @@ export default {
         },
         {
           label: '評分',
-          field: 'score',
+          field: 'rating',
           type: 'number'
         },
         {
@@ -181,7 +181,7 @@ export default {
         },
         {
           label: '網站來源',
-          field: 'resource'
+          field: 'website'
         }
       ],
       // currentPage: 1,
@@ -194,32 +194,59 @@ export default {
       TypesIndeterminate: null,
       ConditionIndeterminate: null,
       ReplyIndeterminate: null,
-      resourceName: [
+      resourceName: ['Trip', 'Hotels', 'Agoda', 'Booking', 'TripAdvisor'],
+      labelchoose: [
         {
-          value: 'BOOKING.com',
-          url: 'https://www.booking.com/'
+          label: '餐飲',
+          field: 'food_drink'
         },
         {
-          value: 'HOTELS',
-          url: 'https://tw.hotels.com/'
+          label: '客房',
+          field: 'room'
         },
         {
-          value: 'Agoda',
-          url: 'https://www.agoda.com/'
+          label: '設施',
+          field: 'amenities'
         },
         {
-          value: 'Expedia',
-          url: 'https://www.expedia.com.tw/'
+          label: '服務',
+          field: 'service'
         },
         {
-          value: 'trip.com',
-          url: 'https://hk.trip.com/'
+          label: '交通',
+          field: 'transportation'
         },
         {
-          value: 'TripAdvisor',
-          url: 'https://www.tripadvisor.com.tw/'
+          label: '價格',
+          field: 'price'
         }
       ],
+      // resourceName: [
+      //   {
+      //     value: 'BOOKING.com',
+      //     url: 'https://www.booking.com/'
+      //   },
+      //   {
+      //     value: 'HOTELS',
+      //     url: 'https://tw.hotels.com/'
+      //   },
+      //   {
+      //     value: 'Agoda',
+      //     url: 'https://www.agoda.com/'
+      //   },
+      //   {
+      //     value: 'Expedia',
+      //     url: 'https://www.expedia.com.tw/'
+      //   },
+      //   {
+      //     value: 'trip.com',
+      //     url: 'https://hk.trip.com/'
+      //   },
+      //   {
+      //     value: 'TripAdvisor',
+      //     url: 'https://www.tripadvisor.com.tw/'
+      //   }
+      // ],
       conditions: [
         // {
         //   value: 'all',
@@ -406,20 +433,20 @@ export default {
         })
       })
     },
-    resourceFn (data) {
-      let self = this
-      self.commentData = data
-      for (var i = 0; i < self.commentData.length; i++) {
-        for (var j = 0; j <= 5; j++) {
-          if (self.commentData[i].resource[0].url === self.resourceName[j].url) {
-            self.commentData[i].resource[1].resourceName = self.resourceName[j].value
-          }
-        }
-      }
-      return self.commentData
-    },
+    // resourceFn (data) {
+    //   let self = this
+    //   self.commentData = data
+    //   for (var i = 0; i < self.commentData.length; i++) {
+    //     for (var j = 0; j <= 5; j++) {
+    //       if (self.commentData[i].resource[0].url === self.resourceName[j].url) {
+    //         self.commentData[i].resource[1].resourceName = self.resourceName[j].value
+    //       }
+    //     }
+    //   }
+    //   return self.commentData
+    // },
     fieldFn (rowObj) {
-      if (rowObj.reply === false) {
+      if (rowObj.reply === '') {
         return '否'
       } else {
         return '是'
