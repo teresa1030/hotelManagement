@@ -144,7 +144,7 @@ export default {
   data () {
     return {
       // table data area
-      companyID: 'A',
+      companyName: 'W_Taipei',
       commentData: [],
       selectedArr: [],
       labelchoose: [],
@@ -283,7 +283,7 @@ export default {
     var moment = require('moment')
     var start = moment().subtract(6, 'month')
     var end = moment()
-    axios.get('/api/comment').then(response => {
+    axios.get('/api/comment/' + self.companyName).then(response => {
       self.commentData = response.data
       self.selectedArr = response.data
       self.resourceFn(self.commentData)

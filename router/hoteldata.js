@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose')
 const accountData = require("../models/accountSchema");
-//comment
-const commentData = require('../models/commentSchema')
 const labelchoose = require('../models/labelSchema')
 const company = require('../models/companySchema')
 const statistic = require('../models/statisticSchema')
@@ -191,8 +190,9 @@ router.get('/labelchoose', (req, res) => {
     })
 })
 
-router.get('/comment', (req, res) => {
-  commentData.find({})
+router.get('/comment/:collection', (req, res) => {
+  const q = require('../models/' + req.params.collection + 'Schema')
+  q.find({})
     .sort({update_at: -1})
     .then(commentDatas => {
       res.json(commentDatas)

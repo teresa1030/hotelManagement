@@ -9,3 +9,4 @@ const tagSchema = mongoose.Schema({
 }, {collection: 'labelchoose'})
 
 const labelchoose = module.exports = mongoose.model('labelchoose', tagSchema)
+
