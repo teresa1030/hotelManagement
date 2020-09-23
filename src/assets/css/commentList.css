@@ -57,7 +57,8 @@ label{
     float: left;
     width: 10%;
     /* margin-top: 15px; */
-    margin-top: 52px;
+    /* margin-top: 52px; */
+    margin-right: 15px;
     height: 100vh;
     padding: 1%;
     background-color: #F4F5F8;
@@ -107,6 +108,8 @@ label{
 
 .filter{
     width: 100%;
+    margin-left: 1.5%;
+    /* margin-bottom: 5px; */
 }
 .filter button{
     all: unset;
@@ -115,7 +118,7 @@ label{
 
 .filter li{
     float: left;
-    width: 145px;
+    width: 120px;
     margin-right: 1%;
 }
 .elcheckbox{
@@ -136,9 +139,14 @@ label{
 .filter li:hover{
     cursor: pointer;
     /* background: #F1F3F6; */
-    background: rgba(138, 165, 224, 0.623);
+    /* background: rgba(138, 165, 224, 0.623); */
+    color: rgb(55, 134, 55);
+    border-bottom: 2px solid green;
 }
-
+.focus{
+    color: rgb(55, 134, 55);
+    border-bottom: 2px solid green;
+}
 .labelchoose{
     display: none;
     float: left;
@@ -174,41 +182,43 @@ tr:hover td{
 .el-input{
     height: 30px;
     width: 100%;
-    /* padding-top: -5px; */
 }
 .el-input__inner{
     height: 30px;
     font-size: 12px;
 }
 
-/* .el-input--suffix .el-input__inner{
-    padding-left: 10px;
-} */
+
 .vgt-table th.line-numbers, .vgt-table th.vgt-checkbox-col{
     border-bottom: 1px solid #dcdfe6;
     border-right: none;
     background-color: rgba(51,68,109,.03);
 }
 .none{
-    background-color: #157ab4c5;
+    background-color: #106697c5;
     color: white;
     padding: 7px;
     border-radius: 3px;
-    box-shadow: 1px 1px 3px #adadad;
+    box-shadow: 0.5px 0.5px 2px #adadad;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
 }
 .ing{
-    background-color: rgba(0, 128, 140, 0.274);
-    text-shadow: 0.5px 0.5px #adadad;
+    background-color: rgba(29, 151, 55, 0.836);
     color: white;
     padding: 7px;
     border-radius: 3px;
-    box-shadow: 1px 1px 0px #adadad;
+    box-shadow: 0.5px 0.5px 2px #adadad;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
 }
 .done{
     background-color: rgb(190, 190, 190);
     color: rgb(218, 0, 0);
     padding: 7px;
     border-radius: 3px;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
 }
 
 .none,.ing{

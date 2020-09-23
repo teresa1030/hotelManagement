@@ -150,24 +150,6 @@ router.get('/competitionCommentList/:companyID', (req, res) => {
     })
 })
 
-router.put('/competition/:companyID', (req, res) => {
-  // console.log(req.body.favorite)
-  company.findOneAndUpdate(
-    { companyID: req.params.companyID },
-    {
-      $set: {
-        favorite: req.body.favorite
-      }
-    },
-    {
-      new: true
-    }
-  ).then(companies => {
-    res.json(companies)
-  }).catch(err => {
-    res.json(err)
-  })
-})
 
 router.get('/competition/:companyID', (req, res) => {
   company.find({companyID: {$ne: req.params.companyID}})
@@ -192,7 +174,6 @@ router.get('/labelchoose', (req, res) => {
 })
 
 router.get('/comment/:collection', (req, res) => {
-  console.log(req.params.collection)
   q = require('../models/' + req.params.collection + 'Schema')
   q.find({})
     .limit(10)
@@ -217,35 +198,65 @@ router.get('/comment/' + q + ':_id', (req, res) => {
       res.json(err)
     })
 })
-
-router.put('/comment/' +q + ':_id', (req, res) => {
+router.put('/comment/:collection/:_id', (req, res) => {
   q = require('../models/' + req.params.collection + 'Schema')
   q.findOneAndUpdate(
     { _id: req.params._id },
     {
       $set: {
-        companyID: req.body.companyID,
-        commentID: req.body.commentID,
-        title: req.body.title,
-        content: req.body.content,
-        relateDep: req.body.relateDep,
-        condition: req.body.condition,
-        score: req.body.score,
-        reply: req.body.reply,
-        resource: req.body.resource,
-        tags: req.body.tags,
-        time: req.body.time
+        labels:{
+          pos_neg: req.body.labels.pos_neg,
+          food_drink: req.body.labels.food_drink,
+          transportation: req.body.labels.transportation,
+          service: req.body.labels.service,
+          room: req.body.labels.room,
+          amenities: req.body.labels.amenities,
+          price: req.body.labels.price,
+          view: req.body.labels.view,
+          appearance: req.body.labels.appearance,
+          condition: req.body.labels.condition,
+          reply: req.body.labels.reply
+        }
       }
     },
     {
       new: true
     }
-  ).then(commentDatas => {
-    res.json(commentDatas)
+  ).then(commentData => {
+    res.json(commentData)
   }).catch(err => {
     res.json(err)
   })
 })
+
+// router.put('/comment/' +q + ':_id', (req, res) => {
+//   q = require('../models/' + req.params.collection + 'Schema')
+//   q.findOneAndUpdate(
+//     { _id: req.params._id },
+//     {
+//       $set: {
+//         companyID: req.body.companyID,
+//         commentID: req.body.commentID,
+//         title: req.body.title,
+//         content: req.body.content,
+//         relateDep: req.body.relateDep,
+//         condition: req.body.condition,
+//         score: req.body.score,
+//         reply: req.body.reply,
+//         resource: req.body.resource,
+//         tags: req.body.tags,
+//         time: req.body.time
+//       }
+//     },
+//     {
+//       new: true
+//     }
+//   ).then(commentDatas => {
+//     res.json(commentDatas)
+//   }).catch(err => {
+//     res.json(err)
+//   })
+// })
 
 // router.get('/comment/:condition', (req, res) => {
 //   commentData.findOne({
@@ -261,5 +272,3 @@ router.put('/comment/' +q + ':_id', (req, res) => {
 
 
 module.exports = router; 
-
-//mongoimport --db test --collection collection名 --file 檔案名.json

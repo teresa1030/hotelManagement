@@ -12,14 +12,52 @@
               <el-option v-for="item in conditions" :key="item.value" :value="item.field"></el-option>
             </el-select>
             <p>編輯回覆狀態</p>
-            <!-- <el-select placeholder="回覆狀態設定" class="editButton" v-model="replyModify"> -->
-              <!-- <el-option v-for="item in replys" :key="item.value" :value="item.field"></el-option> -->
-            <!-- </el-select> -->
+            <el-select placeholder="回覆狀態設定" class="editButton" v-model="replyModify">
+              <el-option v-for="item in reply" :key="item.value" :value="item.field"></el-option>
+            </el-select>
             <button @click="editUpdate" class="confirmButton">確認</button>
             <button @click="editCancle" class="confirmButton">取消</button>
             <div class="clear"></div>
           </div>
         </div>
+      </div>
+      <div class="filter">
+        <ul>
+          <li>
+            <button @click="tagFilter('all')">
+              <div class="labelDiv">
+                <img src="https://fakeimg.pl/20x20/" alt="">
+                <span>全部</span>
+              </div>
+            </button>
+          </li>
+          <li v-for="item in labelchoose" :key="item.field" >
+            <button  @click="tagFilter(item.field)">
+              <div class="labelDiv">
+                <img src="https://fakeimg.pl/20x20/" alt="">
+                <span>{{item.label}}</span>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button @click="tagCustom()">
+              <div class="labelDiv">
+                <img src="https://fakeimg.pl/20x20/" alt="">
+                <span>自訂</span>
+              </div>
+            </button>
+          </li>
+        </ul>
+        <div class="clear"></div>
+        <div class="labelchoose">
+          <input type="checkbox" name="label_all" v-model="checkedtagsALL" @change="checkedALLFilter(checkedtagsALL)" id="checkALL">
+            <label for="checkALL">全選</label>
+        </div>
+        <div class="labelchoose" v-for="item in labelchoose" :key="item.field">
+          <input type="checkbox" name="label_checked_col[]" :id="[item.field]" :value="item.label" v-model="checkedtags" @change="checkedALLFilter(checkedtags)" >
+            <label :for="[item.label]">{{item.label}}</label>
+        </div>
+        <div class="clear"></div>
       </div>
       <div class="dataArea">
         <div class="MultiFilterArea">
@@ -68,45 +106,7 @@
           </div>
         </div>
         <div class="dataRightArea">
-          <div class="filter">
-            <ul>
-              <li>
-                <button @click="tagFilter('all')">
-                  <div class="labelDiv">
-                    <img src="https://fakeimg.pl/20x20/" alt="">
-                    <span>全部評論</span>
-                    <!-- <button>全部評論</button> -->
-                  </div>
-                </button>
-              </li>
-              <li v-for="item in labelchoose" :key="item.field" >
-                <button  @click="tagFilter(item.field)">
-                  <div class="labelDiv">
-                    <img src="https://fakeimg.pl/20x20/" alt="">
-                    <span>{{item.label}}</span>
-                  </div>
-                </button>
-              </li>
-              <li>
-                <button @click="tagCustom()">
-                  <div class="labelDiv">
-                    <img src="https://fakeimg.pl/20x20/" alt="">
-                    <span>自訂</span>
-                  </div>
-                </button>
-              </li>
-            </ul>
-            <div class="clear"></div>
-            <div class="labelchoose">
-              <input type="checkbox" name="label_all" v-model="checkedtagsALL" @change="checkedALLFilter(checkedtagsALL)" id="checkALL">
-                <label for="checkALL">全選</label>
-            </div>
-            <div class="labelchoose" v-for="item in labelchoose" :key="item.field">
-              <input type="checkbox" name="label_checked_col[]" :id="[item.field]" :value="item.label" v-model="checkedtags" @change="checkedALLFilter(checkedtags)" >
-                <label :for="[item.label]">{{item.label}}</label>
-            </div>
-            <div class="clear"></div>
-          </div>
+
           <vue-good-table ref="commentdataTable"  class="el-table" styleClass="vgt-table striped" :rows="commentData"  :columns="columns" @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }" :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}">
             <template slot="table-row" slot-scope="props">
               <template v-if="props.column.label === '狀態'">
@@ -153,7 +153,7 @@ export default {
       newComment: [],
       checkedtagsALL: false,
       oneTag: '',
-      oneTagData: [],
+      // oneTagData: [],
       columns: [
         {
           label: '正/負評',
@@ -288,6 +288,11 @@ export default {
     var moment = require('moment')
     var start = moment().subtract(6, 'month')
     var end = moment()
+    if(!self.companyName){
+      var logining = localStorage.getItem('token')
+      var loginData = JSON.parse(logining)
+      self.companyName = loginData.companyName
+    }
     axios.get('/api/comment/' + self.companyName).then(response => {
       self.commentData = response.data
       self.selectedArr = response.data
@@ -366,7 +371,6 @@ export default {
     },
     handleCheckedChange (value) {
       let self = this
-      // var arr1 = []
       if (value === 0) {
         let checkedCount = self.typeChoosen.length
         self.TypescheckAll = checkedCount === self.types.length
@@ -390,34 +394,14 @@ export default {
         condition: self.conditionChoosen,
         reply: self.replyChoosen
       }
-      console.log(filterObj)
       const filterKeys = Object.keys(filterObj)
-      console.log(filterKeys)
       return self.selectedArr.filter((item) => {
-        console.log(item)
         return filterKeys.every((key) => {
-          console.log(filterKeys[key])
-          console.log(key)
           if(!filterObj[key].length){ return true }
-          console.log(item.labels[key])
-          console.log(filterObj[key])
-          console.log(!!~filterObj[key].indexOf(item.labels[key]))
           return !!~filterObj[key].indexOf(item.labels[key])
           })
       })
     },
-    // resourceFn (data) {
-    //   let self = this
-    //   self.commentData = data
-    //   for (var i = 0; i < self.commentData.length; i++) {
-    //     for (var j = 0; j <= 5; j++) {
-    //       if (self.commentData[i].resource[0].url === self.resourceName[j].url) {
-    //         self.commentData[i].resource[1].resourceName = self.resourceName[j].value
-    //       }
-    //     }
-    //   }
-    //   return self.commentData
-    // },
     fieldFn (rowObj) {
       // 整個陣列
       if(rowObj.labels.pos_neg === 0){
@@ -533,21 +517,22 @@ export default {
         t = $(this).scrollTop()
       })
     },
-    // conditionUpdate: function (id) {
-    //   let self = this
-    //   self.commentData.forEach((item) => {
-    //     if (item._id === id) {
-    //       if (item.condition === '未處理') {
-    //         item.condition = '處理中'
-    //       } else {
-    //         item.condition = '已完成'
-    //       }
-    //       self.newComment = item
-    //       self.updateComment(id)
-    //     }
-    //   })
-    //   return self.commentData
-    // },
+    conditionUpdate: function (id) {
+      let self = this
+      self.commentData.forEach((item) => {
+        if (item._id === id) {
+          if (item.labels.condition === 0) {
+            item.labels.condition = 1
+          } else {
+            item.labels.condition = 2
+          }
+          self.newComment = item
+          console.log(self.newComment)
+          self.updateComment(id)
+        }
+      })
+      return self.commentData
+    },
     editFUn: function () {
       // let self = this
       event.stopPropagation()
@@ -562,25 +547,36 @@ export default {
     },
     editUpdate: function () {
       let self = this
+      if(self.conditionModify === '未處理'){
+        self.conditionModify === 0
+      }else if(self.conditionModify === '處理中'){
+        self.conditionModify === 1
+      }else{
+        self.conditionModify === 2
+      }
       if (self.conditionModify.length !== 0) {
         self.$refs['commentdataTable'].selectedRows.forEach((item) => {
-          item.condition = self.conditionModify
+          item.labels.condition = self.conditionModify
+          console.log(self.conditionModify)
+          console.log(item.labels.condition)
           self.newComment = item
-          self.updateComment(item._id)
+          // self.updateComment(item._id)
         })
       }
       if (self.replyModify.length !== 0) {
         if (self.replyModify === '是') {
           self.$refs['commentdataTable'].selectedRows.forEach((item) => {
-            item.reply = true
+            item.labels.reply = 1
             self.newComment = item
-            self.updateComment(item._id)
+            console.log(item.labels.reply)
+            // self.updateComment(item._id)
           })
         } else {
           self.$refs['commentdataTable'].selectedRows.forEach((item) => {
-            item.reply = false
+            item.labels.reply = 0
+            console.log(item.labels.reply)
             self.newComment = item
-            self.updateComment(item._id)
+            // self.updateComment(item._id)
           })
         }
       }
@@ -589,7 +585,7 @@ export default {
       let self = this
       let updateData = self.newComment
       let updateId = id
-      axios.put('/comment/' + updateId, updateData)
+      axios.put('/api/comment/'+ self.companyName + '/' + updateId, updateData)
         .then((response) => {
         }).catch((err) => {
           console.log(err)
@@ -622,32 +618,10 @@ export default {
         return self.commentData
       } else {
         arrq = self.selectedArr.filter((item, index, array) => {
-          // if(item.labels[key] === tag){
-          // }
-          // Object.keys(item.labels).every((key) => {
-            // return indexOf()
-            // console.log(key)
-            // if(key === tag){
-              // return indexOf()
-            // }
-            console.log(Object.keys(item.labels))
-            console.log(item.labels[tag].indexOf(1))
-          // })
-          // console.log(item.labels)
-          // item.labels.every(() => {
-            // return indexOf(item.labels[tag] === 1)
-          // })
-          // item.labels.filter((element, index, array) => {
-          //   console.log(element)
-          //   if (element === tag) {
-          //     console.log(element)
-          //     arrq.push(item)
-          //   }
-          // })
+            return item.labels[tag] === 1
         })
-        console.log(arrq)
         self.commentData = arrq
-        self.oneTagData = arrq
+        // self.oneTagData = arrq
         self.checkedtags = []
         $("input[name='label_checked_col[]']").prop('checked', false)
         $("input[name='label_all']").prop('checked', false)
