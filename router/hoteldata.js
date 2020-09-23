@@ -162,16 +162,24 @@ router.get('/competition/:companyID', (req, res) => {
     })
 })
 
-router.get('/labelchoose', (req, res) => {
-  labelchoose.find({})
-    .sort({update_at: -1})
-    .then(labelchooses => {
-      res.json(labelchooses)
-    }).catch(err => {
-      console.log(2)
-      res.json(err)
-    })
-})
+// router.put('/competition/:companyID', (req, res) => {
+//   // console.log(req.body.favorite)
+//   company.findOneAndUpdate(
+//     { companyID: req.params.companyID },
+//     {
+//       $set: {
+//         favorite: req.body.favorite
+//       }
+//     },
+//     {
+//       new: true
+//     }
+//   ).then(companies => {
+//     res.json(companies)
+//   }).catch(err => {
+//     res.json(err)
+//   })
+// })
 
 router.get('/comment/:collection', (req, res) => {
   q = require('../models/' + req.params.collection + 'Schema')
@@ -186,7 +194,7 @@ router.get('/comment/:collection', (req, res) => {
     })
 })
 
-router.get('/comment/' + q + ':_id', (req, res) => {
+router.get('/commentDetails/:collection/:_id', (req, res) => {
   q = require('../models/' + req.params.collection + 'Schema')
   q.findOne({
     _id: req.params._id

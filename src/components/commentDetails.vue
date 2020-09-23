@@ -93,7 +93,7 @@ export default {
   name: 'commentDetails',
   data () {
     return {
-      companyID: 'A',
+      companyName: '',
       commentDetailsID: this.$route.params._id,
       commentData: [],
       newComment: [],
@@ -132,8 +132,14 @@ export default {
   },
   mounted () {
     let self = this
-    axios.get('/api/comment/' + self.commentDetailsID).then(response => {
+    if(!self.companyName){
+      var logining = localStorage.getItem('token')
+      var loginData = JSON.parse(logining)
+      self.companyName = loginData.companyName
+    }
+    axios.get('/api/commentDetails/' + self.companyName + '/' + self.commentDetailsID).then(response => {
       self.commentData = response.data
+      console.log(self.commentData)
       self.newComment = response.data
       for (var i in self.resourceName) {
         if (self.commentData.resource[0].url === self.resourceName[i].url) {
@@ -143,12 +149,6 @@ export default {
     }).catch((error) => {
       console.log(error)
     })
-    axios.get('/api/labelchoose').then(response => {
-      self.labelchoose = response.data
-    }).catch((error) => {
-      console.log(error)
-    })
-    console.log(self.labelchoose)
   },
   methods: {
     // getTags: function () {

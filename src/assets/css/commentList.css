@@ -2,6 +2,14 @@ label{
     font-size: 14px;
     padding-top: 5px;
 }
+/* .dataArea{
+    position: relative;
+    float: left;
+    width: 100%;
+    margin-left: 20px;
+    overflow: hidden;
+} */
+
 .editArea{
     display: inline-block;
     position: relative;
@@ -66,12 +74,25 @@ label{
     border: 1px solid rgb(226, 226, 226);
     /* color: white; */
 }
+.clearall{
+    display: inline-block;
+    margin-left: 24%;
+    font-size: 12px;
+    /* background-color: #106697c5; */
+    /* color: white; */
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 0.5px 0.5px 2px #adadad;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
+}
 .el-checkbox{
     /* color: white; */
     margin-left: 15px;
 }
 .filterP{
     font-weight: bold;
+    display: inline-block;
     font-size: 16px;
 }
 .filterTitle{
@@ -126,7 +147,7 @@ label{
 }
 .labelDiv{
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 .labelDiv img{
     padding-left: 10px;
@@ -234,7 +255,15 @@ tr:hover td{
     top:1px;
     left:1px;
 }
-
+.replyButton{
+    /* background-color: #ffffffc5; */
+    /* color: rgb(90, 88, 88); */
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 0.5px 0.5px 2px #adadad;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
+}
 .vgt-global-search{
     padding: 10px;
 }

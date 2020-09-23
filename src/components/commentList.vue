@@ -23,7 +23,7 @@
       </div>
       <div class="filter">
         <ul>
-          <li>
+          <li class='all'>
             <button @click="tagFilter('all')">
               <div class="labelDiv">
                 <img src="https://fakeimg.pl/20x20/" alt="">
@@ -31,7 +31,7 @@
               </div>
             </button>
           </li>
-          <li v-for="item in labelchoose" :key="item.field" >
+          <li v-for="item in labelchoose" :key="item.field" :class="item.field">
             <button  @click="tagFilter(item.field)">
               <div class="labelDiv">
                 <img src="https://fakeimg.pl/20x20/" alt="">
@@ -49,19 +49,25 @@
           </li>
         </ul>
         <div class="clear"></div>
-        <div class="labelchoose">
-          <input type="checkbox" name="label_all" v-model="checkedtagsALL" @change="checkedALLFilter(checkedtagsALL)" id="checkALL">
+        <div class="labelchooseArea">
+          <div class="labelchoose">
+            <input type="checkbox" name="label_all" v-model="checkedtagsALL" @change="checkedALLFilter(checkedtagsALL)" id="checkALL">
             <label for="checkALL">全選</label>
-        </div>
-        <div class="labelchoose" v-for="item in labelchoose" :key="item.field">
-          <input type="checkbox" name="label_checked_col[]" :id="[item.field]" :value="item.label" v-model="checkedtags" @change="checkedALLFilter(checkedtags)" >
-            <label :for="[item.label]">{{item.label}}</label>
+            <div class="clear"></div>
+          </div>
+          <div class="labelchoose" v-for="item in labelchoose" :key="item.field">
+            <input type="checkbox" name="label_checked_col[]" :id="[item.field]" :value="item.field" v-model="checkedtags" @change="checkedALLFilter(checkedtags)" >
+            <label :for="[item.field]">{{item.label}}</label>
+            <div class="clear"></div>
+          </div>
+          <div class="clear"></div>
         </div>
         <div class="clear"></div>
       </div>
       <div class="dataArea">
         <div class="MultiFilterArea">
           <p class="filterP">篩選</p>
+          <el-button @click="clearALL()" class="clearall">全部清除</el-button>
           <div slot="table-actions" class="slot_div">
             <p class="filterTitle">標籤類型</p>
             <template>
@@ -106,7 +112,6 @@
           </div>
         </div>
         <div class="dataRightArea">
-
           <vue-good-table ref="commentdataTable"  class="el-table" styleClass="vgt-table striped" :rows="commentData"  :columns="columns" @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }" :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}">
             <template slot="table-row" slot-scope="props">
               <template v-if="props.column.label === '狀態'">
@@ -120,8 +125,16 @@
                   <el-button class="done" disabled="disabled">已完成</el-button>
                 </span>
               </template>
-              <template v-else-if="props.column.field === 'title'" v-bind:value="props.row._id">
-                <router-link :to="{ name: 'commentDetails', params: { _id: props.row._id }}">{{props.row.title}}</router-link>
+              <template v-else-if="props.column.label === '回覆'">
+                <span v-if="props.row.labels.reply === 1">
+                  <el-button class="replyButton" @click="replyUpdate(props.row._id)">是</el-button>
+                </span>                
+                <span v-else-if="props.row.labels.reply === 0">
+                  <el-button class="replyButton" @click="replyUpdate(props.row._id)">否</el-button>
+                </span>
+              </template>
+              <template v-else-if="props.column.label === '評論'" v-bind:value="props.row._id">
+                <router-link :to="{ name: 'commentDetails' , params: { _id: props.row._id}}">{{props.row.title}}</router-link>
               </template>
               <!-- <template v-else-if="props.column.field === 'website'"> -->
                 <!-- <a :href="props.row.resource[0].url" target="_blanket">{{props.row.resource}}</a> -->
@@ -170,7 +183,7 @@ export default {
 
         {
           label: '評論',
-          field: 'superlative'
+          field: this.fieldFn3
         },
         {
           label: '評分',
@@ -197,6 +210,7 @@ export default {
       TypesIndeterminate: null,
       ConditionIndeterminate: null,
       ReplyIndeterminate: null,
+      titleField: '',
       resourceName: ['Trip', 'Hotels', 'Agoda', 'Booking', 'TripAdvisor', 'Expedia'],
       labelchoose: [
         {
@@ -345,6 +359,18 @@ export default {
     // selectionChanged(params){
 
     // },
+    clearALL(){
+      let self = this
+      self.typeChoosen = []
+      self.conditionChoosen = []
+      self.replyChoosen = []
+      this.TypesIndeterminate = false
+      this.ConditionIndeterminate = false
+      this.ReplyIndeterminate = false
+      self.commentData = self.selectedArr
+      $('#reportrange span').html('時間')
+      return self.commentData
+    },
     handleCheckAllChange (val) {
       let self = this
       if (self.TypescheckAll) {
@@ -426,6 +452,13 @@ export default {
         return '已完成'
       }
     },
+    fieldFn3(rowObj){
+      // let self = this
+      if(rowObj.title === ''){
+        // self.titleField = rowObj.text.substr(0,10) + '...'
+        rowObj.title = rowObj.text.substr(0,10) + '...'
+      }
+    },
     timeFilter: function (arr, startData, endData) {
       let self = this
       arr = arr.filter((item) => {
@@ -504,7 +537,7 @@ export default {
       var p = 0
       var t = 0
       var ori = 0
-      $('.wrap').scroll(function () {
+      $(document).scroll(function () {
         p = $(this).scrollTop()
         if (t < p) {
           // 下滾
@@ -525,6 +558,22 @@ export default {
             item.labels.condition = 1
           } else {
             item.labels.condition = 2
+          }
+          self.newComment = item
+          console.log(self.newComment)
+          self.updateComment(id)
+        }
+      })
+      return self.commentData
+    },
+    replyUpdate: function(id){
+      let self = this
+      self.commentData.forEach((item) => {
+        if(item._id === id){
+          if(item.labels.reply === 0){
+            item.labels.reply = 1
+          }else{
+            item.labels.reply = 0
           }
           self.newComment = item
           console.log(self.newComment)
@@ -560,7 +609,7 @@ export default {
           console.log(self.conditionModify)
           console.log(item.labels.condition)
           self.newComment = item
-          // self.updateComment(item._id)
+          self.updateComment(item._id)
         })
       }
       if (self.replyModify.length !== 0) {
@@ -569,14 +618,14 @@ export default {
             item.labels.reply = 1
             self.newComment = item
             console.log(item.labels.reply)
-            // self.updateComment(item._id)
+            self.updateComment(item._id)
           })
         } else {
           self.$refs['commentdataTable'].selectedRows.forEach((item) => {
             item.labels.reply = 0
             console.log(item.labels.reply)
             self.newComment = item
-            // self.updateComment(item._id)
+            self.updateComment(item._id)
           })
         }
       }
@@ -611,12 +660,24 @@ export default {
       // console.log(self.oneTag)
       if (tag === 'all') {
         self.checkedtags = []
-        $("input[name='label_checked_col[]']").prop('checked', false)
-        $("input[name='label_all']").prop('checked', false)
+        $("input[name='label_checked_col[]']").prop('checked', true)
+        $("input[name='label_all']").prop('checked', true)
+        $('.all').addClass('focus')
+        self.labelchoose.forEach(item => {
+            $('.' + item.field).removeClass('focus')
+        })
         self.checkedtagsALL = false
         self.commentData = self.selectedArr
         return self.commentData
       } else {
+        $('.all').removeClass('focus')
+        self.labelchoose.forEach(item => {
+          if(item.field === tag){
+            $('.' + tag).addClass('focus')
+          }else{
+            $('.' + item.field).removeClass('focus')
+          }
+        })
         arrq = self.selectedArr.filter((item, index, array) => {
             return item.labels[tag] === 1
         })
@@ -635,7 +696,7 @@ export default {
       event.stopPropagation()
       $('.labelchoose').toggle('slow')
       $(document).click(function (event) {
-        var area = $('.labelchoose') // 設定目標區域
+        var area = $('.labelchooseArea') // 設定目標區域
         if (!area.is(event.target) && area.has(event.target).length === 0) {
           // $('#divTop').slideUp('slow');  //滑動消失
           $('.labelchoose').hide(1000) // 淡出消失

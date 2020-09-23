@@ -149,7 +149,6 @@ export default {
             // }
         }
     }
-
   }
     
 }
@@ -287,7 +286,7 @@ a{
 .content{
     float: left;
     width: 89.5%;
-    height: 100vh;
+    height: 100%;
     background-color: #F7F7F7;
 }
 
