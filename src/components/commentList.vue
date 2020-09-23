@@ -12,9 +12,9 @@
               <el-option v-for="item in conditions" :key="item.value" :value="item.field"></el-option>
             </el-select>
             <p>編輯回覆狀態</p>
-            <el-select placeholder="回覆狀態設定" class="editButton" v-model="replyModify">
-              <el-option v-for="item in replys" :key="item.value" :value="item.field"></el-option>
-            </el-select>
+            <!-- <el-select placeholder="回覆狀態設定" class="editButton" v-model="replyModify"> -->
+              <!-- <el-option v-for="item in replys" :key="item.value" :value="item.field"></el-option> -->
+            <!-- </el-select> -->
             <button @click="editUpdate" class="confirmButton">確認</button>
             <button @click="editCancle" class="confirmButton">取消</button>
             <div class="clear"></div>
@@ -29,7 +29,7 @@
             <template>
               <el-checkbox :indeterminate="TypesIndeterminate" v-model="TypescheckAll" @change="handleCheckAllChange">全選</el-checkbox>
               <el-checkbox-group v-model="typeChoosen" @change="handleCheckedChange(0)">
-                <el-checkbox v-for="item in types" :label="item.field" :key="item.value" :value="item.field">{{item.field}}</el-checkbox>
+                <el-checkbox v-for="item in types" :label="item.value" :key="item.value" :value="item.value">{{item.field}}</el-checkbox>
               </el-checkbox-group>
             </template>
           </div>
@@ -38,7 +38,7 @@
             <template>
               <el-checkbox :indeterminate="ConditionIndeterminate" v-model="ConditioncheckAll" @change="handleCheckAllChange">全選</el-checkbox>
               <el-checkbox-group v-model="conditionChoosen" @change="handleCheckedChange(1)">
-                <el-checkbox v-for="item in conditions" :label="item.field" :key="item.value" :value="item.field">{{item.field}}</el-checkbox>
+                <el-checkbox v-for="item in conditions" :label="item.value" :key="item.value" :value="item.value">{{item.field}}</el-checkbox>
               </el-checkbox-group>
             </template>
           </div>
@@ -53,7 +53,7 @@
             <template>
               <el-checkbox :indeterminate="ReplyIndeterminate" v-model="ReplycheckAll" @change="handleCheckAllChange">全選</el-checkbox>
               <el-checkbox-group v-model="replyChoosen" @change="handleCheckedChange(2)">
-                <el-checkbox v-for="item in replys" :label="item.field" :key="item.value" :value="item.field" class="elcheckbox">{{item.field}}</el-checkbox>
+                <el-checkbox v-for="item in reply" :label="item.value" :key="item.value" :value="item.value" class="elcheckbox">{{item.field}}</el-checkbox>
               </el-checkbox-group>
             </template>
           </div>
@@ -79,11 +79,11 @@
                   </div>
                 </button>
               </li>
-              <li v-for="item in labelchoose" :key="item._id" >
-                <button  @click="tagFilter(item.tag)">
+              <li v-for="item in labelchoose" :key="item.field" >
+                <button  @click="tagFilter(item.field)">
                   <div class="labelDiv">
                     <img src="https://fakeimg.pl/20x20/" alt="">
-                    <span>{{item.tag}}</span>
+                    <span>{{item.label}}</span>
                   </div>
                 </button>
               </li>
@@ -101,31 +101,31 @@
               <input type="checkbox" name="label_all" v-model="checkedtagsALL" @change="checkedALLFilter(checkedtagsALL)" id="checkALL">
                 <label for="checkALL">全選</label>
             </div>
-            <div class="labelchoose" v-for="item in labelchoose" :key="item._id">
-              <input type="checkbox" name="label_checked_col[]" :id="[item.tag]" :value="item.tag" v-model="checkedtags" @change="checkedALLFilter(checkedtags)" >
-                <label :for="[item.tag]">{{item.tag}}</label>
+            <div class="labelchoose" v-for="item in labelchoose" :key="item.field">
+              <input type="checkbox" name="label_checked_col[]" :id="[item.field]" :value="item.label" v-model="checkedtags" @change="checkedALLFilter(checkedtags)" >
+                <label :for="[item.label]">{{item.label}}</label>
             </div>
             <div class="clear"></div>
           </div>
           <vue-good-table ref="commentdataTable"  class="el-table" styleClass="vgt-table striped" :rows="commentData"  :columns="columns" @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }" :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}">
             <template slot="table-row" slot-scope="props">
-              <template v-if="props.column.field === 'condition'">
-                <span v-if="props.row.condition === '未處理'">
-                  <el-button class="none" @click="conditionUpdate(props.row._id)">{{props.row.condition}}</el-button>
+              <template v-if="props.column.label === '狀態'">
+                <span v-if="props.row.labels.condition === 0">
+                  <el-button class="none" @click="conditionUpdate(props.row._id)">未處理</el-button>
                 </span>
-                <span v-else-if="props.row.condition === '處理中'">
-                  <el-button class="ing" @click="conditionUpdate(props.row._id)">{{props.row.condition}}</el-button>
+                <span v-else-if="props.row.labels.condition === 1">
+                  <el-button class="ing" @click="conditionUpdate(props.row._id)">處理中</el-button>
                 </span>
-                <span v-else-if="props.row.condition === '已完成'">
-                  <el-button class="done" disabled="disabled">{{props.row.condition}}</el-button>
+                <span v-else-if="props.row.labels.condition === 2">
+                  <el-button class="done" disabled="disabled">已完成</el-button>
                 </span>
               </template>
               <template v-else-if="props.column.field === 'title'" v-bind:value="props.row._id">
                 <router-link :to="{ name: 'commentDetails', params: { _id: props.row._id }}">{{props.row.title}}</router-link>
               </template>
-              <template v-else-if="props.column.field === 'resource'">
-                <a :href="props.row.resource[0].url" target="_blanket">{{props.row.resource[1].resourceName}}</a>
-              </template>
+              <!-- <template v-else-if="props.column.field === 'website'"> -->
+                <!-- <a :href="props.row.resource[0].url" target="_blanket">{{props.row.resource}}</a> -->
+              <!-- </template> -->
             </template>
           </vue-good-table>
           <div class="clear"></div>
@@ -134,6 +134,7 @@
   </div>
 </template>
 <script>
+// import { filter } from 'vue/types/umd'
 import axios from '../../node_modules/axios'
 import $ from '../../node_modules/jquery'
 export default {
@@ -144,7 +145,7 @@ export default {
   data () {
     return {
       // table data area
-      companyName: 'W_Taipei',
+      companyName:  this.$route.params.collections,
       commentData: [],
       selectedArr: [],
       labelchoose: [],
@@ -154,30 +155,32 @@ export default {
       oneTag: '',
       oneTagData: [],
       columns: [
-        // {
-        //   label: '部門',
-        //   field: 'relateDep'
-        // },
+        {
+          label: '正/負評',
+          field: this.fieldFn
+        },
         {
           label: '狀態',
-          field: 'condition'
+          field: this.fieldFn2
         },
         {
-          label: '時間',
-          field: 'times.comment'
+          label: '回覆',
+          field: this.fieldFn1
         },
+
         {
           label: '評論',
-          field: 'title'
+          field: 'superlative'
         },
         {
           label: '評分',
           field: 'rating',
           type: 'number'
         },
+        // ?
         {
-          label: '回覆',
-          field: this.fieldFn
+          label: '時間',
+          field: 'times.comment'
         },
         {
           label: '網站來源',
@@ -194,7 +197,7 @@ export default {
       TypesIndeterminate: null,
       ConditionIndeterminate: null,
       ReplyIndeterminate: null,
-      resourceName: ['Trip', 'Hotels', 'Agoda', 'Booking', 'TripAdvisor'],
+      resourceName: ['Trip', 'Hotels', 'Agoda', 'Booking', 'TripAdvisor', 'Expedia'],
       labelchoose: [
         {
           label: '餐飲',
@@ -219,73 +222,48 @@ export default {
         {
           label: '價格',
           field: 'price'
+        },
+        {
+          label: '景觀',
+          field: 'view'
+        },
+        {
+          label: '外觀',
+          field: 'appearance'
         }
       ],
-      // resourceName: [
-      //   {
-      //     value: 'BOOKING.com',
-      //     url: 'https://www.booking.com/'
-      //   },
-      //   {
-      //     value: 'HOTELS',
-      //     url: 'https://tw.hotels.com/'
-      //   },
-      //   {
-      //     value: 'Agoda',
-      //     url: 'https://www.agoda.com/'
-      //   },
-      //   {
-      //     value: 'Expedia',
-      //     url: 'https://www.expedia.com.tw/'
-      //   },
-      //   {
-      //     value: 'trip.com',
-      //     url: 'https://hk.trip.com/'
-      //   },
-      //   {
-      //     value: 'TripAdvisor',
-      //     url: 'https://www.tripadvisor.com.tw/'
-      //   }
-      // ],
       conditions: [
-        // {
-        //   value: 'all',
-        //   field: '請選擇'
-        // },
         {
-          value: 'none',
+          value: 0,
           field: '未處理'
         },
         {
-          value: 'ing',
+          value: 1,
           field: '處理中'
         },
         {
-          value: 'done',
+          value: 2,
           field: '已完成'
         }
       ],
+      // 在label裡了
       types: [
-        // {
-        //   value: 'all',
-        //   field: '全部'
-        // },
         {
-          value: 'good',
+          value: 0,
           field: '正評'
         },
         {
-          value: 'bad',
+          value: 1,
           field: '負評'
         }
       ],
-      replys: [
+      reply: [
         {
-          value: 'true',
+          value: 1,
           field: '是'
         },
         {
-          value: 'false',
+          value: 0,
           field: '否'
         }
       ],
@@ -313,13 +291,6 @@ export default {
     axios.get('/api/comment/' + self.companyName).then(response => {
       self.commentData = response.data
       self.selectedArr = response.data
-      self.resourceFn(self.commentData)
-      console.log(self.commentData)
-    }).catch((error) => {
-      console.log(error)
-    })
-    axios.get('/api/labelchoose').then(response => {
-      self.labelchoose = response.data
     }).catch((error) => {
       console.log(error)
     })
@@ -372,21 +343,21 @@ export default {
     handleCheckAllChange (val) {
       let self = this
       if (self.TypescheckAll) {
-        self.typeChoosen = Object.values(self.types).map(item => item.field)
+        self.typeChoosen = Object.values(self.types).map(item => item.value)
         this.TypesIndeterminate = false
       } else {
         self.typeChoosen = []
         this.TypesIndeterminate = false
       }
       if (self.ConditioncheckAll) {
-        self.conditionChoosen = Object.values(self.conditions).map(item => item.field)
+        self.conditionChoosen = Object.values(self.conditions).map(item => item.value)
         this.ConditionIndeterminate = false
       } else {
         self.conditionChoosen = []
         this.ConditionIndeterminate = false
       }
       if (self.ReplycheckAll) {
-        self.replyChoosen = Object.values(self.replys).map(item => item.field)
+        self.replyChoosen = Object.values(self.reply).map(item => item.value)
         this.ReplyIndeterminate = false
       } else {
         self.replyChoosen = []
@@ -395,7 +366,7 @@ export default {
     },
     handleCheckedChange (value) {
       let self = this
-      var arr1 = []
+      // var arr1 = []
       if (value === 0) {
         let checkedCount = self.typeChoosen.length
         self.TypescheckAll = checkedCount === self.types.length
@@ -406,31 +377,33 @@ export default {
         self.ConditionIndeterminate = checkedCount > 0 && checkedCount < self.conditions.length
       } else if (value === 2) {
         let checkedCount = self.replyChoosen.length
-        self.ReplycheckAll = checkedCount === self.replys.length
-        self.ReplyIndeterminate = checkedCount > 0 && checkedCount < self.replys.length
+        self.ReplycheckAll = checkedCount === self.reply.length
+        self.ReplyIndeterminate = checkedCount > 0 && checkedCount < self.reply.length
       }
-      for (var i in self.replyChoosen) {
-        if (self.replyChoosen[i] === '是') {
-          arr1[i] = true
-        } else {
-          arr1[i] = false
-        }
-      }
-      self.commentData = self.handleFilterData(arr1)
+      self.commentData = self.handleFilterData()
     },
     handleFilterData (replyArr) {
       let self = this
+      var arr = []
       var filterObj = {
-        type: self.typeChoosen,
+        pos_neg: self.typeChoosen,
         condition: self.conditionChoosen,
-        reply: replyArr
+        reply: self.replyChoosen
       }
+      console.log(filterObj)
       const filterKeys = Object.keys(filterObj)
+      console.log(filterKeys)
       return self.selectedArr.filter((item) => {
+        console.log(item)
         return filterKeys.every((key) => {
-          if (!filterObj[key].length) { return true }
-          return !!~filterObj[key].indexOf(item[key])
-        })
+          console.log(filterKeys[key])
+          console.log(key)
+          if(!filterObj[key].length){ return true }
+          console.log(item.labels[key])
+          console.log(filterObj[key])
+          console.log(!!~filterObj[key].indexOf(item.labels[key]))
+          return !!~filterObj[key].indexOf(item.labels[key])
+          })
       })
     },
     // resourceFn (data) {
@@ -446,17 +419,37 @@ export default {
     //   return self.commentData
     // },
     fieldFn (rowObj) {
-      if (rowObj.reply === '') {
+      // 整個陣列
+      if(rowObj.labels.pos_neg === 0){
+        return '正評'
+      }else{
+        return '負評'
+      }
+    },
+    fieldFn1 (rowObj) {
+      if(rowObj.response_body === '' || rowObj.response_body === null){
         return '否'
-      } else {
+      }else{
         return '是'
       }
     },
+    fieldFn2(rowObj){
+      if(rowObj.labels.condition === 0){
+        return '未處理'
+      }else if(rowObj.labels.condition === 1){
+        return '處理中'
+      }else{
+        return '已完成'
+      }
+    },
     timeFilter: function (arr, startData, endData) {
+      let self = this
       arr = arr.filter((item) => {
-        return (Date.parse(item.time) >= Date.parse(startData._d)) && (Date.parse(item.time) <= Date.parse(endData._d))
+        return (Date.parse(Object.values(item.times)[1]) >= Date.parse(startData._d)) && (Date.parse(Object.values(item.times)[1]) <= Date.parse(endData._d))
       })
-      return arr
+      console.log(arr)
+      self.commentData = arr
+      return self.commentData
     },
     checkedALLFilter: function (data) {
       var self = this
@@ -503,9 +496,10 @@ export default {
     },
     cb: function (start, end) {
       var self = this
-      $('#reportrange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'))
+      $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'))
       self.start = start
       self.end = end
+      this.timeFilter(self.selectedArr, self.start, self.end)
     },
     dateRange: function (arr) {
       var moment = require('moment')
@@ -617,7 +611,8 @@ export default {
     tagFilter: function (tag) {
       let self = this
       var arrq = []
-      self.oneTag = tag
+      // self.oneTag = tag
+      // console.log(self.oneTag)
       if (tag === 'all') {
         self.checkedtags = []
         $("input[name='label_checked_col[]']").prop('checked', false)
@@ -626,13 +621,31 @@ export default {
         self.commentData = self.selectedArr
         return self.commentData
       } else {
-        self.selectedArr.filter((item, index, array) => {
-          item.tags.filter((element, index, array) => {
-            if (element === tag) {
-              arrq.push(item)
-            }
-          })
+        arrq = self.selectedArr.filter((item, index, array) => {
+          // if(item.labels[key] === tag){
+          // }
+          // Object.keys(item.labels).every((key) => {
+            // return indexOf()
+            // console.log(key)
+            // if(key === tag){
+              // return indexOf()
+            // }
+            console.log(Object.keys(item.labels))
+            console.log(item.labels[tag].indexOf(1))
+          // })
+          // console.log(item.labels)
+          // item.labels.every(() => {
+            // return indexOf(item.labels[tag] === 1)
+          // })
+          // item.labels.filter((element, index, array) => {
+          //   console.log(element)
+          //   if (element === tag) {
+          //     console.log(element)
+          //     arrq.push(item)
+          //   }
+          // })
         })
+        console.log(arrq)
         self.commentData = arrq
         self.oneTagData = arrq
         self.checkedtags = []

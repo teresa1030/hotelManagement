@@ -57,7 +57,7 @@ export default {
                         this.$router.push({ name: 'changePassword'});
                         break;
                     }else{
-                        this.$router.push({ name: 'commentList'});
+                        this.$router.push({ name: 'commentList', params: { collections: this.accountInfo[i].companyName} });
                         break;
                     } //決定登入後要導到哪一頁
                 } else if( i == this.accountInfo.length-1){    
@@ -74,7 +74,7 @@ export default {
         updateAccount:function(){
             let updateUser = this.logingAccount;
             let id = this.logingAccount._id;
-            axios.put('http://localhost:8080/api/account/'+id,updateUser) 
+            axios.put('/api/account/'+id,updateUser) 
             .then((response) => {
                 //this.userAccountDetail=updateUser;
                 //寫在mounted的如果數據改會自動更著改且不會重新整理

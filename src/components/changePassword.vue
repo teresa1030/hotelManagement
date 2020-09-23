@@ -83,8 +83,7 @@ export default {
                     text: "成功修改密碼",
                     type: "success",
                 }).then(r => {
-                    //console.log(r.value);
-                    this.$router.push('/accountList');
+                    this.$router.push({ name: 'commentList', params: { collections: this.logingAccount.companyName} });
                 });
                             
             }).catch((error) => {

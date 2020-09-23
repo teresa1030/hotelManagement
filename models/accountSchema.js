@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 
 const accountSchema = mongoose.Schema({
     // id: String,
+    companyName: String,
     department: String,
     employeeNumber: String,
     employeeLimit: String,

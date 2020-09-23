@@ -6,7 +6,7 @@ const labelchoose = require('../models/labelSchema')
 const company = require('../models/companySchema')
 const statistic = require('../models/statisticSchema')
 const statisticRank = require('../models/statisticRankSchema')
-const q = ''
+var q = ''
 
 router.get("/account",(req,res) =>{
     accountData.find({}).sort({update_at: -1}).then(accounts =>{
@@ -192,8 +192,10 @@ router.get('/labelchoose', (req, res) => {
 })
 
 router.get('/comment/:collection', (req, res) => {
+  console.log(req.params.collection)
   q = require('../models/' + req.params.collection + 'Schema')
   q.find({})
+    .limit(10)
     .sort({update_at: -1})
     .then(commentDatas => {
       res.json(commentDatas)

@@ -142,7 +142,7 @@ label{
 .labelchoose{
     display: none;
     float: left;
-    margin: 30px 5px 20px 20px;
+    margin: 30px 5px 20px 5px;
 }
 
 .el-table{
@@ -190,11 +190,11 @@ tr:hover td{
     background-color: rgba(51,68,109,.03);
 }
 .none{
-    background-color: #00808C;
+    background-color: #157ab4c5;
     color: white;
     padding: 7px;
     border-radius: 3px;
-    box-shadow: 1px 1px 0px #adadad;
+    box-shadow: 1px 1px 3px #adadad;
 }
 .ing{
     background-color: rgba(0, 128, 140, 0.274);
