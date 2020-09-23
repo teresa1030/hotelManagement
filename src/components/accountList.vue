@@ -188,7 +188,7 @@ export default {
               console.log(index);
               self.hotels.splice(index,1);
               console.log("delete:"+self.checkedAccount[k]);
-              axios.delete('http://localhost:8080/api/account/'+self.checkedAccount[k])
+              axios.delete('/api/account/'+self.checkedAccount[k])
               .then((response) => {
                 self.checkedAccount=[];   
               // console.log("delete successed:");    
@@ -208,7 +208,7 @@ export default {
     createAccount:function(){
       let newUser = this.newAccount;
       console.log(newUser);
-      axios.post('http://localhost:8080/api/account',newUser) 
+      axios.post('/api/account',newUser) 
       .then((response) => {
          // this.accountList.push(newUser);
           this.hotels.push(newUser);

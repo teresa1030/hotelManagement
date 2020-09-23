@@ -87,7 +87,7 @@ export default {
     updateAccount:function(){
       let updateUser = this.userAccountDetail;
       let id = this.userID;
-      axios.put('http://localhost:8080/api/account/'+id,updateUser) 
+      axios.put('/api/account/'+id,updateUser) 
       .then((response) => {
         //this.userAccountDetail=updateUser;
         //寫在mounted的如果數據改會自動更著改且不會重新整理
