@@ -10,38 +10,37 @@
         <span class="addAccount" >新增帳號</span>
         <button class="closeAdd" v-on:click="close()" > X </button>
         <div class="clear"></div>
+        <form v-on:submit.prevent="createAccount">       
         <div class="input">
-          <input  type="text" v-model="newAccount.employeeNumber" > <span>*員工編號&nbsp;:&nbsp;</span>  
+          <input id="employeeNumber" type="text" v-model="newAccount.employeeNumber" required> <span>*員工編號&nbsp;:&nbsp;</span>  
           <!-- &nbsp; 不換行空格 -->
           <div class="clear"></div>
-          <input  type="text" v-model="newAccount.email" ><span>信箱&nbsp;:&nbsp;</span>
+          <input id="email" type="email" v-model="newAccount.email" required><span>*信箱&nbsp;:&nbsp;</span>
           <div class="clear"></div>
-          <input  type="text" v-model="newAccount.password" ><span>*密碼&nbsp;: &nbsp;</span>
+          <input id="password" type="text" v-model="newAccount.password" required><span>*密碼&nbsp;: &nbsp;</span>
           <div class="clear"></div>
         </div>
         <div class="input">
           <select v-model="newAccount.department" class="addSelect">
-            <option newAccount.department>請選擇</option>
             <option>資訊部</option>  
             <option>行銷部</option>
           </select>
           <span>所屬單位&nbsp;: &nbsp;</span>  
           <div class="clear"></div>
           <select v-model="newAccount.employeeLimit" class="addSelect">
-            <option newAccount.employeeLimit>請選擇</option>
             <option>後台管理者</option>
             <option>主管使用者</option>
             <option>一般使用者</option>
           </select>
-          <span>*員工權限&nbsp;: &nbsp;</span>
+          <span>員工權限&nbsp;: &nbsp;</span>
           <div class="clear"></div>
-          <input  type="text" v-model="newAccount.userName" ><span>*姓名&nbsp;: &nbsp;</span>
+          <input id="userName" type="text" v-model="newAccount.userName" required><span>*姓名&nbsp;: &nbsp;</span>
           <div class="clear"></div>
-        </div>
-        
-        <div class="clear"></div>
-        <button class="functionButton" id="tableActionsBtn" v-on:click="close()" >取消</button>
-      <button class="functionButton" type="submit" method="post" v-on:click="createAccount()">確認</button>
+        </div>       
+        <div class="clear"></div>       
+          <button class="functionButton" id="tableActionsBtn" type="submit">確認</button>
+        </form>
+        <button class="functionButton"  v-on:click="close()" >取消</button>
       
       
       </div>
@@ -90,9 +89,9 @@ export default {
       accountList:[],
       newAccount:{
         companyName:"",
-        department: "請選擇",
+        department: "資訊部",
         employeeNumber: "",
-        employeeLimit: "請選擇",
+        employeeLimit: "一般使用者",
         email: "",
         userName: "",
         password: "",
@@ -216,7 +215,7 @@ export default {
          // this.searchResults.push(newUser);
          this.$fire({
           title: "Success !!",
-          text: "成功新增使用者:&nbsp;"+newUser.userName,
+          text: "成功新增使用者:"+newUser.userName,
           type: "success",
         });     
      }).catch((error) => {
@@ -245,11 +244,23 @@ export default {
       //return this.accountList;     
     },
     close:function(){
-      this.newAccount={};
       document.getElementById("addNewUser").style.visibility="hidden";
+      document.getElementById('employeeNumber').removeAttribute("required");
+      document.getElementById('email').removeAttribute("required");
+      document.getElementById('password').removeAttribute("required");
+      document.getElementById('userName').removeAttribute("required");
+      this.newAccount={};
+      this.newAccount.department="資訊部";
+      this.newAccount.chooseLimit="一般使用者";
+      
+     
       console.log("close")
     },
     open:function(){
+      document.getElementById('employeeNumber').required = true;
+      document.getElementById('email').required = true;
+      document.getElementById('password').required = true;
+      document.getElementById('userName').required = true;
       document.getElementById("addNewUser").style.visibility="visible";
       console.log("open")
     },
