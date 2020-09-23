@@ -21,6 +21,7 @@
     "emailjs-com": "^2.6.3",
     "jquery": "^3.5.1",
     "mongoose": "^5.9.13",
+    "sweetalert2": "^10.3.2",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.5",
     "vue-chartjs": "^3.5.1",

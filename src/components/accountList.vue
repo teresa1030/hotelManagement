@@ -20,9 +20,20 @@
           <div class="clear"></div>
         </div>
         <div class="input">
-          <input  type="text" v-model="newAccount.department" ><span>所屬單位&nbsp;: &nbsp;</span>
+          <select v-model="newAccount.department" class="addSelect">
+            <option newAccount.department>請選擇</option>
+            <option>資訊部</option>  
+            <option>行銷部</option>
+          </select>
+          <span>所屬單位&nbsp;: &nbsp;</span>  
           <div class="clear"></div>
-          <input  type="text" v-model="newAccount.employeeLimit" ><span>*員工權限&nbsp;: &nbsp;</span>
+          <select v-model="newAccount.employeeLimit" class="addSelect">
+            <option newAccount.employeeLimit>請選擇</option>
+            <option>後台管理者</option>
+            <option>主管使用者</option>
+            <option>一般使用者</option>
+          </select>
+          <span>*員工權限&nbsp;: &nbsp;</span>
           <div class="clear"></div>
           <input  type="text" v-model="newAccount.userName" ><span>*姓名&nbsp;: &nbsp;</span>
           <div class="clear"></div>
@@ -78,14 +89,15 @@ export default {
       // checkedAccount:勾選的，accountList:最後要顯示的
       accountList:[],
       newAccount:{
-        department: "",
+        companyName:"",
+        department: "請選擇",
         employeeNumber: "",
-        employeeLimit: "",
+        employeeLimit: "請選擇",
         email: "",
         userName: "",
         password: "",
         lastLoginDate: "",
-        lastLoginTime: "",
+        lastLoginTime: "",    
         firstLogin:true
       },
       columns:[
@@ -156,23 +168,42 @@ export default {
     deleteAccount:function(){
       let k;
       let self = this;
-      for(k=0;k<self.checkedAccount.length;k++){
-        //console.log("id:"+self.checkedAccount[k])
-        //var check = new String(self.checkedAccount[k]);
-        let check = self.checkedAccount[k];
-        //console.log(typeof(check));
-        //找陣列裡的物件中的值
-        var index = self.hotels.findIndex( s => s._id == check )
-        console.log(index);
-        self.hotels.splice(index,1);
-        console.log("delete:"+self.checkedAccount[k]);
-        axios.delete('http://localhost:8080/api/account/'+self.checkedAccount[k])
-        .then((response) => {
-          self.checkedAccount=[];   
-         // console.log("delete successed:");    
-         // console.log(this.checkedAccount);
-         });
-      }      
+      this.$fire({
+        title: '你確定要刪除嗎?',
+        text: '刪除後將不可復原',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '對!刪掉!!',
+        cancelButtonText:'取消'
+      }).then((result) => {
+        if (result.value) {
+            for(k=0;k<self.checkedAccount.length;k++){
+              //console.log("id:"+self.checkedAccount[k])
+              //var check = new String(self.checkedAccount[k]);
+              let check = self.checkedAccount[k];
+              //console.log(typeof(check));
+              //找陣列裡的物件中的值
+              var index = self.hotels.findIndex( s => s._id == check )
+              console.log(index);
+              self.hotels.splice(index,1);
+              console.log("delete:"+self.checkedAccount[k]);
+              axios.delete('http://localhost:8080/api/account/'+self.checkedAccount[k])
+              .then((response) => {
+                self.checkedAccount=[];   
+              // console.log("delete successed:");    
+              // console.log(this.checkedAccount);
+                  this.$fire({
+                    title: "Success !!",
+                    text: "成功刪除",
+                    type: "success",
+                  });  
+              });
+            } 
+        }
+      })
+           
       //window.location.reload(); 網頁重新整理
     },
     createAccount:function(){
@@ -183,7 +214,11 @@ export default {
          // this.accountList.push(newUser);
           this.hotels.push(newUser);
          // this.searchResults.push(newUser);
-         console.log(response)        
+         this.$fire({
+          title: "Success !!",
+          text: "成功新增使用者:&nbsp;"+newUser.userName,
+          type: "success",
+        });     
      }).catch((error) => {
           console.log(error);
     });  
@@ -353,5 +388,14 @@ export default {
 #tableActionsBtn{
   margin-right: 330px;
   margin-left: 100px;
+}
+.addSelect{
+  float:right;
+  width: 165px;
+  height: 23px;
+  border: #707070 solid 1px;
+  border-radius: 3px;
+  font-family: "微軟正黑體";
+  margin-bottom: 60px;
 }
 </style>

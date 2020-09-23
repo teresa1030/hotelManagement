@@ -116,7 +116,7 @@ export default {
         if( localStorage.getItem('token') ){
             var loging = JSON.parse(localStorage.getItem('token'));
             this.userID = loging.id;
-            console.log(this.userID);
+            //console.log(this.userID);
 
             event.stopPropagation()
             $('#logining').toggle('slow')

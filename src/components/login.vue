@@ -43,7 +43,6 @@ export default {
           console.log(loginData)
           for(i = 0; i<self.accountInfo.length; i++){
               if(self.accountInfo[i]._id === loginData.id){
-                  console.log('Q')
                 this.$router.push({ name: 'commentList', params: { collections: this.accountInfo[i].companyName} });
                 break
               }
@@ -64,7 +63,7 @@ export default {
                     //var userID = this.accountInfo[i]._id;
                     var currentTime = new Date().getTime(); //取得從 1970-01-01 00:00:00 UTC 累計的毫秒數
                     this.recordLogingTime();               
-                    localStorage.setItem('token', JSON.stringify({id: this.logingAccount._id,time: currentTime, companyName: this.accountInfo[i].companyName}));
+                    localStorage.setItem('token', JSON.stringify({id: this.logingAccount._id,time: currentTime, companyName: this.logingAccount.companyName}));
                     this.updateAccount();
                     if(this.accountInfo[i].firstLogin){
                         this.$router.push({ name: 'changePassword'});
