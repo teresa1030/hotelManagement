@@ -36,17 +36,10 @@ export default {
     axios.get('/api/account')
     .then((response) => {
       self.accountInfo = response.data; 
-      let i
       if(localStorage.getItem('token')){
           var logining = localStorage.getItem('token')
           var loginData = JSON.parse(logining)
-          console.log(loginData)
-          for(i = 0; i<self.accountInfo.length; i++){
-              if(self.accountInfo[i]._id === loginData.id){
-                this.$router.push({ name: 'commentList', params: { collections: this.accountInfo[i].companyName} });
-                break
-              }
-          }
+          this.$router.push({ name: 'commentList', params: { collections: loginData.companyName} });
       }
     })
     .catch((error) => {
@@ -64,6 +57,8 @@ export default {
                     var currentTime = new Date().getTime(); //取得從 1970-01-01 00:00:00 UTC 累計的毫秒數
                     this.recordLogingTime();               
                     localStorage.setItem('token', JSON.stringify({id: this.logingAccount._id,time: currentTime, companyName: this.logingAccount.companyName}));
+                    document.getElementById('menu').style.visibility="visible";
+                    document.getElementById('breadcrumb').style.visibility="visible";
                     this.updateAccount();
                     if(this.accountInfo[i].firstLogin){
                         this.$router.push({ name: 'changePassword'});

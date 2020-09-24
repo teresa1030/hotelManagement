@@ -83,6 +83,8 @@ export default {
                     text: "成功修改密碼",
                     type: "success",
                 }).then(r => {
+                    document.getElementById('menu').style.visibility="visible";
+                    document.getElementById('breadcrumb').style.visibility="visible";
                     this.$router.push({ name: 'commentList', params: { collections: this.logingAccount.companyName} });
                 });
                             

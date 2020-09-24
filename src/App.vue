@@ -8,11 +8,11 @@
                 <p class="title">旅館評論管理系統</p>
                 <div class="clear"></div>
             </div>
-            <div class="menu">
+            <div class="menu" id="menu">
                 <p>功能列</p>
                 <ul>
                     <li><router-link :to="{ name: 'accountList'}"><img src="https://fakeimg.pl/15x15/" alt="">帳號管理</router-link></li>
-                    <li><router-link :to="{ name: 'commentList', params: { companyID: companyID }}"><img src="https://fakeimg.pl/15x15/" alt="">評論管理</router-link></li>
+                    <li><router-link :to="{ name: 'commentList', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">評論管理</router-link></li>
                     <li><router-link :to="{ name: 'statistic' }"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
                     <li><router-link :to="{ name: 'competition', params: { companyID: companyID }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
                     <li><a href="#"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</a></li>
@@ -25,7 +25,7 @@
     </div>
     <div class="content">
       <div class="contentTop">
-        <div class="breadcrumb">
+        <div class="breadcrumb" id="breadcrumb">
           <a class="breadcrumb-item" href="#">首頁</a>
           <a class="breadcrumb-item" href="/commentlist">評論管理</a>
           <a href="#">評論列表</a>
@@ -81,9 +81,22 @@ export default {
   name: 'App',
   data(){
     return {
-        userID:"",
-        companyID: 'A'
+        userID:'',
+        companyID: 'A',
+        companyName:''
     }
+  },
+  mounted(){
+      if(localStorage.getItem('token')){
+        var logining = localStorage.getItem('token')
+        var loginData = JSON.parse(logining)
+        this.companyName = loginData.companyName;
+        document.getElementById('menu').style.visibility="visible";
+        document.getElementById('breadcrumb').style.visibility="visible";
+      }else{
+        document.getElementById('menu').style.visibility="hidden";
+        document.getElementById('breadcrumb').style.visibility="hidden";
+      }
   },
   methods:{
     // openPersonalInfo:function(){
@@ -106,6 +119,8 @@ export default {
     logout:function(){
         $('#logining').hide(1000) // 淡出消失
         localStorage.removeItem('token');
+        document.getElementById('menu').style.visibility="hidden";
+        document.getElementById('breadcrumb').style.visibility="hidden";
         this.$router.push('/login');
     },
     login:function(){

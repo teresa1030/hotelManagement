@@ -36,8 +36,8 @@ export default {
     },
     mounted(){
         let self = this;
-        this.certification = Math.round(Math.random()*1000000);    //取六位整數
-        console.log(self.certification);
+        // this.certification = Math.round(Math.random()*1000000);    //取六位整數
+        // console.log(self.certification);
         axios.get('/api/account/'+self.userID)
         .then((response) => {
             self.userAccountDetail = response.data;
@@ -50,6 +50,8 @@ export default {
     },
     methods:{
         sendEmail:function(){
+            this.certification = Math.round(Math.random()*1000000);    //取六位整數
+            console.log(this.certification);
             console.log('sendEmail');
             var emailData = {
                 user_name: this.userAccountDetail.userName,
@@ -73,7 +75,8 @@ export default {
             if(this.check == this.certification){
                 var currentTime = new Date().getTime(); //取得從 1970-01-01 00:00:00 UTC 累計的毫秒數
                 this.recordLogingTime();               
-                localStorage.setItem('token', JSON.stringify({id:this.userID,time:currentTime}));
+                // localStorage.setItem('token', JSON.stringify({id:this.userID,time:currentTime}));
+                localStorage.setItem('token', JSON.stringify({id: this.userAccountDetail._id,time: currentTime, companyName: this.userAccountDetail.companyName}));
                 this.updateAccount();
                 this.$router.push({ name: 'changePassword'});
             }else{
