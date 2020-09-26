@@ -2,16 +2,175 @@ label{
     font-size: 14px;
     padding-top: 5px;
 }
+.flex1{
+    flex: 1;
+}
+.flex2{
+    flex: 2;
+}
+.dataArea{
+    height: 100%;
+}
+
+.MainComment{
+    float: left;
+    width: 67%;
+    height: 77vh;
+    margin-right: 1%;
+    padding: 1.5%;
+    background-color: #F4F5F8;
+    border-radius: 3px;
+    border: 1px solid rgb(226, 226, 226);
+}
+.CommentTtle{
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.Maincontent{
+    margin-top: 3%;
+    margin-bottom: 5%;
+}
+.commentContent{
+    line-height: 25px;
+}
+.subtitle{
+    font-weight: bold;
+    margin-right: 10px;
+}
+.space{
+    margin-top: 20px;
+}
+.spaceRight{
+    margin-right: 30px;
+}
+.ReplyAddress{
+    float: left;
+    width: 25%;
+    height: 100%;
+}
 
 .MultiFilterArea1{
-    /* width: 80%; */
-    /* height: 40px; */
-    /* padding: 1%; */
-    margin-top: 20px;
-    padding-left: 5px;
-    padding-bottom: 5px;
-    /* border-bottom: 1px solid rgb(207, 207, 207); */
+    /* float: left;
+    width: 8%;
+    height: 75vh;
+    margin-right: 1%; */
+    margin-bottom: 20px;
+    padding: 7% 5%;
+    background-color: #eef0f7;
+    border-radius: 3px;
+    border: 1px solid rgb(209, 209, 209);
 }
+.AreaTitle{
+    background: blue;
+}
+.manageConditionDiv{
+    display: block;
+    margin-bottom: 10%;
+}
+
+.filterP1{
+    margin-bottom: 5%;
+}
+
+
+.none{
+    width: 100px;
+    background-color: #106697c5;
+    color: white;
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 0.5px 0.5px 2px #adadad;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
+}
+.ing{
+    width: 100px;
+    background-color: rgba(29, 151, 55, 0.836);
+    color: white;
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 0.5px 0.5px 2px #adadad;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
+}
+.done{
+    background-color: rgb(190, 190, 190);
+    color: rgb(218, 0, 0);
+    padding: 7px;
+    border-radius: 3px;
+    font-family: "Segoe UI";
+    letter-spacing: 1px;
+}
+
+.none,.ing{
+    -webkit-transition: all 0.1s;
+	-moz-transition: all 0.1s;
+	transition: all 0.1s;
+}
+.none:active, .editButton:active, .ing:active{
+    -webkit-box-shadow: 2px 2px 0px #adadad;
+    -moz-box-shadow: 2px 2px 0px #adadad;
+    box-shadow: 1px 1px 0px #adadad;
+    position:relative;
+    top:1px;
+    left:1px;
+}
+
+.manageReplyDiv{
+    display: block;
+    margin-bottom: 10%;
+}
+
+.reply{
+    width: 100px;
+    height: 30px;
+    padding: 0px;
+}
+
+.manageTags{
+    display: block;
+    margin-bottom: 10%;
+}
+
+.tags{
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.replyArea{
+    /* width: 20%; */
+    height: 50%;
+    padding: 2%;
+    margin-bottom: 10%;
+    background-color: #eef0f7;
+    border-radius: 3px;
+    border: 1px solid rgb(209, 209, 209);
+}
+
+.addressArea{
+    /* width: 20%; */
+    padding: 2%;
+    background-color: #eef0f7;
+    border-radius: 3px;
+    border: 1px solid rgb(209, 209, 209);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .manageTagDiv button{
     all: unset;    
     border-radius: 10px;
@@ -24,9 +183,6 @@ label{
     height: 20px;
 }
 
-.filterP1{
-    display: inline;
-}
 
 .labelchoose1{
     display: inline-block;
@@ -45,56 +201,10 @@ label{
     display: inline-block;
 }
 
-.manageConditionDiv{
-    display: inline-block;
-    margin-left: 5%;
-}
 
-.none{
-    background-color: #00808C;
-    color: white;
-    padding: 7px;
-    border-radius: 3px;
-    box-shadow: 1px 1px 0px #adadad;
-}
-.ing{
-    background-color: rgba(0, 128, 140, 0.274);
-    text-shadow: 0.5px 0.5px #adadad;
-    color: white;
-    padding: 7px;
-    border-radius: 3px;
-    box-shadow: 1px 1px 0px #adadad;
-}
-.done{
-    background-color: rgb(190, 190, 190);
-    color: rgb(218, 0, 0);
-    padding: 7px;
-    border-radius: 3px;
-}
 
-.none,.ing{
-    -webkit-transition: all 0.1s;
-	-moz-transition: all 0.1s;
-	transition: all 0.1s;
-}
-.none:active, .manageTagDiv button:active, .ing:active{
-    -webkit-box-shadow: 2px 2px 0px #adadad;
-    -moz-box-shadow: 2px 2px 0px #adadad;
-    box-shadow: 1px 1px 0px #adadad;
-    position:relative;
-    top:1px;
-    left:1px;
-}
 
-.manageReplyDiv{
-    display: inline-block;
-    margin-left: 5%;
-}
-.reply{
-    width: 30px;
-    height: 30px;
-    padding: 0px;
-}
+
 .score, .info, .time{
     display: inline-block;
     font-size: 14px;
@@ -152,4 +262,7 @@ label{
     display: none;
     float: left;
     /* margin: 30px 5px 20px 20px; */
+}
+.clear{
+    clear: both;
 }

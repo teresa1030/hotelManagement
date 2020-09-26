@@ -6,7 +6,6 @@
               <li class="flex-1">
                 <div>
                   <span>總評論則數</span>
-                  <p>{{statisticData[0].labels[0].positive + statisticData[0].labels[0].negative}}</p>
                 </div>
               </li>
               <li class="flex-1">
@@ -142,11 +141,11 @@ export default {
   },
   data () {
     return {
-      companyName: 'OkuraPrestigeTaipei',
-      companyID: 'A',
-      time: 'August',
+      companyName: '',
+      // time: 'August',
       statisticData: [],
-      statisticRank: [],
+      selectedArr: [],
+      // statisticRank: [],
       Rankcollection: null,
       Commentcollection: null,
       datacollection: null,
@@ -215,21 +214,39 @@ export default {
   },
   mounted () {
     let self = this
+    var time = []
+    var arr = {}
+    if(!self.companyName){
+      var logining = localStorage.getItem('token')
+      var loginData = JSON.parse(logining)
+      self.companyName = loginData.companyName
+    }
     axios.get('/api/statistic').then(response => {
       self.statisticData = response.data
-      self.fillData()
-      self.ServiceData()
-      self.webCommentData()
-    }).catch((error) => {
-      console.log(error)
-    })
-    axios.get('/api/statistic/' + self.time).then(response => {
-      self.statisticRank = response.data
+      self.statisticData.filter((item) => {
+        item.data.filter((child) => {
+         if(child.hotelName === self.companyName){
+           arr.push({time: item.time, data: child})
+         }
+       })
+      })
+      self.statisticData = arr
+      console.log(self.statisticData)
+      console.log(self.statisticData.data)
       self.RankData()
-      self.commentData()
+      // self.fillData()
+      // self.ServiceData()
+      // self.webCommentData()
     }).catch((error) => {
       console.log(error)
     })
+    // axios.get('/api/statistic/' + self.time).then(response => {
+    //   self.statisticRank = response.data
+    //   self.RankData()
+    //   self.commentData()
+    // }).catch((error) => {
+    //   console.log(error)
+    // })
 
     // this.renderChart(this.chartdata, this.options)
   },
@@ -237,8 +254,12 @@ export default {
     // 總排名趨勢
     RankData () {
       let self = this
+      var times = []
+      self.statisticData.filter((item) => {
+        times.push(item.time)
+      })
       this.Rankcollection = {
-        labels: [self.statisticRank[0].time],
+        labels: times,
         datasets: [
           {
             label: '排名',
@@ -249,7 +270,7 @@ export default {
             backgroundcolor: 'none',
             fill: false,
             pointDotRadius: 4,
-            data: [this.getRank()]
+            data: [1]
           }
         ]
       }
@@ -273,15 +294,15 @@ export default {
       }
     },
     getRank () {
-      let self = this
-      self.statisticRank[0].data.sort(function (a, b) {
-        return a.avg_rating > b.avg_rating ? -1 : 1
-      })
-      var Rank = $.map(self.statisticRank[0].data, function (item, index) {
-        return item.name
-      }).indexOf(self.companyName)
-      Rank += 1
-      return Rank
+      // let self = this
+      // self.statisticData.data.sort(function (a, b) {
+      //   return a.avg_rating > b.avg_rating ? -1 : 1
+      // })
+      // var Rank = $.map(self.statisticData, function (item, index) {
+      //   return item.time
+      // }).indexOf(self.companyName)
+      // Rank += 1
+      // return Rank
     },
     // 正負評比例
     commentData () {

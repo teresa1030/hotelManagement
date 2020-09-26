@@ -6,83 +6,79 @@
         </div>
       </div>
       <div class="dataArea">
-        <!-- <p>{{commentData.title}}</p> -->
-        <div class="MultiFilterArea1">
-          <p class="filterP1">標籤：</p>
-          <!--  id="LabelArea"  -->
-          <div class="labelchoose1" v-for="item in commentData.tags" :key="item._id">
-            <input type="text" name="label_tags" disabled="true" :value="item" class="tagInput">
-              <!--  @click="deleteTags(item)" -->
-              <label :for="[item]"></label>
+        <div class="MainComment">
+          <p class="CommentTtle">{{commentData.title}}</p>
+          <span class="subtitle">評分</span><span class="spaceRight">{{commentData.rating}}</span>
+          <span class="subtitle">評論日期</span><span>{{commentData.times.comment}}</span>
+          <div class="Maincontent">
+            <span class="commentContent">{{commentData.text}}</span>
           </div>
-          <div class="manageTagDiv">
-            <button @click="tagCustom"><img src="../assets/icon/add.png"></button>
-          </div>
-          <div class="manageConditionDiv">
-            <p class="filterP1">評論狀態：</p>
-            <template>
-              <span v-if="commentData.condition === '未處理'">
-                <el-button class="none" @click="conditionUpdate(commentData.condition)">{{commentData.condition}}</el-button>
-              </span>
-              <span v-if="commentData.condition === '處理中'">
-                <el-button class="ing" @click="conditionUpdate(commentData.condition)">{{commentData.condition}}</el-button>
-              </span>
-              <span v-if="commentData.condition === '已完成'">
-                <el-button class="done" disabled="disabled">{{commentData.condition}}</el-button>
-              </span>
-            </template>
-          </div>
-          <div class="manageReplyDiv">
-            <p class="filterP1">回覆狀態：</p>
-            <template>
-              <span v-if="commentData.reply === true">
-                <el-button class="reply" @click="replyUpdate(commentData.reply)">是</el-button>
-              </span>
-              <span v-else-if="commentData.reply === false">
-                <el-button class="reply" @click="replyUpdate(commentData.reply)">否</el-button>
-              </span>
-            </template>
-          </div>
-          <p class="score"><span>評分：</span>{{commentData.score}}</p>
-          <p class="info"><span>來源：</span>{{commentData.resource[1].resourceName}}</p>
-          <p class="time">{{commentData.time}}</p>
-          <div class="clear"></div>
-          <div class="labelArea">
-            <div class="labelchoose2">
-              <input type="checkbox" name="label_all" v-model="checkedtagsALL" @change="checkedALLFilter(checkedtagsALL)" id="checkALL">
-                <label for="checkALL">全選</label>
+          <p class="space"><span class="subtitle">住客國家</span><span>{{commentData.locale}}</span></p>
+          <p class="space"><span class="subtitle">入住時間</span><span>{{commentData.times.checkin}}</span></p>
+          <p class="space"><span class="subtitle">房型</span><span>{{commentData.room_type}}</span></p>
+          <p class="space"><span class="subtitle">來源網站</span><span>{{commentData.website}}</span></p>
+        </div>
+
+        <div class="ReplyAddress">
+          <div class="MultiFilterArea1">
+            <div class="manageConditionDiv">
+              <p class="filterP1">評論狀態</p>
+              <template>
+                <span v-if="commentData.labels.condition === 0">
+                  <el-button class="none" @click="conditionUpdate(commentData.condition)">未處理</el-button>
+                </span>
+                <span v-if="commentData.labels.condition === 1">
+                  <el-button class="ing" @click="conditionUpdate(commentData.condition)">處理中</el-button>
+                </span>
+                <span v-if="commentData.labels.condition === 2">
+                  <el-button class="done" disabled="disabled">已完成</el-button>
+                </span>
+              </template>
+              <div class="clear"></div>
             </div>
-            <div class="labelchoose2" v-for="item in labelchoose" :key="item._id">
-              <input type="checkbox" name="label_checked_col[]" :id="[item.tag]" :value="item.tag" v-model="checkedtags" @change="checkedALLFilter(checkedtags)" >
-                <label :for="[item.tag]">{{item.tag}}</label>
+            <div class="manageReplyDiv">
+              <p class="filterP1">回覆狀態</p>
+              <template>
+                <span v-if="commentData.labels.reply === 1">
+                  <el-button class="reply" @click="replyUpdate(commentData.reply)">是</el-button>
+                </span>
+                <span v-else-if="commentData.labels.reply === 0">
+                  <el-button class="reply" @click="replyUpdate(commentData.reply)">否</el-button>
+                </span>
+              </template>
+              <div class="clear"></div>
+            </div>
+            <div class="manageTags">
+              <p class="filterP1">標籤</p>
+              <!-- <div class="labelchoose1" v-for="item in commentData.tags" :key="item._id"> -->
+                <!-- <input type="text" name="label_tags" disabled="true" :value="item" class="tagInput"> -->
+                  <!--  @click="deleteTags(item)" -->
+                <!-- <label :for="[item]"></label> -->
+              <!-- </div> -->
+              <template>
+                <div class="tags" v-for="item in label_tags" :key="item.field">
+                  <el-button>{{item.label}}</el-button>
+                </div>
+              </template>
             </div>
             <div class="clear"></div>
           </div>
-          <div class="clear"></div>
-        </div>
-        <div class="dataMainArea">
-          <p>{{commentData.content}}</p>
-        </div>
-        <div class="address">
-            <p class="addressPeople">處理者：XXX</p>
-            <p class="addresstime">處理時間：2020/08/08</p>
+          <div class="replyArea">
+            <p>回覆內容</p>
+            <template v-if="commentData.response_body === '' || commentData.labels.reply === 0">
+              <p>尚未回覆</p>
+            </template>
+            <template v-else-if="commentData.response_body !== '' || commentData.labels.reply === 1">
+              <p>{{commentData.response_body}}</p>
+            </template>
+          </div>
+          <div class="addressArea">
+            <p>address再看要不要</p>
+
+          </div>
         </div>
         <div class="clear"></div>
       </div>
-        <!-- <div class="filter-left" >
-          <span class="chooseTitle">篩選標籤</span>
-          (<button class="manageLabel" @click="editTags">管理標籤</button>)
-          <div class="clear"></div>
-          <div class="labelchoose" id="LabelArea" v-for="item in commentData.tags" :key="item._id">
-            <input type="text" name="label_tags"  disabled="true" :value="item" class="tagInput">
-              <label :for="[item]" @click="deleteTags(item)"><img src="../assets/icon/delete.png" class="deleteImg"></label>
-          </div>
-          <div class="manageDiv">
-            <input type="text" placeholder="新增標籤" class="addLabelInput" v-model="addLabel">
-            <el-button @click="submitAdd" class="addButton">確定</el-button>
-            <el-button @click="submitCancled" class="addButton">取消</el-button>
-          </div>
-        </div> -->
   </div>
 </template>
 
@@ -97,37 +93,45 @@ export default {
       commentDetailsID: this.$route.params._id,
       commentData: [],
       newComment: [],
-      labelchoose: [],
-      resourceName: [
+      labelchoose: [
         {
-          value: 'BOOKING.com',
-          url: 'https://www.booking.com/'
+          label: '餐飲',
+          field: 'food_drink'
         },
         {
-          value: 'HOTELS',
-          url: 'https://tw.hotels.com/'
+          label: '客房',
+          field: 'room'
         },
         {
-          value: 'Agoda',
-          url: 'https://www.agoda.com/'
+          label: '設施',
+          field: 'amenities'
         },
         {
-          value: 'Expedia',
-          url: 'https://www.expedia.com.tw/'
+          label: '服務',
+          field: 'service'
         },
         {
-          value: 'trip.com',
-          url: 'https://hk.trip.com/'
+          label: '交通',
+          field: 'transportation'
         },
         {
-          value: 'TripAdvisor',
-          url: 'https://www.tripadvisor.com.tw/'
+          label: '價格',
+          field: 'price'
+        },
+        {
+          label: '景觀',
+          field: 'view'
+        },
+        {
+          label: '外觀',
+          field: 'appearance'
         }
       ],
-      addLabel: '',
-      editLabel: '',
-      currentPage: 1,
-      pagesize: 10
+      label_tags: []
+      // addLabel: '',
+      // editLabel: '',
+      // currentPage: 1,
+      // pagesize: 10
     }
   },
   mounted () {
@@ -139,13 +143,15 @@ export default {
     }
     axios.get('/api/commentDetails/' + self.companyName + '/' + self.commentDetailsID).then(response => {
       self.commentData = response.data
-      console.log(self.commentData)
       self.newComment = response.data
-      for (var i in self.resourceName) {
-        if (self.commentData.resource[0].url === self.resourceName[i].url) {
-          self.commentData.resource[1].resourceName = self.resourceName[i].value
+      if(self.commentData.title === ''){
+          self.commentData.title = self.commentData.text.substr(0,10) + '...'
         }
-      }
+        self.label_tags = self.labelchoose.filter((item) => {
+          if(self.commentData.labels[item.field] === 1){
+            return item.label
+          }
+        })
     }).catch((error) => {
       console.log(error)
     })
@@ -168,7 +174,7 @@ export default {
         self.commentData.condition = '已完成'
       }
       self.newComment = self.commentData
-      self.updateComment()
+      // self.updateComment()
     },
     replyUpdate: function (data) {
       let self = this
@@ -179,7 +185,7 @@ export default {
         self.commentData.reply = true
         self.newComment.reply = true
       }
-      self.updateComment()
+      // self.updateComment()
     },
     // editTags: function () {
     //   $('.deleteImg').css('display', 'block')

@@ -62,22 +62,27 @@ export default new Router({
     },
     //comment
     {
+      path: '/commentList',
+      name: 'commentList',
+      component: commentList
+    },
+    {
       path: '/commentDetails/:_id',
       name: 'commentDetails',
       component: commentDetails
     },
     {
-      path: '/competition/:companyID',
+      path: '/competition/:collections',
       name: 'competition',
       component: competition
     },
     {
-      path: '/competitionCommentList/:companyID',
+      path: '/competitionCommentList/:collections',
       name: 'competitionCommentList',
       component: competitionCommentList
     },
     {
-      path: '/competitionCommentDetails/:companyID',
+      path: '/competitionCommentDetails/:collections/:_id',
       name: 'competitionCommentDetails',
       component: competitionCommentDetails
     },
@@ -90,11 +95,6 @@ export default new Router({
       path: '/statistic/:time',
       name: 'statistic',
       component: statistic
-    },
-    {
-      path: '/commentList',
-      name: 'commentList',
-      component: commentList
-    },
+    }
   ]
 })

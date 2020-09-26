@@ -13,7 +13,7 @@
             <!-- <template v-if="props.column.type === input"> -->
               <!-- <el-button>QQ</el-button> -->
             <!-- </template> -->
-            <template v-if="props.column.field === 'favorite'">
+            <!-- <template v-if="props.column.field === 'favorite'">
               <template>
                 <span v-if="props.row.favorite===true">
                   <input type="checkbox" :value="[props.row.companyID]" class="checkbox" v-model="favoriteList" @change="favoriteFn">
@@ -28,9 +28,9 @@
                   </span>
                 </span>
               </template>
-            </template>
-            <template v-else-if="props.column.field === 'goComment'" class="goCommentDiv">
-              <el-button class="goCommentBtn"><router-link :to="{ name: 'competitionCommentList', params: { companyID: props.row.companyID }}">→評論列表</router-link></el-button>
+            </template> -->
+            <template v-if="props.column.field === 'goComment'" class="goCommentDiv">
+              <el-button class="goCommentBtn"><router-link :to="{ name: 'competitionCommentList', params: { collections: props.row.hotelName}}">→評論列表</router-link></el-button>
             </template>
 
           </template>
@@ -60,13 +60,14 @@
               </label>
             </div>
           </div> -->
-      <div class="labelchoose" id="LabelArea">
+      <!-- <div class="labelchoose" id="LabelArea">
           <button class="favButton"  @click="favoriteFilter">已釘選</button>
-          <el-select  class="formInputCss" placeholder="地區" v-model="areaChoosen" @change="ALLFilterFunction">
+           @change="ALLFilterFunction"
+          <el-select  class="formInputCss" placeholder="地區" v-model="areaChoosen">
             <el-option v-for="item in areas" :key="item" :value="item"></el-option>
           </el-select>
-      </div>
-      <div class="favDiv" v-for="item in favoriteData" :key="item.companyID">
+      </div> -->
+      <!-- <div class="favDiv" v-for="item in favoriteData" :key="item.companyID">
           <div>
             <label :for="[item.companyID]">
               <input type="checkbox" :value="[item.companyID]" class="checkbox" v-model="favoriteList" @change="favoriteFn">
@@ -74,11 +75,11 @@
                 <span class="btn"></span>
               </span>
               <span>{{item.area}}</span>
-              <span><router-link :to="{ name: 'competitionCommentList', params: { companyID: item.companyID }}">{{item.company}}</router-link></span>
+              <span><router-link :to="{ name: 'competitionCommentList', params: { collection: item.hotelName }}">{{item.hotelName}}</router-link></span>
               <span>{{item.rating}}</span>
             </label>
           </div>
-      </div>
+      </div> -->
   </div>
 </template>
 
@@ -90,26 +91,23 @@ export default {
   data () {
     return {
       columns: [
+        // 用history抓
         {
           label: '收藏',
           field: 'favorite'
         },
         {
           label: '公司名稱',
-          field: 'company'
-        },
-        {
-          label: '區域',
-          field: 'area'
+          field: 'hotelName'
         },
         {
           label: '分數',
-          field: 'rating'
+          field: 'avg_rating'
         },
-        {
-          label: '排名',
-          field: 'ranking'
-        },
+        // {
+        //   label: '排名',
+        //   field: 'ranking'
+        // },
         {
           label: '連結',
           field: 'goComment',
@@ -117,7 +115,8 @@ export default {
           tdClass: 'custom-td-class'
         }
       ],
-      companyID: this.$route.params.companyID,
+      companyName: this.$route.params.companyName,
+      // company:['EasternPlazaHotelTaipei', 'GaiaHotelTaipei', 'GrandHyattTaipei', 'GrandHotelTaipei', 'OkuraPrestigeTaipei', 'PalaisDeChineHotel', 'RegentTaipei', 'RoyalNikkoTaipei', 'SheratonGrandTaipei', 'W_Taipei'],
       companyData: [],
       selectedArr: [],
       areas: '',
@@ -130,51 +129,68 @@ export default {
   },
   mounted () {
     let self = this
-    axios.get('/api/competition/' + self.companyID).then(response => {
+    if(!self.companyName){
+      var logining = localStorage.getItem('token')
+      var loginData = JSON.parse(logining)
+      self.companyName = loginData.companyName
+    }
+    axios.get('/api/competition/' + self.companyName).then(response => {
       self.companyData = response.data
-      self.selectedArr = response.data
+      // self.selectedArr = self.companyData.data
+      self.selectedArr = self.companyData.data.filter((item) => {
+        return item.hotelName !== self.companyName
+      })
+      self.companyData = self.selectedArr
       self.rating()
-      self.splitString()
-      self.favoriteDataFilter()
-    }).catch((error) => {
-      console.log(error)
     })
+    // self.company = self.company.filter((item) => {
+    //   return item !== self.companyName
+    // })
+    // axios.get('/api/competition/' + self.companyName).then(response => {
+    //   self.companyData = response.data
+    //   self.selectedArr = response.data
+    //   self.rating()
+    //   self.splitString()
+    //   self.favoriteDataFilter()
+    // }).catch((error) => {
+    //   console.log(error)
+    // })
   },
   computed: {
-    ALLFilterFunction () {
-      var self = this
-      if (self.count === 0) {
-        self.count++
-      } else {
-        let arr = []
-        arr = this.areaFilter(self.selectedArr, self.areaChoosen)
-        self.companyData = arr
-      }
-      return self.companyData
-    }
+    // ALLFilterFunction () {
+    //   var self = this
+    //   if (self.count === 0) {
+    //     self.count++
+    //   } else {
+    //     let arr = []
+    //     arr = this.areaFilter(self.selectedArr, self.areaChoosen)
+    //     self.companyData = arr
+    //   }
+    //   return self.companyData
+    // }
   },
   methods: {
     rating: function () {
       let self = this
       self.companyData.sort(function (a, b) {
-        return a.rating - b.rating
+        return b.avg_rating - a.avg_rating
       })
     },
-    splitString: function () {
-      let self = this
-      var y = new Set()
-      var repeat = new Set()
-      self.areas = new Set()
-      self.companyData.forEach(item => {
-        let x = item.area.split('台灣', 2)
-        item.area = x[1]
-        y.add(x[1])
-      })
-      self.areas.add('請選擇')
-      y.forEach((item) => {
-        y.has(item) ? self.areas.add(item) : repeat.add(item)
-      })
-    },
+    // splitString: function () {
+    //   let self = this
+    //   var y = new Set()
+    //   var repeat = new Set()
+    //   self.areas = new Set()
+    //   self.companyData.forEach(item => {
+    //     let x = item.area.split('台灣', 2)
+    //     item.area = x[1]
+    //     y.add(x[1])
+    //   })
+    //   self.areas.add('請選擇')
+    //   y.forEach((item) => {
+    //     y.has(item) ? self.areas.add(item) : repeat.add(item)
+    //   })
+    // },
     favoriteDataFilter: function () {
       let self = this
       self.favoriteList = []
@@ -187,16 +203,16 @@ export default {
         }
       })
     },
-    areaFilter: function (arr, area) {
-      if (area === '請選擇' || area === '') {
-        return arr
-      } else {
-        let arr1 = arr.filter((item) => {
-          return item.area === area
-        })
-        return arr1
-      }
-    },
+    // areaFilter: function (arr, area) {
+    //   if (area === '請選擇' || area === '') {
+    //     return arr
+    //   } else {
+    //     let arr1 = arr.filter((item) => {
+    //       return item.area === area
+    //     })
+    //     return arr1
+    //   }
+    // },
     favoriteFn: function ($event) {
       let self = this
       self.companyData.forEach((item) => {

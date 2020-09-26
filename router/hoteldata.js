@@ -2,10 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const accountData = require("../models/accountSchema");
-const labelchoose = require('../models/labelSchema')
-const company = require('../models/companySchema')
-const statistic = require('../models/statisticSchema')
-const statisticRank = require('../models/statisticRankSchema')
+const stat = require('../models/statSchema')
 var q = ''
 
 router.get("/account",(req,res) =>{
@@ -115,6 +112,20 @@ router.put("/account/:id", (req, res) => {
 
 
 //comment
+
+
+router.get('/statistic', (req, res) => {
+  // {companyID: req.params.companyID}
+  stat.find()
+    .sort({update_at: -1})
+    .then(statistic => {
+      res.json(statistic)
+    }).catch(err => {
+      console.log(2)
+      res.json(err)
+    })
+})
+
 router.get('/statistic/:time', (req, res) => {
   // {companyID: req.params.companyID}
   statisticRank.find({time: req.params.time})
@@ -126,41 +137,29 @@ router.get('/statistic/:time', (req, res) => {
       res.json(err)
     })
 })
-
-router.get('/statistic', (req, res) => {
-  // {companyID: req.params.companyID}
-  statistic.find({})
-    .sort({update_at: -1})
-    .then(statistic => {
-      res.json(statistic)
-    }).catch(err => {
-      console.log(2)
-      res.json(err)
-    })
-})
-
-router.get('/competitionCommentList/:companyID', (req, res) => {
-  commentData.find({companyID: req.params.companyID})
-    .sort({update_at: -1})
-    .then(companies => {
-      res.json(companies)
-    }).catch(err => {
-      console.log(2)
-      res.json(err)
-    })
-})
+// router.get('/competitionCommentList/:companyID', (req, res) => {
+//   commentData.find({companyID: req.params.companyID})
+//     .sort({update_at: -1})
+//     .then(companies => {
+//       res.json(companies)
+//     }).catch(err => {
+//       console.log(2)
+//       res.json(err)
+//     })
+// })
 
 
-router.get('/competition/:companyID', (req, res) => {
-  company.find({companyID: {$ne: req.params.companyID}})
-    .sort({update_at: -1})
-    .then(companies => {
-      res.json(companies)
-    }).catch(err => {
-      console.log(2)
-      res.json(err)
-    })
-})
+// router.get('/competition/:collection', (req, res) => {
+//   q = require('../models/' + req.params.collection + 'Schema')
+//   q.find({companyID: {$ne: req.params.companyID}})
+//     .sort({update_at: -1})
+//     .then(companies => {
+//       res.json(companies)
+//     }).catch(err => {
+//       console.log(2)
+//       res.json(err)
+//     })
+// })
 
 // router.put('/competition/:companyID', (req, res) => {
 //   // console.log(req.body.favorite)
@@ -194,18 +193,6 @@ router.get('/comment/:collection', (req, res) => {
     })
 })
 
-router.get('/commentDetails/:collection/:_id', (req, res) => {
-  q = require('../models/' + req.params.collection + 'Schema')
-  q.findOne({
-    _id: req.params._id
-  })
-    .then(commentDatas => {
-      res.json(commentDatas)
-    }).catch(err => {
-      console.log(err)
-      res.json(err)
-    })
-})
 router.put('/comment/:collection/:_id', (req, res) => {
   q = require('../models/' + req.params.collection + 'Schema')
   q.findOneAndUpdate(
@@ -237,6 +224,28 @@ router.put('/comment/:collection/:_id', (req, res) => {
   })
 })
 
+router.get('/commentDetails/:collection/:_id', (req, res) => {
+  q = require('../models/' + req.params.collection + 'Schema')
+  q.findOne({
+    _id: req.params._id
+  })
+    .then(commentDatas => {
+      res.json(commentDatas)
+    }).catch(err => {
+      console.log(err)
+      res.json(err)
+    })
+})
+router.get('/competition/:collection', (req,res) => {
+  stat.findOne({})
+    .sort({update_at: -1})
+    .then(companies => {
+      res.json(companies)
+    }).catch(err => {
+      console.log(2)
+      res.json(err)
+    })
+})
 // router.put('/comment/' +q + ':_id', (req, res) => {
 //   q = require('../models/' + req.params.collection + 'Schema')
 //   q.findOneAndUpdate(

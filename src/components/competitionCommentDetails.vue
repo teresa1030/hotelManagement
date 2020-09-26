@@ -6,13 +6,41 @@
         </div>
       </div>
       <div class="dataArea">
-        <!-- <p>{{commentData.title}}</p> -->
-        <div class="MultiFilterArea1">
-          <p class="filterP1">標籤：</p>
-          <!--  id="LabelArea"  -->
+        <div class="MainComment">
+          <p class="CommentTtle">{{commentData.title}}</p>
+          <span class="subtitle">評分</span><span class="spaceRight">{{commentData.rating}}</span>
+          <span class="subtitle">評論日期</span><span>{{commentData.times.comment}}</span>
+          <div class="Maincontent">
+            <span class="commentContent">{{commentData.text}}</span>
+          </div>
+          <p class="space"><span class="subtitle">住客國家</span><span>{{commentData.locale}}</span></p>
+          <p class="space"><span class="subtitle">入住時間</span><span>{{commentData.times.checkin}}</span></p>
+          <p class="space"><span class="subtitle">房型</span><span>{{commentData.room_type}}</span></p>
+          <p class="space"><span class="subtitle">來源網站</span><span>{{commentData.website}}</span></p>
+        </div>
+        
+        <div class="ReplyAddress">
+          <div class="MultiFilterArea1">
+            <div class="manageTags">
+              <p class="filterP1">標籤</p>
+              <!-- <div class="labelchoose1" v-for="item in commentData.tags" :key="item._id"> -->
+                <!-- <input type="text" name="label_tags" disabled="true" :value="item" class="tagInput"> -->
+                  <!--  @click="deleteTags(item)" -->
+                <!-- <label :for="[item]"></label> -->
+              <!-- </div> -->
+              <template>
+                <div class="tags" v-for="item in label_tags" :key="item.field">
+                  <el-button>{{item.label}}</el-button>
+                </div>
+              </template>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <!-- <div class="MultiFilterArea1"> -->
+          <!-- <p class="filterP1">標籤：</p>
           <div class="labelchoose1" v-for="item in commentData.tags" :key="item._id">
             <input type="text" name="label_tags" disabled="true" :value="item" class="tagInput">
-              <!--  @click="deleteTags(item)" -->
               <label :for="[item]"></label>
           </div>
           <p class="score"><span>評分：</span>{{commentData.score}}</p>
@@ -39,7 +67,7 @@
             <p class="addressPeople">處理者：XXX</p>
             <p class="addresstime">處理時間：2020/08/08</p>
           </div>
-        <div class="clear"></div>
+        <div class="clear"></div> -->
       </div>
   </div>
 </template>
@@ -51,47 +79,87 @@ export default {
   name: 'competitionCommentDetails',
   data () {
     return {
-      // companyID: this.$route.params.companyID,
+      companyName: this.$route.params.collections,
       commentDetailsID: this.$route.params._id,
       commentData: [],
-      resourceName: [
+      labelchoose: [
         {
-          value: 'BOOKING.com',
-          url: 'https://www.booking.com/'
+          label: '餐飲',
+          field: 'food_drink'
         },
         {
-          value: 'HOTELS',
-          url: 'https://tw.hotels.com/'
+          label: '客房',
+          field: 'room'
         },
         {
-          value: 'Agoda',
-          url: 'https://www.agoda.com/'
+          label: '設施',
+          field: 'amenities'
         },
         {
-          value: 'Expedia',
-          url: 'https://www.expedia.com.tw/'
+          label: '服務',
+          field: 'service'
         },
         {
-          value: 'trip.com',
-          url: 'https://hk.trip.com/'
+          label: '交通',
+          field: 'transportation'
         },
         {
-          value: 'TripAdvisor',
-          url: 'https://www.tripadvisor.com.tw/'
+          label: '價格',
+          field: 'price'
+        },
+        {
+          label: '景觀',
+          field: 'view'
+        },
+        {
+          label: '外觀',
+          field: 'appearance'
         }
-      ]
+      ],
+      label_tags: []
+
+      // resourceName: [
+      //   {
+      //     value: 'BOOKING.com',
+      //     url: 'https://www.booking.com/'
+      //   },
+      //   {
+      //     value: 'HOTELS',
+      //     url: 'https://tw.hotels.com/'
+      //   },
+      //   {
+      //     value: 'Agoda',
+      //     url: 'https://www.agoda.com/'
+      //   },
+      //   {
+      //     value: 'Expedia',
+      //     url: 'https://www.expedia.com.tw/'
+      //   },
+      //   {
+      //     value: 'trip.com',
+      //     url: 'https://hk.trip.com/'
+      //   },
+      //   {
+      //     value: 'TripAdvisor',
+      //     url: 'https://www.tripadvisor.com.tw/'
+      //   }
+      // ]
     }
   },
   mounted () {
     let self = this
-    console.log(self.commentDetailsID)
-    axios.get('/api/comment/' + self.commentDetailsID).then(response => {
+    // console.log(self.commentDetailsID)
+    axios.get('/api/commentDetails/' + self.companyName + '/' + self.commentDetailsID).then(response => {
       self.commentData = response.data
-      for (var i in self.resourceName) {
-        if (self.commentData.resource[0].url === self.resourceName[i].url) {
-          self.commentData.resource[1].resourceName = self.resourceName[i].value
+      console.log(self.commentData)
+      if(self.commentData.title === ''){
+          self.commentData.title = self.commentData.text.substr(0,10) + '...'
         }
-      }
+        self.label_tags = self.labelchoose.filter((item) => {
+          if(self.commentData.labels[item.field] === 1){
+            return item.label
+          }
+        })
     }).catch((error) => {
       console.log(error)
     })

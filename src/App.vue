@@ -13,8 +13,8 @@
                 <ul>
                     <li><router-link :to="{ name: 'accountList'}"><img src="https://fakeimg.pl/15x15/" alt="">帳號管理</router-link></li>
                     <li><router-link :to="{ name: 'commentList', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">評論管理</router-link></li>
-                    <li><router-link :to="{ name: 'statistic' }"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
-                    <li><router-link :to="{ name: 'competition', params: { companyID: companyID }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
+                    <li><router-link :to="{ name: 'statistic', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
+                    <li><router-link :to="{ name: 'competition', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
                     <li><a href="#"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</a></li>
                 </ul>
                 <div class="clear"></div>
@@ -82,7 +82,6 @@ export default {
   data(){
     return {
         userID:'',
-        companyID: 'A',
         companyName:''
     }
   },

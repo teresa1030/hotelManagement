@@ -71,7 +71,7 @@
           <div slot="table-actions" class="slot_div">
             <p class="filterTitle">標籤類型</p>
             <template>
-              <el-checkbox :indeterminate="TypesIndeterminate" v-model="TypescheckAll" @change="handleCheckAllChange">全選</el-checkbox>
+              <el-checkbox :indeterminate="TypesIndeterminate" v-model="TypescheckAll" @change="handleCheckAllChange(0)">全選</el-checkbox>
               <el-checkbox-group v-model="typeChoosen" @change="handleCheckedChange(0)">
                 <el-checkbox v-for="item in types" :label="item.value" :key="item.value" :value="item.value">{{item.field}}</el-checkbox>
               </el-checkbox-group>
@@ -80,7 +80,7 @@
           <div slot="table-actions" class="slot_div">
             <p class="filterTitle">評論處理狀態</p>
             <template>
-              <el-checkbox :indeterminate="ConditionIndeterminate" v-model="ConditioncheckAll" @change="handleCheckAllChange">全選</el-checkbox>
+              <el-checkbox :indeterminate="ConditionIndeterminate" v-model="ConditioncheckAll" @change="handleCheckAllChange(1)">全選</el-checkbox>
               <el-checkbox-group v-model="conditionChoosen" @change="handleCheckedChange(1)">
                 <el-checkbox v-for="item in conditions" :label="item.value" :key="item.value" :value="item.value">{{item.field}}</el-checkbox>
               </el-checkbox-group>
@@ -95,7 +95,7 @@
           <div slot="table-actions" class="slot_div">
             <p class="filterTitle">評論回覆狀態</p>
             <template>
-              <el-checkbox :indeterminate="ReplyIndeterminate" v-model="ReplycheckAll" @change="handleCheckAllChange">全選</el-checkbox>
+              <el-checkbox :indeterminate="ReplyIndeterminate" v-model="ReplycheckAll" @change="handleCheckAllChange(2)">全選</el-checkbox>
               <el-checkbox-group v-model="replyChoosen" @change="handleCheckedChange(2)">
                 <el-checkbox v-for="item in reply" :label="item.value" :key="item.value" :value="item.value" class="elcheckbox">{{item.field}}</el-checkbox>
               </el-checkbox-group>
@@ -158,10 +158,10 @@ export default {
   data () {
     return {
       // table data area
-      companyName:  this.$route.params.collections,
+      companyName:  '',
       commentData: [],
       selectedArr: [],
-      labelchoose: [],
+      // labelchoose: [],
       checkedtags: [],
       newComment: [],
       checkedtagsALL: false,
@@ -373,27 +373,32 @@ export default {
     },
     handleCheckAllChange (val) {
       let self = this
-      if (self.TypescheckAll) {
-        self.typeChoosen = Object.values(self.types).map(item => item.value)
-        this.TypesIndeterminate = false
-      } else {
-        self.typeChoosen = []
-        this.TypesIndeterminate = false
+      if(val === 0){
+        if (self.TypescheckAll) {
+          self.typeChoosen = Object.values(self.types).map(item => item.value)
+          this.TypesIndeterminate = false
+        } else {
+          self.typeChoosen = []
+          this.TypesIndeterminate = false
+        }
+      }else if(val === 1){
+        if (self.ConditioncheckAll) {
+          self.conditionChoosen = Object.values(self.conditions).map(item => item.value)
+          this.ConditionIndeterminate = false
+        } else {
+          self.conditionChoosen = []
+          this.ConditionIndeterminate = false
+        }
+      }else if(val === 2){
+        if (self.ReplycheckAll) {
+          self.replyChoosen = Object.values(self.reply).map(item => item.value)
+          this.ReplyIndeterminate = false
+        } else {
+          self.replyChoosen = []
+          this.ReplyIndeterminate = false
+        }
       }
-      if (self.ConditioncheckAll) {
-        self.conditionChoosen = Object.values(self.conditions).map(item => item.value)
-        this.ConditionIndeterminate = false
-      } else {
-        self.conditionChoosen = []
-        this.ConditionIndeterminate = false
-      }
-      if (self.ReplycheckAll) {
-        self.replyChoosen = Object.values(self.reply).map(item => item.value)
-        this.ReplyIndeterminate = false
-      } else {
-        self.replyChoosen = []
-        this.ReplyIndeterminate = false
-      }
+      self.commentData = self.handleFilterData()
     },
     handleCheckedChange (value) {
       let self = this
@@ -412,9 +417,9 @@ export default {
       }
       self.commentData = self.handleFilterData()
     },
-    handleFilterData (replyArr) {
+    handleFilterData () {
       let self = this
-      var arr = []
+      // var arr = []
       var filterObj = {
         pos_neg: self.typeChoosen,
         condition: self.conditionChoosen,
@@ -464,7 +469,6 @@ export default {
       arr = arr.filter((item) => {
         return (Date.parse(Object.values(item.times)[1]) >= Date.parse(startData._d)) && (Date.parse(Object.values(item.times)[1]) <= Date.parse(endData._d))
       })
-      console.log(arr)
       self.commentData = arr
       return self.commentData
     },
