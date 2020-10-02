@@ -2,7 +2,7 @@
   <div id="app" class="warp">
     <div class="header">
         <div class="headerContent">
-            <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x15/" alt=""></a>
+            <!-- <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x15/" alt=""></a> -->
             <!-- <img class="companyImg" src="https://fakeimg.pl/50x50/" alt=""> -->
             <div class="company">
                 <p class="title">旅館評論管理系統</p>
@@ -25,6 +25,7 @@
     </div>
     <div class="content">
       <div class="contentTop">
+        <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x15/" alt=""></a>
         <div class="breadcrumb" id="breadcrumb">
           <a class="breadcrumb-item" href="#">首頁</a>
           <a class="breadcrumb-item" href="/commentlist">評論管理</a>
@@ -63,6 +64,7 @@
       </div>
       <router-view></router-view>
     </div>
+    <div class="clear"></div>
     <div class="footer">
         <ul class="phoneMenu">
             <li><a href="#"><img src="https://fakeimg.pl/27x27/" alt=""></a></li>
@@ -219,6 +221,7 @@ a{
 .warp{
     width: 100%;
     margin: auto;
+    height: 100vh;
     font-family: 微軟正黑體;  
     background-color: #F7F7F7;
     overflow-x: hidden;
@@ -233,7 +236,7 @@ a{
 .footer{
     background-color: #F7F7F7;
 }
-/* hrader */
+/* header */
 .headerContent{
     height: 100vh;
     position: fixed;
@@ -267,6 +270,8 @@ a{
     margin-top: 25px;
     margin-left: 15px;
     font-size: 16px;
+    z-index: 100;
+    position: absolute;
 }
 .menu li{
     padding: 15px 20px;
@@ -301,7 +306,7 @@ a{
     float: left;
     width: 89.5%;
     height: 100%;
-    background-color: #F7F7F7;
+    
 }
 
 .contentTop{
@@ -371,6 +376,7 @@ a{
 }
 
 /* 這裡改版過還沒重寫!!!! */
+
 @media (max-width: 768px){
     .page{
         font-size: 18px;
@@ -379,7 +385,11 @@ a{
         margin-right: 20px;
     }
     .header{
-        height: 35px;
+        height: 0;
+    }
+    .headerContent{
+        width: 100%;
+        height: 0;
     }
     .companyImg{
         display: none;
@@ -406,7 +416,7 @@ a{
 		overflow: hidden;
 		/*隱藏選單結束*/
 		/*漸變效果*/
-    	transition: max-height 2.3s;
+    	transition: max-height 0.5s;
         margin-top: 0px;
         margin-right: 0px;
     	/*絕對定位疊在網頁上*/
@@ -418,7 +428,7 @@ a{
     	/* left:0 right:0表示滿版 */
     	left: 0;
    		right: 0;
-    	background: #226A4D;
+    	background: black;
     }
     .menu li{
         width: 100%;
@@ -432,13 +442,13 @@ a{
         font-size: 14px;
   	}
 	.menu li a:hover{
-    	background: #ccaf6f ;
+    	background: rgb(182, 96, 96) ;
     	color: #fff;
   	}
 	.showMenu{
         width: 10%;
     	display: block;
-        float: left;
+        float: right;
         padding-top: 12px;
         margin-left: 7%;
     }
@@ -455,7 +465,7 @@ a{
         position: fixed;
         bottom: 0;
         text-align: center;
-        background-color: #226A4D;
+        background-color: rgb(47, 58, 76);
     }
     .phoneMenu li{  
         width: 25%;
@@ -536,5 +546,107 @@ a{
 
 .clear{
     clear: both;
+}
+@media (max-width: 425px) {
+    .headerContent{
+       display: inline;
+    }
+    .showMenu{
+       display: block;
+    }
+    .contentTop{
+        position: absolute;
+        background-color: rgb(47, 58, 76);
+        height: 30px;
+        margin: 0;
+    }
+    .content{
+        width: 100%;
+        padding: 0;
+    }
+    .personalInfo{
+        display: none;
+    }
+    .header{
+        height: 0;
+    }
+    .headerContent{
+        background: #000;
+        width: 100%;
+        height: 0;
+    }
+    .company{
+        display: none;
+    }
+    .companyImg{
+        display: none;
+    }
+    .photo{
+        display: none;
+    }
+    .identity{
+        display: none;
+    }
+    .breadcrumb{
+        display: none;
+    }
+    .menu{
+		/*隱藏選單開始*/
+		max-height: 0;
+		overflow: hidden;
+		/*隱藏選單結束*/
+		/*漸變效果*/
+    	transition: max-height 0.5s;
+        margin-top: 0px;
+        margin-right: 0px;
+    	/*絕對定位疊在網頁上*/
+    	position: relative;
+    	/*權重*/
+    	z-index: 100;
+    	/*header 80px+1px boder 線條*/
+    	top: 39px;
+    	/* left:0 right:0表示滿版 */
+    	left: 0;
+   		right: 0;
+        background-color: rgb(192, 214, 250);
+        margin: 0;
+    }
+    .menu li{
+        width: 100%;
+        /* float: none; */
+        text-align: center;
+        border-top: white solid 1px;  
+        background: rgb(47, 58, 76);
+        padding: 20px 0 ; 
+        float: left;
+        margin: 0;
+    }
+    .menu p{
+         display: none;
+	}
+	.menu li a{
+        padding: 0px;
+        transition: all 0.3s;
+        font-size: 20px;
+        /* border: none; */
+  	}
+	.menu li a:hover{
+    	background-color: rgb(182, 96, 96);
+    	color: #fff;
+  	}
+	.showMenu{
+        width: 10%;
+    	display: block;
+        float: left;
+        padding-top: 10px;
+        margin-left: 7%;
+    }
+    #logout{
+        display: block;
+    }
+    /*jQuery點擊後動態在 body 加上 class */
+  	.menu-show .menu{
+        max-height: 500px;
+    }
 }
 </style>

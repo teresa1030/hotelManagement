@@ -242,5 +242,56 @@ export default {
   font-family: 微軟正黑體;
   outline: none;
 }
-
+@media (max-width: 425px) {
+  .contentCenter{
+    /* background: blue; */
+    width: 100%;
+    margin-top: 30px;
+  }
+  .detail{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #F7F7F7;
+    margin-bottom: 50px;
+  }
+  .leftContent{
+    width: 100%;
+    margin: 25px auto;
+    text-align:center;
+  }
+  .rightContent{
+    background-color: #F7F7F7;
+    width: 90%;
+    margin:auto;
+    float: none;
+  }
+  .rightContent h2{
+    /* background: red; */
+    margin: 10px 0;
+  
+  }
+  .rightContent li{
+    /* background: #000; */
+    margin: 10 15px;
+  }
+  .personalDetail{
+    background: #FFFFFF;
+    margin: 0;
+  }
+  .contactInfo{
+    background: #FFFFFF;
+    margin: 0;
+  }
+  .private{
+    background: #FFFFFF;
+    margin: 0;
+  }
+  .rightContent input{
+    margin: 3px 0;
+    padding: 3px 5px;
+    font-weight:normal;
+    
+  }
+}
 </style>

@@ -102,7 +102,9 @@ export default {
       columns:[
         {
           label:'所屬單位',
-          field:'department'
+          field:'department',
+          tdClass: 'display',
+          thClass: 'display'
         },
         {
           label:'員工編號',
@@ -114,7 +116,9 @@ export default {
         },
         {
           label:'信箱',
-          field:'email'
+          field:'email',
+          tdClass: 'display',
+          thClass: 'display'
         },
         {
           label:'權限等級',
@@ -122,9 +126,12 @@ export default {
         },
         {
           label:'上次登入時間',
-          field:'lastLoginDate'
+          field:'lastLoginDate',
+          tdClass: 'display',
+          thClass: 'display'
         }
       ],
+    
       rowSelection: []
     }  
   },
@@ -287,7 +294,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style >
 
 
 /* function */
@@ -354,6 +361,7 @@ export default {
   margin-left: 20px;
   /* margin-top: 20px; */
   position: relative;
+  z-index: 0;
 }
 /* increasing User */
 .addUser{
@@ -408,5 +416,34 @@ export default {
   border-radius: 3px;
   font-family: "微軟正黑體";
   margin-bottom: 60px;
+}
+@media (max-width: 425px) {
+  .insideContent{
+    width: 100%;
+    
+  }
+  .display{
+    display: none;
+  }
+  .vueGoodTable{
+    width: 100%;
+    margin: 0;
+    background: #000;
+    /* display: none; */
+  }
+  .contentCenter{
+    /* background: blue; */
+    width: 100%;
+    margin-top: 30px;
+  }
+  .page{
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 30px;  
+    margin-right: 20%;
+  }
+  .vgt-global-search__input vgt-pull-left{
+    background: #000;
+  }
 }
 </style>

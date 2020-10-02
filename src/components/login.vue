@@ -182,4 +182,12 @@ export default {
     font-family: 微軟正黑體;
     outline:none;
 }
+@media (max-width: 425px) {
+    .page input{
+        margin-top: 10px;
+    }
+    .page button{
+        margin-top: 10px;
+    }
+}
 </style>
