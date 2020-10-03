@@ -2,6 +2,7 @@
     /* background-color: #fff; */
     /* padding-top: 10px; */
     width: 100%;
+    overflow: hidden;
 }
 
 .RealTime{
@@ -49,6 +50,15 @@
     border-radius: 2px;
     background-color: #fff;
 }
+
+.RealTime .equal{
+    vertical-align: top;
+}
+
+.RealTime .equal img{
+    padding-top: 10px;
+}
+
 .main ul{
     width: 80%;
 }
@@ -85,7 +95,9 @@
 .statisticRank, .statisticService div, .statistic div, .statisticWeb div, .statisticWeb1 div, .statisticComment div{
     width: 100%;
 }
-
+.travel{
+    margin-top: -20px;
+}
 .allP{
     width: 95%;
     margin-right: auto;
@@ -98,7 +110,7 @@
 }
 
 .allP1{
-    padding: 20px 20px;
+    padding: 20px 20px 10px 20px;
     font-size: 18px;
     font-weight: bold;
 }

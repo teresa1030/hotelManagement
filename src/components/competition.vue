@@ -6,10 +6,29 @@
         </div>
       </div>
       <div class="dataArea">
-        <!-- :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}" -->
-        <vue-good-table ref="competitionTable" class="el-table" styleClass="vgt-table striped" :rows="companyData"  :columns="columns"
-                      @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }" >
-          <template slot="table-row" slot-scope="props">
+        <template >
+          <span>
+            <vue-good-table ref="competitionTable" class="el-table" styleClass="vgt-table striped" :rows="companyData"  :columns="columns"
+                      @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }"  @on-cell-click="goComment" >
+              <template slot="table-row" slot-scope="props">
+                <template v-if="props.column.field === 'favorite'">
+                  <template>
+                    <span v-if="props.row.favorite === true">
+                      <!--  :value="[props.row.companyID]" -->
+                      <input type="checkbox" class="checkbox" :value="props.row.hotelName" v-model="favoriteList" @change="favoriteFn">
+                      <span class="btn-box">
+                        <span class="btn1"></span>
+                      </span>
+                    </span>
+                    <span v-else-if="props.row.favorite === false">
+                      <!--  :name="[props.row.companyID]" :value="[props.row.companyID]"  -->
+                      <input type="checkbox" class="checkbox" :name="props.row.hotelName" :value="props.row.hotelName" v-model="favoriteList" @change="favoriteFn($event)">
+                      <span class="btn-box">
+                        <span class="btn"></span>
+                      </span>
+                    </span>
+                  </template>
+                </template>
             <!-- <template v-if="props.column.type === input"> -->
               <!-- <el-button>QQ</el-button> -->
             <!-- </template> -->
@@ -29,12 +48,16 @@
                 </span>
               </template>
             </template> -->
-            <template v-if="props.column.field === 'goComment'" class="goCommentDiv">
-              <el-button class="goCommentBtn"><router-link :to="{ name: 'competitionCommentList', params: { collections: props.row.hotelName}}">→評論列表</router-link></el-button>
-            </template>
-
-          </template>
-        </vue-good-table>
+                <template v-else-if="props.column.field === 'goComment'" class="goCommentDiv">
+                  <el-button class="goCommentBtn"><router-link :to="{ name: 'competitionCommentList', params: { collections: props.row.hotelName}}">→評論列表</router-link></el-button>
+                </template>
+              </template>
+            </vue-good-table>
+          </span>
+        <!-- </template> -->
+        <!-- :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}" -->
+        <!-- <template > -->
+        </template>
       </div>
           <!-- <div class="clear"></div>
           <div v-for="item in companyData" :key="item._id" class="competitionList">
@@ -91,7 +114,6 @@ export default {
   data () {
     return {
       columns: [
-        // 用history抓
         {
           label: '收藏',
           field: 'favorite'
@@ -116,6 +138,8 @@ export default {
         }
       ],
       companyName: this.$route.params.companyName,
+      loginData: [],
+      account: [],
       // company:['EasternPlazaHotelTaipei', 'GaiaHotelTaipei', 'GrandHyattTaipei', 'GrandHotelTaipei', 'OkuraPrestigeTaipei', 'PalaisDeChineHotel', 'RegentTaipei', 'RoyalNikkoTaipei', 'SheratonGrandTaipei', 'W_Taipei'],
       companyData: [],
       selectedArr: [],
@@ -124,39 +148,46 @@ export default {
       favoriteList: [],
       favoriteData: [],
       favoriteOpen: false,
-      count: 0
+      count: 0,
     }
   },
   mounted () {
     let self = this
+    var logining = localStorage.getItem('token')
+    self.loginData = JSON.parse(logining)
     if(!self.companyName){
-      var logining = localStorage.getItem('token')
-      var loginData = JSON.parse(logining)
-      self.companyName = loginData.companyName
+      self.companyName = self.loginData.companyName
     }
+    axios.get('/api/account/'+ self.loginData.id).then(response => {
+      self.account = response.data
+      console.log(self.account)
+    }).catch((error) => {
+      console.log(error)
+    })
     axios.get('/api/competition/' + self.companyName).then(response => {
       self.companyData = response.data
-      // self.selectedArr = self.companyData.data
       self.selectedArr = self.companyData.data.filter((item) => {
         return item.hotelName !== self.companyName
       })
       self.companyData = self.selectedArr
       self.rating()
+      self.favorite()
+      self.favoriteList = self.account.favorite
     })
-    // self.company = self.company.filter((item) => {
-    //   return item !== self.companyName
-    // })
-    // axios.get('/api/competition/' + self.companyName).then(response => {
-    //   self.companyData = response.data
-    //   self.selectedArr = response.data
-    //   self.rating()
-    //   self.splitString()
-    //   self.favoriteDataFilter()
-    // }).catch((error) => {
-    //   console.log(error)
-    // })
+    // $(document).ready(function(){
+    //   // var self = this
+    //     $(window).resize(function() {
+    //       var t = $(window).width()
+    //         if(t < 768){
+    //           self.isshow = false
+    //         }else{
+    //           self.isshow = true
+    //         }
+    //     });
+    // });
   },
   computed: {
+
     // ALLFilterFunction () {
     //   var self = this
     //   if (self.count === 0) {
@@ -170,77 +201,71 @@ export default {
     // }
   },
   methods: {
+    favorite: function(){
+      let self = this
+      self.companyData.forEach((item) => {
+        item["favorite"] = false
+      })
+      self.companyData.forEach((item) => {
+        self.account.favorite.filter((child) => {
+          if(item.hotelName === child){
+            item["favorite"] = true
+          }
+        })
+      })
+      self.companyData.sort(function(item) {
+        return item.favorite ? -1 : 1
+      })
+    },
+    favoriteFn: function($event){
+      let self = this
+      self.companyData.forEach((item) =>{
+        if(item.hotelName === $event.target.value){
+          item["favorite"] = $event.target.checked
+          self.account.favorite = self.favoriteList
+          axios.put('/api/account/' + self.loginData.id, self.account).then((response) => {
+          }).catch((err) => {
+            console.log(err)
+          })
+        }
+      })
+      self.companyData.sort(function(item) {
+        return item.favorite ? -1 : 1
+      })
+    },
     rating: function () {
       let self = this
       self.companyData.sort(function (a, b) {
         return b.avg_rating - a.avg_rating
       })
     },
-    // splitString: function () {
+    goComment(params){
+      let goComment = params.row
+      this.$router.push(({ name: 'competitionCommentList', params: { collections: goComment.hotelName}}))
+    },
+    // favoriteDataFilter: function () {
     //   let self = this
-    //   var y = new Set()
-    //   var repeat = new Set()
-    //   self.areas = new Set()
-    //   self.companyData.forEach(item => {
-    //     let x = item.area.split('台灣', 2)
-    //     item.area = x[1]
-    //     y.add(x[1])
+    //   self.favoriteList = []
+    //   self.favoriteData = self.companyData.filter((item) => {
+    //     return item.favorite === true
     //   })
-    //   self.areas.add('請選擇')
-    //   y.forEach((item) => {
-    //     y.has(item) ? self.areas.add(item) : repeat.add(item)
+    //   self.companyData.filter((item) => {
+    //     if (item.favorite === true) {
+    //       self.favoriteList.push(item.companyID)
+    //     }
     //   })
     // },
-    favoriteDataFilter: function () {
-      let self = this
-      self.favoriteList = []
-      self.favoriteData = self.companyData.filter((item) => {
-        return item.favorite === true
-      })
-      self.companyData.filter((item) => {
-        if (item.favorite === true) {
-          self.favoriteList.push(item.companyID)
-        }
-      })
-    },
-    // areaFilter: function (arr, area) {
-    //   if (area === '請選擇' || area === '') {
-    //     return arr
+
+    // favoriteFilter: function () {
+    //   let self = this
+    //   if (self.favoriteOpen === false) {
+    //     $('.favDiv').css('display', 'block')
+    //     self.favoriteOpen = true
     //   } else {
-    //     let arr1 = arr.filter((item) => {
-    //       return item.area === area
-    //     })
-    //     return arr1
+    //     $('.favDiv').css('display', 'none')
+    //     self.favoriteOpen = false
     //   }
-    // },
-    favoriteFn: function ($event) {
-      let self = this
-      self.companyData.forEach((item) => {
-        self.favoriteList.filter((item) => {
-          if ($event.target.checked === true && item === $event.target.value) {
-            $event.target.checked = false
-          }
-        })
-        if (item.companyID === $event.target.value) {
-          item.favorite = $event.target.checked
-          axios.put('/competition/' + item.companyID, item).then((response) => {
-          }).catch((err) => {
-            console.log(err)
-          })
-        }
-        self.favoriteDataFilter()
-      })
-    },
-    favoriteFilter: function () {
-      let self = this
-      if (self.favoriteOpen === false) {
-        $('.favDiv').css('display', 'block')
-        self.favoriteOpen = true
-      } else {
-        $('.favDiv').css('display', 'none')
-        self.favoriteOpen = false
-      }
-    }
+    // }
   }
 }
 </script>

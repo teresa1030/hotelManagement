@@ -9,7 +9,6 @@ router.get("/account",(req,res) =>{
     accountData.find({}).sort({update_at: -1}).then(accounts =>{
         res.json(accounts);
     }).catch(err =>{
-        console.log(2);
         res.json(err);
     });
 });  
@@ -67,7 +66,6 @@ router.delete("/account/:id", (req, res) => {
   });
 //更新
 router.put("/account/:id", (req, res) => {
-  console.log(req.body);
   accountData.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -80,7 +78,8 @@ router.put("/account/:id", (req, res) => {
         password: req.body.password,
         lastLoginDate: req.body.lastLoginDate,
         lastLoginTime: req.body.lastLoginTime,
-        firstLogin:req.body.firstLogin
+        firstLogin:req.body.firstLogin,
+        favorite:req.body.favorite
       }
     },
     {
