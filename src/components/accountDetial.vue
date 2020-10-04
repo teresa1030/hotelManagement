@@ -5,17 +5,6 @@
           <span>帳號詳細內容</span>
         </div>
       </div>
-<!-- route {{"route.params:"+this.$route.params.userID}} -->
-<!-- userID {{"userID:"+userID}} -->
-<!-- <ul>
-  <li>{{userAccountDetail._id}}</li>
-  <li>{{userAccountDetail.id}}</li>
-  <li>{{userAccountDetail.userName}}</li>
-  <li>{{userAccountDetail.employeeNumber}}</li>
-  <li>{{userAccountDetail.department}}</li>
-  <li>{{userAccountDetail.employeeLimit}}</li>
-</ul>
- <button class="" type="submit" method="post" v-on:click="updateAccount()" >更新</button> -->
 
     <div class="detail">
       <div class="leftContent">
@@ -23,7 +12,6 @@
       </div>
       <div class="rightContent">
         <h2>個人資料</h2>
-        <!-- <input type="button" id="personal" v-on:click="editPersonal()" value="編輯"> -->
         <button id="personal" v-on:click="editPersonal()" >編輯</button>
         <div class="clear"></div>
         <div class="personalDetail">
@@ -47,8 +35,12 @@
         <div class="private">
           <ul>
             <li>權限&nbsp;:&nbsp;<input type="text" readonly="readonly" :value="userAccountDetail.employeeLimit"></li>
-            <li>密碼&nbsp;:&nbsp;<input type="password" readonly="readonly" :value="userAccountDetail.password"></li>
+            <li>密碼&nbsp;:&nbsp;<input class="form-control" type="password" readonly="readonly" :value="userAccountDetail.password">
+                <span v-on:click="changePassword" v-if="pass_type==='password'"><font-awesome-icon icon="eye" /></span>
+                <span v-on:click="changePassword" v-else><font-awesome-icon icon="eye-slash" /></span>    
+            </li>
           </ul>
+          
         </div>
       </div>
       <div class="clear"></div>
@@ -60,12 +52,14 @@
 import axios from 'axios';
 export default { 
   name: 'accountDetial',
+
   data () {
     return {
       userAccountDetail:{},
       userID:this.$route.params.userID,
       editPersonalBtn:false,
-      editContactInfoBtn:false    
+      editContactInfoBtn:false,
+      pass_type:"password"
     }
   },
   mounted(){
@@ -144,6 +138,15 @@ export default {
         document.getElementById("email").style.cssText="border:1px solid;";
         this.editContactInfoBtn=true;
       }       
+    },
+    changePassword:function(){
+      if (this.pass_type === "password" ){
+          $("input.form-control").attr("type", "text");  
+          this.pass_type="text";
+      } else {
+          $("input.form-control").attr("type", "password");
+          this.pass_type="password";
+      }
     }
   }
 }
@@ -241,6 +244,12 @@ export default {
   line-height: 25px;
   font-family: 微軟正黑體;
   outline: none;
+}
+.fa{
+	color:black;
+	z-index: 2;
+	margin-top: 26.5px;
+	margin-right: 95px;
 }
 @media (max-width: 425px) {
   .contentCenter{

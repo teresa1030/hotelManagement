@@ -194,41 +194,62 @@ export default {
               var index = self.hotels.findIndex( s => s._id == check )
               console.log(index);
               self.hotels.splice(index,1);
+              console.log(k+":"+self.checkedAccount[k]);
               console.log("delete:"+self.checkedAccount[k]);
               axios.delete('/api/account/'+self.checkedAccount[k])
               .then((response) => {
                 self.checkedAccount=[];   
               // console.log("delete successed:");    
               // console.log(this.checkedAccount);
-                  this.$fire({
-                    title: "Success !!",
-                    text: "成功刪除",
-                    type: "success",
-                  });  
+                                              
               });
             } 
         }
+        this.$fire({
+          title: "Success !!",
+          text: "成功刪除",
+          type: "success",
+        });    
       })
            
       //window.location.reload(); 網頁重新整理
     },
     createAccount:function(){
+      let i;
       let newUser = this.newAccount;
+      for(i=0;i<this.hotels.length;i++){
+        console.log("newAccount: "+this.newAccount.userName);
+        console.log("hotels: "+this.hotels[i].userName);
+        if(this.newAccount.employeeNumber === this.hotels[i].employeeNumber){
+          
+          this.$fire({
+              title: "Warning !!",
+              text: "員工編號(帳號) "+this.newAccount.userName+" 已經有人用了，換一個吧!!",
+              type: "warning",
+            }); 
+          this.newAccount.employeeNumber="";
+          break;
+          
+        }else if(i === this.hotels.length-1){
+          axios.post('/api/account',newUser) 
+          .then((response) => {
+            // this.accountList.push(newUser);
+            this.hotels.push(newUser);
+            // this.searchResults.push(newUser);
+            this.$fire({
+              title: "Success !!",
+              text: "成功新增使用者: "+newUser.userName,
+              type: "success",
+            });     
+          }).catch((error) => {
+                console.log(error);
+          });  
+          this.close();
+        }
+      }
       console.log(newUser);
-      axios.post('/api/account',newUser) 
-      .then((response) => {
-         // this.accountList.push(newUser);
-          this.hotels.push(newUser);
-         // this.searchResults.push(newUser);
-         this.$fire({
-          title: "Success !!",
-          text: "成功新增使用者:"+newUser.userName,
-          type: "success",
-        });     
-     }).catch((error) => {
-          console.log(error);
-    });  
-      this.close();
+      
+      
       
     },
       selection:function(){
@@ -258,7 +279,7 @@ export default {
       document.getElementById('userName').removeAttribute("required");
       this.newAccount={};
       this.newAccount.department="資訊部";
-      this.newAccount.chooseLimit="一般使用者";
+      this.newAccount.employeeLimit="一般使用者";
       
      
       console.log("close")

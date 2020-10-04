@@ -17,6 +17,10 @@ import './assets/css/commentList.css'
 import './assets/js/jquery-3.4.1.min.js'
 import './assets/js/basic.js'
 import 'element-ui/lib/theme-chalk/reset.css'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faEye ,faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+// import { fab } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import {
   Select,
@@ -50,7 +54,9 @@ Vue.use(ElementUI)
 Vue.use(VueGoodTablePlugin);
 Vue.use(VueSimpleAlert);
 Vue.config.productionTip = false
-
+// library.add(fab);
+library.add(faEye,faEyeSlash);
+Vue.component('font-awesome-icon', FontAwesomeIcon) 
 
 
 
