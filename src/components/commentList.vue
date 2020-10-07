@@ -24,7 +24,7 @@
       <div class="filter">
         <ul>
           <li class='all'>
-            <button @click="tagFilter('all')">
+            <button @click="tagFilter('all')" :value="oneTag">
               <div class="labelDiv">
                 <img src="https://fakeimg.pl/20x20/" alt="">
                 <span>全部</span>
@@ -419,14 +419,21 @@ export default {
     },
     handleFilterData () {
       let self = this
-      // var arr = []
+      var arr = []
       var filterObj = {
         pos_neg: self.typeChoosen,
         condition: self.conditionChoosen,
         reply: self.replyChoosen
       }
+      if(self.oneTag.length !== 0){
+        arr = self.selectedArr.filter((item, index, array) => {
+          return item.labels[self.oneTag] === 1
+        })
+      }else{
+        arr = self.selectedArr
+      }
       const filterKeys = Object.keys(filterObj)
-      return self.selectedArr.filter((item) => {
+      return arr.filter((item) => {
         return filterKeys.every((key) => {
           if(!filterObj[key].length){ return true }
           return !!~filterObj[key].indexOf(item.labels[key])
@@ -559,6 +566,7 @@ export default {
       self.commentData.forEach((item) => {
         if (item._id === id) {
           if (item.labels.condition === 0) {
+            console.log(item.labels.condition)
             item.labels.condition = 1
           } else {
             item.labels.condition = 2
@@ -589,29 +597,27 @@ export default {
     editFUn: function () {
       // let self = this
       event.stopPropagation()
-      $('.edit').toggle('slow')
+      $('.edit').toggle('fast')
       $(document).click(function (event) {
         var area = $('.edit') // 設定目標區域
         if (!area.is(event.target) && area.has(event.target).length === 0) {
           // $('#divTop').slideUp('slow');  //滑動消失
-          $('.edit').hide(1000) // 淡出消失
+          $('.edit').hide(700) // 淡出消失
         }
       })
     },
     editUpdate: function () {
       let self = this
       if(self.conditionModify === '未處理'){
-        self.conditionModify === 0
+        self.conditionModify = 0
       }else if(self.conditionModify === '處理中'){
-        self.conditionModify === 1
+        self.conditionModify = 1
       }else{
-        self.conditionModify === 2
+        self.conditionModify = 2
       }
       if (self.conditionModify.length !== 0) {
         self.$refs['commentdataTable'].selectedRows.forEach((item) => {
           item.labels.condition = self.conditionModify
-          console.log(self.conditionModify)
-          console.log(item.labels.condition)
           self.newComment = item
           self.updateComment(item._id)
         })
@@ -649,7 +655,7 @@ export default {
       let self = this
       self.conditionModify = []
       self.replyModify = []
-      $('.edit').hide(1000) // 淡出消失
+      $('.edit').hide(700) // 淡出消失
     },
     // handleSizeChange: function (size) {
     //   this.pagesize = size
@@ -660,8 +666,8 @@ export default {
     tagFilter: function (tag) {
       let self = this
       var arrq = []
-      // self.oneTag = tag
-      // console.log(self.oneTag)
+      self.oneTag = tag
+      self.clearALL()
       if (tag === 'all') {
         self.checkedtags = []
         $("input[name='label_checked_col[]']").prop('checked', true)
@@ -706,8 +712,8 @@ export default {
           $('.labelchoose').hide(1000) // 淡出消失
         }
       })
-    }
-
+    },
+    selectionChanged(params){}
   }
 }
 </script>

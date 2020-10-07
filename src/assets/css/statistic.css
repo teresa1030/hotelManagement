@@ -2,31 +2,38 @@
     /* background-color: #fff; */
     /* padding-top: 10px; */
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
+
+
+.element::-webkit-scrollbar { width: 0 !important }
 
 .RealTime{
     width: 100%;
     background-color: rgb(11, 66, 122, 0.46);
     /* height: 250px; */
     height: 11vw;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
 }
 .RealTime p{
     color: white;
     font-size: 18px;
-    padding: 0.5% 2%;
+    padding: 1% 2%;
 }
 .RealTime ul{
     display: flex;
-    width: 100%;
+    width: 90%;
     margin-top: 10px;
-    /* margin-left: 2%; */
+    margin-bottom: 10px;
+    margin-left: 2.5%;
     /* padding-left: 2.5%; */
     /* margin-left: 1%; */
 }
 .RealTime li{
     display: inline-flex;
     justify-content:space-around;
+    margin-left: 2%;
+    /* margin-right: 1%; */
 }
 
 .RealTime li span, .main li span{
@@ -45,7 +52,7 @@
     width: 75%;
     height: 5vw;
     border: 0.5px solid rgb(238, 238, 238);
-    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.3);
     padding: 5%;
     border-radius: 2px;
     background-color: #fff;
@@ -71,6 +78,28 @@
 .flex-2{
     width: 20%;
 }
+.filterTime{
+    height: 50px;
+}
+.filterTime p{
+    display: inline-block;
+    margin-left: 25px;
+    font-size: 14px;
+    color: #8BA4BE;
+}
+#reportrange{
+    display: inline-block;
+    margin: 15px 5px;
+}
+.timeSpan{
+    font-size: 14px;
+    margin-top: 3px;
+    color: #aaaaaa;
+}
+.spanSize{
+    font-size: 12px;
+}
+
 .statisticTop, .statisticCenter, .statisticBottom{
     /* background-color: rgb(191, 245, 199); */
     display: flex;

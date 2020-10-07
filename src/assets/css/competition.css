@@ -55,33 +55,35 @@ button{
 .btn-box {
     display:inline-block;
     vertical-align:middle;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
 }
 .btn-box .btn {
     display:inline-block;
-    width: 20px;
-    height: 20px;
-    background-image: url(../icon/star.png);
+    width: 30px;
+    height: 30px;
+    background-image: url(../icon/star.svg);
     background-position: center;
-    background-size: 18px;
+    background-size: 30px;
     background-repeat: no-repeat;
     /*動畫從ml為0開始*/
     transition: .5s;
 }
 .btn-box .btn1 {
     display:inline-block;
-    width: 20px;
-    height: 20px;
-    background-image: url(../icon/fullstar.png);
-    background-position: center;
-    background-size: 18px;
+    width: 30px;
+    height: 30px;
+    background-image: url(../icon/fullstar.svg);
+    background-position: top;
+    background-size: 30px;
     background-repeat: no-repeat;
     /*動畫從ml為0開始*/
     transition: .5s;
     /* box-shadow:1px 2px 5px rgba(0,0,0,.3); */
 }
 .checkbox {
+    width: 30px;
+    height: 30px;
     position:absolute;
     opacity:0;
 }

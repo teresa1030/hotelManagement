@@ -18,13 +18,13 @@ import './assets/js/jquery-3.4.1.min.js'
 import './assets/js/basic.js'
 import 'element-ui/lib/theme-chalk/reset.css'
 
+
 import {
   Select,
   Button,
   Option,
   Checkbox,
   CheckboxGroup,
-  
 } from 'element-ui'
 Vue.component(Select.name, Select)
 Vue.component(Button.name, Button)
