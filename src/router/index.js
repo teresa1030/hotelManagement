@@ -14,6 +14,7 @@ import competition from '@/components/competition'
 import competitionCommentList from '@/components/competitionCommentList'
 import competitionCommentDetails from '@/components/competitionCommentDetails'
 import statistic from '@/components/statistic'
+import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
@@ -95,6 +96,11 @@ export default new Router({
       path: '/statistic/:time',
       name: 'statistic',
       component: statistic
+    },
+    {
+      path: '/HelloWorld',
+      name: 'HelloWorld',
+      component: HelloWorld
     }
   ]
 })
