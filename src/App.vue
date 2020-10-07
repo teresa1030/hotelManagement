@@ -11,8 +11,8 @@
             <div class="menu" id="menu">
                 <p>功能列</p>
                 <ul>
-                    <li><router-link :to="{ name: 'accountList'}"><img src="https://fakeimg.pl/15x15/" alt="">帳號管理</router-link></li>
-                    <li><router-link :to="{ name: 'commentList', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">評論管理</router-link></li>
+                    <li><router-link :to="{ name: 'accountList'}"><img src="./assets/icon/info9.svg" class="icons" alt="">帳號管理</router-link></li>
+                    <li><router-link :to="{ name: 'commentList', params: { collections: companyName }}"><img src="./assets/icon/comment.svg" class="icons" alt="">評論管理</router-link></li>
                     <li><router-link :to="{ name: 'statistic', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
                     <li><router-link :to="{ name: 'competition', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
                     <li><a href="#"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</a></li>
@@ -108,17 +108,17 @@ export default {
     // },
     editWindow: function(){
         event.stopPropagation()
-        $('#logining').toggle('slow')
+        $('#logining').toggle('fast')
         $(document).click(function (event) {
         var area = $('#logining') // 設定目標區域
         if (!area.is(event.target) && area.has(event.target).length === 0) {
                 // $('#divTop').slideUp('slow');  //滑動消失
-            $('#logining').hide(1000) // 淡出消失
+            $('#logining').hide(100) // 淡出消失
             }
         })
     },
     logout:function(){
-        $('#logining').hide(1000) // 淡出消失
+        $('#logining').hide(100) // 淡出消失
         localStorage.removeItem('token');
         document.getElementById('menu').style.visibility="hidden";
         document.getElementById('breadcrumb').style.visibility="hidden";
@@ -126,7 +126,7 @@ export default {
     },
     login:function(){
         this.$router.push('/login');
-        $('#logining').hide(1000) // 淡出消失
+        $('#logining').hide(100) // 淡出消失
     },
     personalState:function(){
         if( localStorage.getItem('token') ){
@@ -135,12 +135,12 @@ export default {
             //console.log(this.userID);
 
             event.stopPropagation()
-            $('#logining').toggle('slow')
+            $('#logining').toggle('fast')
             $(document).click(function (event) {
             var area = $('#logining') // 設定目標區域
             if (!area.is(event.target) && area.has(event.target).length === 0) {
                 // $('#divTop').slideUp('slow');  //滑動消失
-                $('#logining').hide(1000) // 淡出消失
+                $('#logining').hide(100) // 淡出消失
                 }
             })
             // if(document.getElementById("logining").style.visibility=="visible"){
@@ -150,12 +150,12 @@ export default {
             // }
         }else{
             event.stopPropagation()
-            $('#logoutInfo').toggle('slow')
+            $('#logoutInfo').toggle('fast')
             $(document).click(function (event) {
             var area = $('#logoutInfo') // 設定目標區域
             if (!area.is(event.target) && area.has(event.target).length === 0) {
                 // $('#divTop').slideUp('slow');  //滑動消失
-                $('#logoutInfo').hide(1000) // 淡出消失
+                $('#logoutInfo').hide(100) // 淡出消失
                 }
             })
             // if(document.getElementById("logoutInfo").style.visibility=="visible"){
@@ -217,7 +217,10 @@ table {
 a{
     text-decoration:none;
 }
-
+.icons{
+    width: 20px;
+    height: 20px;
+}
 .warp{
     width: 100%;
     margin: auto;
@@ -274,21 +277,22 @@ a{
     position: absolute;
 }
 .menu li{
-    padding: 15px 20px;
     margin: 20px 0px;
 }
 .menu li a{
     font-size: 16px;
     letter-spacing: 3px;
+    padding: 15px 20px;
     color: white;
     display: block;
 }
 .menu p{
     font-size: 14x;
+    margin-left: 10px;
     color: #A89090;
 }
 .menu img{
-    margin-right: 3px;
+    margin-right: 5px;
 }
 .menu li:hover{
     cursor: pointer;

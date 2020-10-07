@@ -24,13 +24,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import './assets/css/svgMap.css'
 import './assets/css/demo.css'
 
+
 import {
   Select,
   Button,
   Option,
   Checkbox,
   CheckboxGroup,
-  
 } from 'element-ui'
 Vue.component(Select.name, Select)
 Vue.component(Button.name, Button)

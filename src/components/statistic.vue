@@ -83,6 +83,13 @@
               
           </ul>
         </div>
+        <div class="filterTime">
+          <p>篩選：</p>
+          <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #DCDFE6;" >
+            <span @click="dateRange" class="timeSpan">時間</span>
+          </div>
+        </div>
+        <!-- <div id="world-map" style="width: 600px; height: 400px"></div> -->
         <div class="statisticTop">
           <div class="main flex-2">
             <ul>
@@ -107,14 +114,11 @@
               </li>
             </ul>
           </div>
-          <div class="map flex-1">
-          </div>
+
           <div class="Rank flex-1">
             <div class="statisticRank">
               <p class="allP">總排名趨勢</p>
-              <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #DCDFE6;" >
-                <span @click="dateRange" class="timeSpan">時間</span>
-              </div>
+              
               <line-chart :chart-data="Rankcollection" :options="options" style="width: 96%; height: 80%; margin-right: 2%; margin-left: 2%;"></line-chart>
             </div>
             <div class="clear"></div>
@@ -174,6 +178,8 @@ import lineChart from '../assets/js/lineChart'
 import barChart from '../assets/js/barChart'
 import doughnutChart from '../assets/js/doughnutChart'
 import $ from '../../node_modules/jquery'
+// import svgMap from '../assets/js/svgMap'
+// import svgMapDataGPD from '../assets/js/gdp'
 // import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export default {
@@ -181,7 +187,8 @@ export default {
   components: {
     lineChart,
     barChart,
-    doughnutChart
+    doughnutChart,
+    // svgMap
     // ChartDataLabels
   },
   data () {
@@ -196,11 +203,12 @@ export default {
       today: '',
       todayEnd: '',
       week: '',
+      month: '',
       todayRank: '',
       avg_rank: '',
       todayData: [],
       yesterdayData: [],
-      weekData: [],
+      RangeLabelData: [],
       selectedArr: [],
       rise: [
         {
@@ -224,6 +232,7 @@ export default {
           value: 1
         }
       ],
+
       // statisticRank: [],
       Rankcollection: null,
       Commentcollection: null,
@@ -285,7 +294,7 @@ export default {
           // 可以加onclick
         }
       },
-      labelX: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
+      labelX: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       labelX1: ['餐飲', '交通', '服務', '客房', '設施','價格','外觀','景觀'],
       labelX2: ['Trip.com', 'Agoda', 'Booking', 'TripAdvisor', 'Hotels.com', 'Expedia'],
       labelX3: []
@@ -296,7 +305,7 @@ export default {
     var time = []
     var arr = []
     var moment = require('moment')
-    var start = moment().subtract(6, 'days')
+    var start = moment().subtract(7, 'days')
     var end = moment()
     self.start = start
     self.end = end
@@ -308,7 +317,7 @@ export default {
     }
     axios.get('/api/statistic').then(response => {
       self.statisticAllData = response.data
-      console.log(self.statisticAllData)
+      // console.log(self.statisticAllData)
       self.statisticAllData.filter((item) => {
         item.data.filter((child) => {
          if(child.hotelName === self.companyName){
@@ -330,9 +339,12 @@ export default {
       self.labelX3 = self.todayData[0].data.travel_types.map((ele) => {
         return ele.type
       })
+
+      
       self.rate()
       self.RankData()
       self.commentData()
+      // self.map()
       self.fillData()
       self.ServiceData()
       self.webCommentData()
@@ -342,13 +354,27 @@ export default {
 
     // this.renderChart(this.chartdata, this.options)
   },
+
   methods: {
+    // map(){
+    //   var svgMapDataGPD = require('../assets/js/gdp')
+    //   new svgMap = {
+    //     targetElementID: 'world-map',
+    //     data: svgMapDataGPD
+    //   }
+      // $('#world-map').vectorMap({map: 'world_mill'})
+    // },
     date(){
       let self = this
       var moment = require('moment')
       self.today = moment().subtract(1, 'days')
       self.todayEnd = moment()
       self.yesterday = moment().subtract(2, 'days')
+      // var map = new svgMap()
+      // map = {
+      //   targetElementID: 'world-map',
+      //   data: svgMapDataGPD
+      // }
     },
     rate(){
       let self = this
@@ -387,7 +413,10 @@ export default {
     },
     cb: function (start, end) {
       var self = this
+      // console.log(end._d.getMonth()-start._d.getMonth())
       $('#reportrange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'))
+      $('#reportrange').css({'width':'160px'})
+      $('#reportrange span').css({'font-size':'12px', 'width':'170px'})
       self.start = start
       self.end = end
       this.RankData()
@@ -398,16 +427,22 @@ export default {
       var self = this
       var start = self.start
       var end = self.end
+      var month = self.start._d.getMonth() + 1
       $('#reportrange').daterangepicker({
         startDate: start,
         endDate: end,
         ranges: {
-          'Today': [moment(), moment()],
+          '本日': [moment(), moment()],
           // 'Yesterday': [moment().subtract(1, 'days'), moment()],
-          'Last Week': [moment().subtract(6, 'days'), moment()],
-          'Last Month': [moment().subtract(30, 'days'), moment()],
+          '本週': [moment().subtract(6, 'days'), moment()],
+          '本月': [moment().subtract(30, 'days'), moment()],
+          '本年': [moment().subtract(month, 'month'), moment()]
           // 'Last Six Months': [moment().subtract(6, 'month'), moment()]
-        }
+        },
+        // singleDatePicker: false,
+        // timePicker: false,
+        showCustomRangeLabel: false,
+        alwaysShowCalendars: false
       }, self.cb)
       // var p = 0
       // var t = 0
@@ -429,15 +464,24 @@ export default {
     RankData () {
       let self = this
       var arr = []
-      self.weekData = []
-      arr = self.statisticAllData.filter((item) => {
-        return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
-      })
-      arr.forEach((item) => {
-        self.weekData.push(item.time)
-      })
+      var monthLabel = []
+      self.RangeLabelData = []
+      self.month = self.end._d.getMonth() - self.start._d.getMonth()
+      if(self.month > 1){
+        for(var i = 0; i < self.month; i++){
+          monthLabel.push(self.labelX[i])
+        }
+        self.RangeLabelData = monthLabel
+      }else{
+        arr = self.statisticAllData.filter((item) => {
+          return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
+        })
+        arr.forEach((item) => {
+          self.RangeLabelData.push(item.time)
+        })
+      }
       this.Rankcollection = {
-        labels: self.weekData,
+        labels: self.RangeLabelData,
         datasets: [
           {
             label: '排名',
@@ -456,6 +500,12 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
+          yAxes: [{
+            ticks:{
+              min: 1,
+              stepSize: 1
+            }
+          }],
           xAxes: [{
             gridLines: {
               display: false
@@ -475,11 +525,40 @@ export default {
       let self = this
       var Rank = []
       var avg = 0
-      var arr = self.statisticAllData.filter((item) => {
+      var monthData = []
+      var arr = []
+      if(self.month > 1){
+        const cors = 'https://cors-anywhere.herokuapp.com/'
+        // if(self.month < 10){
+        //   for(var i = 1; i < self.month; i++){
+        //     // year再說
+        //     const url = 'https://hotelapi.im.nuk.edu.tw/stat?month=0' + i + '&year=2020'
+        //     axios.get(`${cors}${url}`).then((response) => {
+        //       if(response.status === 500){
+        //         monthData.push('')
+        //       }else{
+        //         monthData.push(response.data)
+        //       }
+        //     }).catch((error) => {
+        //       console.log(error)
+        //     })
+        //   }
+        // }
+        const url = 'https://hotelapi.im.nuk.edu.tw/stat?month=09&year=2020'
+        axios.get(`${cors}${url}`).then((response) => {
+          monthData = response.data
+          arr = monthData.filter((item) => {
+            return item.hotel === self.companyName
+          })
+          console.log(arr)
+        }).catch((error) => {
+          console.log(error)
+        })
+      }else{
+        var arr = self.statisticAllData.filter((item) => {
         return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
       })
       arr.forEach((item) => {
-        // self.weekData = item.time
         item.data.sort(function(a, b){
           return a.avg_rating > b.avg_rating ? -1 : 1
         })
@@ -491,31 +570,15 @@ export default {
           }
         }) 
       })
+      }
+      
+      // 這裡要改寫！
       self.todayRank = Rank[Rank.length-1]
       Rank.forEach((item) => {
         avg += item
       })
       self.avg_rank = avg/Rank.length
       return Rank
-      // var Rank = $.map(arr, function(item, index) {
-      //   return item.time
-      // }).indexOf(self.companyName)
-      // console.log(Rank)
-      // self.eachData(arr)
-      // self.AllCompany.sort(function(a, b){
-      //   return a.data.map(el => el.avg_rating).reduce((c,d) => c+d) > b.data.map(el => el.avg_rating).reduce((c,d) => c+d) ? -1 : 1
-      // })
-      // console.log(self.AllCompany)
-      // var Rank = $.map(self.AllCompany, function(item, index) {
-      //   return item.name
-      // }).indexOf(self.companyName)
-      // Rank += 1
-      // return Rank
-      // var Rank = $.map(self.statisticData, function (item, index) {
-      //   return item.time
-      // }).indexOf(self.companyName)
-      // Rank += 1
-      // return Rank
     },
     // 正負評比例
     commentData () {
@@ -538,7 +601,7 @@ export default {
     fillData () {
       let self = this
       this.datacollection = {
-        labels: self.weekData,
+        labels: self.RangeLabelData,
         datasets: [
           {
             label: '正評',
@@ -638,7 +701,7 @@ export default {
         if(item === 'positive' || item === 'negative' || item === 'reply'){
 
         }else{
-          console.log(item)
+          // console.log(item)
           data.push(self.todayData[0].data.labels[item])
         }
       })
@@ -697,6 +760,11 @@ export default {
         ]
       }
     },
+    getWebsiteData(){
+      let self = this
+      var data = []
+      // data = self.
+    },
     getTripTypesData () {
       let self = this
       var data = []
@@ -706,6 +774,22 @@ export default {
       return data
     }
   }
+
 }
 </script>
+<style type="text/css">
+  .daterangepicker{
+    width: 140px;
+    height: 130px;
+  }
+  .daterangepicker .drp-calendar.left{
+    display: none;
+  }
+  .daterangepicker .drp-calendar.right{
+    display: none;
+  }
+  .daterangepicker.show-calendar .drp-buttons{
+    display: none;
+  }
+</style>
 <style scoped src= '../assets/css/statistic.css'></style>

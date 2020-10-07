@@ -23,7 +23,6 @@ mongoose.connect('mongodb://myUserAdmin:b83m33pE@140.127.220.67:27017/HotelComme
 app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
 app.use(bodyParser.json())
-
 const hoteltest = require('./router/hoteldata');
 
 

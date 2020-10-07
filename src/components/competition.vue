@@ -9,7 +9,7 @@
         <template >
           <span>
             <vue-good-table ref="competitionTable" class="el-table" styleClass="vgt-table striped" :rows="companyData"  :columns="columns"
-                      @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }"  @on-cell-click="goComment" >
+                      @on-selected-rows-change="selectionChanged" :search-options="{ enabled: true }" >
               <template slot="table-row" slot-scope="props">
                 <template v-if="props.column.field === 'favorite'">
                   <template>
@@ -48,8 +48,13 @@
                 </span>
               </template>
             </template> -->
-                <template v-else-if="props.column.field === 'goComment'" class="goCommentDiv">
+                <!-- <template v-else-if="props.column.field === 'goComment'" class="goCommentDiv">
                   <el-button class="goCommentBtn"><router-link :to="{ name: 'competitionCommentList', params: { collections: props.row.hotelName}}">→評論列表</router-link></el-button>
+                </template> -->
+                <!--  class="goCommentDiv" -->
+                <template v-else-if="props.column.field === 'hotelName'">
+                  <!-- <el-button class="goCommentBtn"> -->
+                  <router-link :to="{ name: 'competitionCommentList', params: { collections: props.row.hotelName}}">{{props.row.hotelName}}</router-link>
                 </template>
               </template>
             </vue-good-table>
@@ -130,12 +135,12 @@ export default {
         //   label: '排名',
         //   field: 'ranking'
         // },
-        {
-          label: '連結',
-          field: 'goComment',
-          thClass: 'custom-th-class',
-          tdClass: 'custom-td-class'
-        }
+        // {
+        //   label: '連結',
+        //   field: 'goComment',
+        //   thClass: 'custom-th-class',
+        //   tdClass: 'custom-td-class'
+        // }
       ],
       companyName: this.$route.params.companyName,
       loginData: [],
@@ -238,11 +243,11 @@ export default {
       self.companyData.sort(function (a, b) {
         return b.avg_rating - a.avg_rating
       })
-    },
-    goComment(params){
-      let goComment = params.row
-      this.$router.push(({ name: 'competitionCommentList', params: { collections: goComment.hotelName}}))
-    },
+    }
+    // goComment(params){
+    //   let goComment = params.row
+    //   this.$router.push(({ name: 'competitionCommentList', params: { collections: goComment.hotelName}}))
+    // },
     // favoriteDataFilter: function () {
     //   let self = this
     //   self.favoriteList = []
