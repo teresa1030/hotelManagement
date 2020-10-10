@@ -24,15 +24,27 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App Welcome_test2',
       hotels:[],
-      testData: 59501
+      testData: 59501,
+      historyData:[]
     }
   },
   
     mounted(){
       let self = this
-      axios.get('http://localhost:8080/api/account')
+      axios.get('/api/account')
       .then((response) => {
         self.hotels=response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      axios.get('/api/history')
+      .then((response) => {
+        console.log(response);
+        self.historyData = response;
+        console.log(self.historyData.data[0].condition[0].employeeNumber)
+        console.log(self.historyData.data[0].condition)    //抓condition的所有資料
+        console.log(self.historyData.data[0].condition.length);    //抓某個標籤長度
       })
       .catch((error) => {
         console.log(error);
