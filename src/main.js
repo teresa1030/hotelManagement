@@ -81,6 +81,7 @@ router.beforeEach((to, from, next)=>{
       localStorage.removeItem('token');
       alert('連線愈時，請重新登入');
       next('/login');
+      window.location.reload(); 
     }else{
       next();
     }   
