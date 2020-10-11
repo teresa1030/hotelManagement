@@ -12,6 +12,7 @@
     </div>
  
     <button v-on:click="GDP()">GDP</button>
+     <button v-on:click="record()">record</button>
   </div>
 </template>
 
@@ -24,19 +25,36 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App Welcome_test2',
       hotels:[],
-      testData: 59501
+      testData: 59501,
+      historyData:[],
+      logout:{
+        "employeeNumber": "info01",
+        "logoutTime":"2020/10/11"
+      }
     }
   },
   
     mounted(){
       let self = this
-      axios.get('http://localhost:8080/api/account')
+      axios.get('/api/account')
       .then((response) => {
         self.hotels=response.data;
       })
       .catch((error) => {
         console.log(error);
       })
+      axios.get('/api/history')
+      .then((response) => {
+        console.log(response);
+        self.historyData = response;
+        console.log(self.historyData.data[0].condition[0].employeeNumber)
+        console.log(self.historyData.data[0].condition)    //抓condition的所有資料
+        console.log(self.historyData.data[0].condition.length);    //抓某個標籤長度
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      console.log(this.logout);
     },
     methods:{
       GDP:function(){
@@ -262,6 +280,16 @@ export default {
           }
         }
         worldMap.map(svgMapDataGPD)
+      },
+      record:function(){
+        let record = 'logout';
+        axios.put('/api/history/'+record,this.logout)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
       }
     }
   

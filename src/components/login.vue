@@ -28,7 +28,8 @@ export default {
         userName: '',
         passWord: '',
         accountInfo:[],
-        logingAccount:{}
+        logingAccount:{},
+        userAccountDetail:{}
       }
     },
     mounted(){
@@ -63,8 +64,9 @@ export default {
                     if(this.accountInfo[i].firstLogin){
                         this.$router.push({ name: 'changePassword'});
                         break;
-                    }else{
+                    }else{ 
                         this.$router.push({ name: 'commentList', params: { collections: this.accountInfo[i].companyName} });
+                        window.location.reload(); 
                         break;
                     } //決定登入後要導到哪一頁
                 } else if( i == this.accountInfo.length-1){    
@@ -83,8 +85,6 @@ export default {
             let id = this.logingAccount._id;
             axios.put('/api/account/'+id,updateUser) 
             .then((response) => {
-                //this.userAccountDetail=updateUser;
-                //寫在mounted的如果數據改會自動更著改且不會重新整理
                 console.log(response)        
             }).catch((error) => {
                 console.log(error);

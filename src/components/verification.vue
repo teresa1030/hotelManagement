@@ -79,6 +79,7 @@ export default {
                 localStorage.setItem('token', JSON.stringify({id: this.userAccountDetail._id,time: currentTime, companyName: this.userAccountDetail.companyName}));
                 this.updateAccount();
                 this.$router.push({ name: 'changePassword'});
+                window.location.reload(); 
             }else{
                 //alert('驗證碼錯誤!!請重新輸入或點選『重新寄送』按鈕');
                  this.$fire({

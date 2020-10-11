@@ -204,12 +204,13 @@ export default {
                                               
               });
             } 
+            this.$fire({
+              title: "Success !!",
+              text: "成功刪除",
+              type: "success",
+            });  
         }
-        this.$fire({
-          title: "Success !!",
-          text: "成功刪除",
-          type: "success",
-        });    
+          
       })
            
       //window.location.reload(); 網頁重新整理

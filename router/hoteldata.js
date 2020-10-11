@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose')
 const accountData = require("../models/accountSchema");
 const stat = require('../models/statSchema')
+const historyData = require('../models/historyDataSchema')
 var q = ''
 
 router.get("/account",(req,res) =>{
@@ -286,5 +287,34 @@ router.get('/competition/:collection', (req,res) => {
 //     })
 // })
 
+
+//history
+router.get("/history",(req,res) =>{
+  historyData.find({}).sort({update_at: -1}).then(accounts =>{
+      res.json(accounts);
+  }).catch(err =>{
+      res.json(err);
+  });
+}); 
+//add new record
+router.put("/history/:record",(req,res) =>{
+
+  if(req.params.record==='logout'){
+    historyData.findOneAndUpdate(
+      { _id: '5f806fd06ec8a637bc45428f' },
+      {
+        $push: { 
+          logout : req.body
+        } 
+      },
+      {
+        new: true
+      }
+      )
+      .then(records => res.json(records))
+      .catch(err => res.json(err));
+  }
+  
+}); 
 
 module.exports = router; 

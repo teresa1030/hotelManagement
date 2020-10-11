@@ -41,15 +41,15 @@
             <div class="nameEmail">
                 <img src="https://fakeimg.pl/50x50/" alt="">
                 <ul>
-                    <li>XXX</li>
-                    <li>a1063343@gmail.com</li>
+                    <li>{{userAccountDetail.userName}}</li>
+                    <li>{{userAccountDetail.email}}</li>
                 </ul>
                 <div class="clear"></div>     
             </div>
             <div class="personalMenu">
                 <ul>
-                    <li><img src="https://fakeimg.pl/20x20/" alt="">個人資料</li>
-                    <li><img src="https://fakeimg.pl/20x20/" alt="">歷史紀錄</li>
+                    <li><button v-on:click="link('accountDetial')"><img src="https://fakeimg.pl/20x20/" alt="">個人資料</button></li>
+                    <li><button v-on:click="link('')"><img src="https://fakeimg.pl/20x20/" alt="">歷史紀錄</button></li>
                     <li><img src="https://fakeimg.pl/20x20/" alt=""><button  v-on:click="logout()" >登出</button></li>
                 </ul>
             </div>
@@ -78,22 +78,32 @@
 </template>
 
 <script>
+import axios from 'axios';
 import $ from '../node_modules/jquery'
 export default {
   name: 'App',
   data(){
     return {
         userID:'',
-        companyName:''
+        companyName:'',
+        userAccountDetail:{},
     }
   },
   mounted(){
+      let self = this;
       if(localStorage.getItem('token')){
-        var logining = localStorage.getItem('token')
-        var loginData = JSON.parse(logining)
-        this.companyName = loginData.companyName;
+        var loginData = JSON.parse(localStorage.getItem('token'))
+        self.companyName = loginData.companyName;
+        self.userID = loginData.id;
         document.getElementById('menu').style.visibility="visible";
         document.getElementById('breadcrumb').style.visibility="visible";
+
+        axios.get('/api/account/'+self.userID).then((response) => {
+            console.log(response.data); 
+            self.userAccountDetail = response.data;
+        }).catch((error) => {
+            console.log(error);
+        })
       }else{
         document.getElementById('menu').style.visibility="hidden";
         document.getElementById('breadcrumb').style.visibility="hidden";
@@ -120,6 +130,9 @@ export default {
     logout:function(){
         $('#logining').hide(100) // 淡出消失
         localStorage.removeItem('token');
+        this.userID='';
+        this.companyName='';
+        this.userAccountDetail={};
         document.getElementById('menu').style.visibility="hidden";
         document.getElementById('breadcrumb').style.visibility="hidden";
         this.$router.push('/login');
@@ -129,11 +142,10 @@ export default {
         $('#logining').hide(100) // 淡出消失
     },
     personalState:function(){
-        if( localStorage.getItem('token') ){
-            var loging = JSON.parse(localStorage.getItem('token'));
-            this.userID = loging.id;
+        if( localStorage.getItem('token')){
+            // var loging = JSON.parse(localStorage.getItem('token'));
+            // this.userID = loging.id;
             //console.log(this.userID);
-
             event.stopPropagation()
             $('#logining').toggle('fast')
             $(document).click(function (event) {
@@ -164,9 +176,16 @@ export default {
             //     document.getElementById("logoutInfo").style.visibility="visible";
             // }
         }
+    },
+    link:function(page){
+        $('#logining').hide(100)
+        let toPage = page;
+        console.log(toPage);
+        var logingData = JSON.parse(localStorage.getItem('token'))
+        this.$router.push(({ path: `/${toPage}/${logingData.id}` }))
     }
   }
-    
+
 }
 
 </script>
