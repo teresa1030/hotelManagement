@@ -12,6 +12,7 @@
     </div>
  
     <button v-on:click="GDP()">GDP</button>
+     <button v-on:click="record()">record</button>
   </div>
 </template>
 
@@ -25,7 +26,11 @@ export default {
       msg: 'Welcome to Your Vue.js App Welcome_test2',
       hotels:[],
       testData: 59501,
-      historyData:[]
+      historyData:[],
+      logout:{
+        "employeeNumber": "info01",
+        "logoutTime":"2020/10/11"
+      }
     }
   },
   
@@ -49,6 +54,7 @@ export default {
       .catch((error) => {
         console.log(error);
       })
+      console.log(this.logout);
     },
     methods:{
       GDP:function(){
@@ -274,6 +280,16 @@ export default {
           }
         }
         worldMap.map(svgMapDataGPD)
+      },
+      record:function(){
+        let record = 'logout';
+        axios.put('/api/history/'+record,this.logout)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
       }
     }
   

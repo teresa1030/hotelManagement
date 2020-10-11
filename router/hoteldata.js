@@ -296,5 +296,25 @@ router.get("/history",(req,res) =>{
       res.json(err);
   });
 }); 
+//add new record
+router.put("/history/:record",(req,res) =>{
+
+  if(req.params.record==='logout'){
+    historyData.findOneAndUpdate(
+      { _id: '5f806fd06ec8a637bc45428f' },
+      {
+        $push: { 
+          logout : req.body
+        } 
+      },
+      {
+        new: true
+      }
+      )
+      .then(records => res.json(records))
+      .catch(err => res.json(err));
+  }
+  
+}); 
 
 module.exports = router; 
