@@ -243,7 +243,9 @@ export default {
       self.companyData.sort(function (a, b) {
         return b.avg_rating - a.avg_rating
       })
-    }
+    },
+    selectionChanged(params){}
+
     // goComment(params){
     //   let goComment = params.row
     //   this.$router.push(({ name: 'competitionCommentList', params: { collections: goComment.hotelName}}))

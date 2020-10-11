@@ -602,7 +602,7 @@ export default {
         var area = $('.edit') // 設定目標區域
         if (!area.is(event.target) && area.has(event.target).length === 0) {
           // $('#divTop').slideUp('slow');  //滑動消失
-          $('.edit').hide(700) // 淡出消失
+          $('.edit').hide(100) // 淡出消失
         }
       })
     },
@@ -655,7 +655,7 @@ export default {
       let self = this
       self.conditionModify = []
       self.replyModify = []
-      $('.edit').hide(700) // 淡出消失
+      $('.edit').hide(100) // 淡出消失
     },
     // handleSizeChange: function (size) {
     //   this.pagesize = size

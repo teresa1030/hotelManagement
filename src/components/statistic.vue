@@ -88,6 +88,11 @@
           <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #DCDFE6;" >
             <span @click="dateRange" class="timeSpan">時間</span>
           </div>
+          <div id="showmonthMenu">
+            <el-select placeholder="請選擇月份" v-model="chosenmonthData"  @change="callSingleDate()">
+              <el-option v-for="(item, index) in months" :value="item.field" :key="index">{{item.field}}</el-option>
+            </el-select>
+          </div>
         </div>
         <!-- <div id="world-map" style="width: 600px; height: 400px"></div> -->
         <div class="statisticTop">
@@ -114,28 +119,39 @@
               </li>
             </ul>
           </div>
-
           <div class="Rank flex-1">
             <div class="statisticRank">
               <p class="allP">總排名趨勢</p>
-              
-              <line-chart :chart-data="Rankcollection" :options="options" style="width: 96%; height: 80%; margin-right: 2%; margin-left: 2%;"></line-chart>
+              <line-chart :chart-data="Rankcollection" :options="options" style="width: 90%; height: 80%; margin-right: 2%; margin-left: 2%;"></line-chart>
             </div>
             <div class="clear"></div>
           </div>
-        </div>
-        <div class="statisticCenter">
-          <div class="statisticComment flex-2">
+          <div class="statisticComment flex-3">
             <div>
               <p class="allP1">正負評比例</p>
               <doughnut-chart :chart-data="Commentcollection" :options="options2" style="width: 90%; height: 90%; margin-left: 30px;"></doughnut-chart>
               <div class="clear"></div>
             </div>
           </div>
+        </div>
+        <div class="statisticCenter">
+          <!-- <div class="statisticComment flex-2">
+            <div>
+              <p class="allP1">正負評比例</p>
+              <doughnut-chart :chart-data="Commentcollection" :options="options2" style="width: 90%; height: 90%; margin-left: 30px;"></doughnut-chart>
+              <div class="clear"></div>
+            </div>
+          </div> -->
           <div class="statistic flex-1">
             <div>
-              <p class="allP">正負評趨勢</p>
-              <line-chart :chart-data="datacollection" :options="options" style="width: 96%; height: 80%; margin-right: 2%; margin-left: 2%; margin-bottom: 10px"></line-chart>
+              <p class="allP">正評趨勢</p>
+              <line-chart :chart-data="positiveDatacollection" :options="options4" style="width: 96%; height: 80%; margin-right: 2%; margin-left: 2%; margin-bottom: 10px"></line-chart>
+            </div>
+          </div>
+          <div class="statistic flex-1">
+            <div>
+              <p class="allP">負評趨勢</p>
+              <line-chart :chart-data="negativeDatacollection" :options="options" style="width: 96%; height: 80%; margin-right: 2%; margin-left: 2%; margin-bottom: 10px"></line-chart>
             </div>
           </div>
           <div class="statisticService flex-1">
@@ -150,13 +166,13 @@
           <div class="statisticWeb flex-1">
             <div>
               <p class="allP1">各平台留言數量比例</p>
-              <!-- <doughnut-chart :chart-data="webCommentcollection" :options="options2" style="width: 80%; height: 80%; margin-left: 30px;"></doughnut-chart> -->
+              <doughnut-chart class="travel" :chart-data="this.webCommentcollection" :options="options2" style="width: 70%; height: 50%; margin-left: 40px;"></doughnut-chart>
             </div>
           </div>
           <div class="statisticWeb flex-1">
             <div>
               <p class="allP1">旅遊類型比例</p>
-              <doughnut-chart class="travel" :chart-data="tripTypecollection" :options="options2" style="width: 80%; height: 60%; margin-left: 40px;"></doughnut-chart>
+              <doughnut-chart class="travel" :chart-data="this.tripTypecollection" :options="options2" style="width: 80%; height: 60%; margin-left: 40px;"></doughnut-chart>
               <div class="clear"></div>
             </div>
           </div>
@@ -204,7 +220,11 @@ export default {
       todayEnd: '',
       week: '',
       month: '',
+      minDate: '',
+      months: [],
+      chosenmonthData: [],
       todayRank: '',
+      RankFilterData: [],
       avg_rank: '',
       todayData: [],
       yesterdayData: [],
@@ -236,7 +256,8 @@ export default {
       // statisticRank: [],
       Rankcollection: null,
       Commentcollection: null,
-      datacollection: null,
+      positiveDatacollection: null,
+      negativeDatacollection: null,
       Servicecollection: null,
       webCommentcollection: null,
       tripTypecollection: null,
@@ -275,6 +296,13 @@ export default {
         }
       },
       options2: {
+        yAxes: [{
+            ticks:
+              {
+                stepSize: 1
+              }
+            // ]
+          }],
         responsive: true,
         animation: {
           duration: 2000,
@@ -294,9 +322,59 @@ export default {
           // 可以加onclick
         }
       },
-      labelX: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      // labelX: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      labelX: [
+        {
+          value: '01',
+          field: 'January'
+        },
+        {
+          value: '02',
+          field: 'Feburary'
+        },
+        {
+          value: '03',
+          field: 'March'
+        },
+        {
+          value: '04',
+          field: 'April'
+        },
+        {
+          value: '05',
+          field: 'May'
+        },
+        {
+          value: '06',
+          field: 'June'
+        },
+        {
+          value: '07',
+          field: 'July'
+        },
+        {
+          value: '08',
+          field: 'August'
+        },
+        {
+          value: '09',
+          field: 'September'
+        },
+        {
+          value: '10',
+          field: 'October'
+        },
+        {
+          value: '11',
+          field: 'November'
+        },
+        {
+          value: '12',
+          field: 'December'
+        }
+      ],
       labelX1: ['餐飲', '交通', '服務', '客房', '設施','價格','外觀','景觀'],
-      labelX2: ['Trip.com', 'Agoda', 'Booking', 'TripAdvisor', 'Hotels.com', 'Expedia'],
+      labelX2: ['Expedia', 'Agoda', 'Booking', 'Hotels', 'Tripadvisor', 'Trip'],
       labelX3: []
     }
   },
@@ -307,6 +385,7 @@ export default {
     var moment = require('moment')
     var start = moment().subtract(7, 'days')
     var end = moment()
+    self.minDate = moment('2020/08/01')
     self.start = start
     self.end = end
     self.date()
@@ -317,7 +396,7 @@ export default {
     }
     axios.get('/api/statistic').then(response => {
       self.statisticAllData = response.data
-      // console.log(self.statisticAllData)
+      console.log(self.statisticAllData)
       self.statisticAllData.filter((item) => {
         item.data.filter((child) => {
          if(child.hotelName === self.companyName){
@@ -339,15 +418,13 @@ export default {
       self.labelX3 = self.todayData[0].data.travel_types.map((ele) => {
         return ele.type
       })
-
-      
       self.rate()
-      self.RankData()
-      self.commentData()
-      // self.map()
-      self.fillData()
+      self.RankData(3)
+      self.commentData(3)
+      self.positiveData(3)
+      self.negativeData(3)
       self.ServiceData()
-      self.webCommentData()
+      self.webCommentData(3, self.statisticData)
     }).catch((error) => {
       console.log(error)
     })
@@ -356,25 +433,44 @@ export default {
   },
 
   methods: {
-    // map(){
-    //   var svgMapDataGPD = require('../assets/js/gdp')
-    //   new svgMap = {
-    //     targetElementID: 'world-map',
-    //     data: svgMapDataGPD
-    //   }
-      // $('#world-map').vectorMap({map: 'world_mill'})
-    // },
+    getSelfCompany(arr){
+      let self = this
+      arr.filter((item) => {
+        // item.filter((child) => {
+          if(item.hotelName === self.companyName){
+            arr = item
+          }
+        // })
+      })
+      return arr
+    },
+    momentChange(value){
+      var newValue = value + 1
+      if(newValue < 10){
+        return '0'+ newValue
+      }else{
+        return newValue
+      }
+    },
+    callSingleDate(){
+      let self = this
+      self.RankData(2)
+      self.commentData(2)
+      self.positiveData(2)
+      self.negativeData(2)
+      
+      // self.fillData(2)
+    },
     date(){
       let self = this
       var moment = require('moment')
       self.today = moment().subtract(1, 'days')
       self.todayEnd = moment()
       self.yesterday = moment().subtract(2, 'days')
-      // var map = new svgMap()
-      // map = {
-      //   targetElementID: 'world-map',
-      //   data: svgMapDataGPD
-      // }
+      for(var i = self.minDate._d.getMonth(); i < self.todayEnd._d.getMonth(); i++){
+        // 加個判斷大小判斷有沒有到隔年
+        self.months.push({year: self.minDate._d.getFullYear(), month: self.labelX[i].value, field: self.minDate._d.getFullYear() + '/' + self.labelX[i].value})
+      }
     },
     rate(){
       let self = this
@@ -411,80 +507,246 @@ export default {
         self.rise[3].value = 1
       }
     },
-    cb: function (start, end) {
+    cb: function (value, start, end) {
       var self = this
-      // console.log(end._d.getMonth()-start._d.getMonth())
       $('#reportrange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'))
       $('#reportrange').css({'width':'160px'})
       $('#reportrange span').css({'font-size':'12px', 'width':'170px'})
       self.start = start
       self.end = end
-      this.RankData()
-      this.fillData()
+      this.RankData(value)
+      this.commentData(value)
+      this.positiveData(value)
+      this.negativeData(value)
+
+      // this.fillData(value)
     },
     dateRange: function (arr) {
       var moment = require('moment')
       var self = this
       var start = self.start
       var end = self.end
-      var month = self.start._d.getMonth() + 1
+      self.chosenmonthData = ''
+      $('#showmonthMenu').css('display', 'none')
       $('#reportrange').daterangepicker({
         startDate: start,
         endDate: end,
         ranges: {
           '本日': [moment(), moment()],
-          // 'Yesterday': [moment().subtract(1, 'days'), moment()],
           '本週': [moment().subtract(6, 'days'), moment()],
           '本月': [moment().subtract(30, 'days'), moment()],
-          '本年': [moment().subtract(month, 'month'), moment()]
-          // 'Last Six Months': [moment().subtract(6, 'month'), moment()]
+          '本年': [self.minDate, moment()],
+          '自訂月份':[]
         },
-        // singleDatePicker: false,
-        // timePicker: false,
         showCustomRangeLabel: false,
         alwaysShowCalendars: false
-      }, self.cb)
-      // var p = 0
-      // var t = 0
-      // var ori = 0
-      // $(document).scroll(function () {
-      //   p = $(this).scrollTop()
-      //   if (t < p) {
-      //     // 下滾
-      //     ori = $('#reportrange').offset().top
-      //     $('.daterangepicker').css('top', ori + 35)
-      //   } else {
-      //     // 上滾
-      //     $('#reportrange').daterangepicker('hide')
-      //   }
-      //   t = $(this).scrollTop()
-      // })
+      }, function(start, end){
+          $('#reportrange').on('apply.daterangepicker', function(ev, picker){
+          if(picker.chosenLabel === '自訂月份'){
+            $('#showmonthMenu').css('display', 'inline-block')
+          }else if(picker.chosenLabel === '本月'){
+            self.cb(0, start, end)
+          }else if(picker.chosenLabel === '本年'){
+            self.cb(1, start, end)
+          }else{
+            self.cb(3, start, end)
+          }
+        })
+      })
     },
     // 總排名趨勢
-    RankData () {
+    RankData (value) {
       let self = this
       var arr = []
       var monthLabel = []
+      let promises = []
+      var time = ''
+      var moment = require('moment')
+      self.RankFilterData = []
       self.RangeLabelData = []
-      self.month = self.end._d.getMonth() - self.start._d.getMonth()
-      if(self.month > 1){
-        for(var i = 0; i < self.month; i++){
-          monthLabel.push(self.labelX[i])
-        }
-        self.RangeLabelData = monthLabel
-      }else{
-        arr = self.statisticAllData.filter((item) => {
-          return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
+      self.month = self.end._d.getMonth() - self.start._d.getMonth()      
+      if(value === 0){
+        time = moment()._d.getMonth()
+        self.statisticAllData.filter((item) => {
+          if(moment(item.time)._d.getMonth() === time){
+            self.RankFilterData.push(item)
+            return item
+          }
+          // return moment(item.time)._d.getMonth() === time
+        }).forEach((child) => {
+          self.RangeLabelData.push(child.time)
         })
-        arr.forEach((item) => {
+      }else if(value === 1){
+        for(var i = 0; i< self.months.length; i++){
+          const cors = 'https://cors-anywhere.herokuapp.com/'
+          const url = 'https://hotelapi.im.nuk.edu.tw/stat?month=' + self.months[i].month + '&year=' + self.months[i].year
+          promises.push(
+            axios.get(`${cors}${url}`).then((response) => {
+              self.RankFilterData.push(response.data)
+            })
+          )
+        }
+        Promise.all(promises).then(() => {
+          for(var i = self.start._d.getMonth(); i < self.end._d.getMonth(); i++){
+            monthLabel.push(self.labelX[i].field)
+          }
+          self.RangeLabelData = monthLabel
+          self.positiveData(value)
+          self.negativeData(value)
+          // self.fillData(value)
+        })
+      }else if(value === 2){
+        var x = self.months.filter((item) => {
+          return item.field === self.chosenmonthData
+        })
+        self.statisticAllData.filter((item) => {
+          if(self.momentChange(moment(item.time)._d.getMonth()) === x[0].month){
+            self.RankFilterData.push(item)
+            return item
+          } 
+        }).forEach((child) => {
+          self.RangeLabelData.push(child.time)
+        })
+      }else{
+        self.statisticAllData.filter((item) => {
+          if((Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))){
+            self.RankFilterData.push(item)
+            return item
+          }
+          // return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
+        }).forEach((item) => {
           self.RangeLabelData.push(item.time)
         })
       }
-      this.Rankcollection = {
+      Promise.all(promises).then(() => {
+        this.Rankcollection = {
+          labels: self.RangeLabelData,
+          datasets: [
+            {
+              label: '排名',
+              borderColor: 'green',
+              borderWIdth: 1,
+              pointStrokeColor: 'green',
+              scaleShowGridLines: false,
+              backgroundcolor: 'none',
+              fill: false,
+              pointDotRadius: 4,
+              data: this.calculate(self.RankFilterData)
+            }
+          ]
+        }
+        this.options = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [{
+              ticks:{
+                min: 1,
+                stepSize: 1
+              }
+            }],
+            xAxes: [{
+              gridLines: {
+                display: false
+              }
+            }]
+          },
+          legend: {
+            position: 'right',
+            align: 'start',
+            labels: {
+              padding: 20
+            }
+          }
+        }
+      })
+    },
+    calculate(arr){
+      let self = this
+      var Rank = []
+      var avg = 0
+      arr.forEach((item) => {
+        item.data.sort(function(a,b) {
+          return a.avg_rating > b.avg_rating ? -1 : 1
+        })
+      })
+      arr.forEach((item) => {
+        item.data.filter((element, index) => {
+          if(element.hotelName === self.companyName){
+            Rank.push(index+1)
+          }
+        })
+      })
+      self.todayRank = Rank[Rank.length-1]
+      Rank.forEach((item) => {
+        avg +=item
+      })
+      self.avg_rank = avg/Rank.length
+      return Rank
+    },
+    // 正負評比例
+    commentData (value) {
+      let self = this
+      let promises = []
+      var data = []
+      var moment = require('moment')
+      if(value === 2){
+        var x = self.months.filter((item) => {
+          return item.field === self.chosenmonthData
+        })
+        const cors = 'https://cors-anywhere.herokuapp.com/'
+        const url = 'https://hotelapi.im.nuk.edu.tw/stat?month=' + x[0].month + '&year=' + x[0].year
+        promises.push(
+          axios.get(`${cors}${url}`).then((response) => {
+            data = response.data
+            data = Object.values(data)
+            data = data[0]
+            self.webCommentData(value, data)
+          })
+        )
+      }else{
+        data = []
+      }
+      Promise.all(promises).then(() => {
+        this.Commentcollection = {
+          labels: ['正評', '負評'],
+          datasets: [
+            {
+              backgroundColor: [
+                '#F75019',
+                '#178D8F'
+              ],
+              // 用data[]取 , 要以什麼為基準??
+              data: self.getCommentData(value, data)
+            }
+          ]
+        }
+      })
+      
+    },
+    getCommentData(value, data){
+      let self = this
+      let promises = []
+      // var data = []
+      var moment = require('moment')
+      if(value === 2){
+        data = self.getSelfCompany(data)
+        return [data.labels.positive, data.labels.negative]
+      }else{
+        var data1 = [self.todayData[0].data.labels.positive, self.todayData[0].data.labels.negative]
+        return data1
+      }
+    },
+    // 正負評趨勢
+    positiveData (value) {
+      let self = this
+      var data = []
+      // var max = Math.max.apply(null, this.getData(value))
+      this.positiveDatacollection = {
         labels: self.RangeLabelData,
         datasets: [
           {
-            label: '排名',
+            label: '正評',
             borderColor: 'green',
             borderWIdth: 1,
             pointStrokeColor: 'green',
@@ -492,18 +754,19 @@ export default {
             backgroundcolor: 'none',
             fill: false,
             pointDotRadius: 4,
-            data: this.getRank()
+            data: this.getData(value)
           }
         ]
       }
-      this.options = {
+      this.options4 = {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
           yAxes: [{
             ticks:{
-              min: 1,
-              stepSize: 1
+              // min: Math.max.apply(null, this.getData(value))-5,
+              stepSize: 1,
+              max: Math.max.apply(null, this.getData(value))+5
             }
           }],
           xAxes: [{
@@ -521,99 +784,13 @@ export default {
         }
       }
     },
-    getRank () {
+    negativeData (value) {
       let self = this
-      var Rank = []
-      var avg = 0
-      var monthData = []
-      var arr = []
-      if(self.month > 1){
-        const cors = 'https://cors-anywhere.herokuapp.com/'
-        // if(self.month < 10){
-        //   for(var i = 1; i < self.month; i++){
-        //     // year再說
-        //     const url = 'https://hotelapi.im.nuk.edu.tw/stat?month=0' + i + '&year=2020'
-        //     axios.get(`${cors}${url}`).then((response) => {
-        //       if(response.status === 500){
-        //         monthData.push('')
-        //       }else{
-        //         monthData.push(response.data)
-        //       }
-        //     }).catch((error) => {
-        //       console.log(error)
-        //     })
-        //   }
-        // }
-        const url = 'https://hotelapi.im.nuk.edu.tw/stat?month=09&year=2020'
-        axios.get(`${cors}${url}`).then((response) => {
-          monthData = response.data
-          arr = monthData.filter((item) => {
-            return item.hotel === self.companyName
-          })
-          console.log(arr)
-        }).catch((error) => {
-          console.log(error)
-        })
-      }else{
-        var arr = self.statisticAllData.filter((item) => {
-        return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
-      })
-      arr.forEach((item) => {
-        item.data.sort(function(a, b){
-          return a.avg_rating > b.avg_rating ? -1 : 1
-        })
-      })
-      arr.forEach((item) => {
-        item.data.filter((element, index) => {
-          if(element.hotelName === self.companyName){
-            Rank.push(index+1)
-          }
-        }) 
-      })
-      }
-      
-      // 這裡要改寫！
-      self.todayRank = Rank[Rank.length-1]
-      Rank.forEach((item) => {
-        avg += item
-      })
-      self.avg_rank = avg/Rank.length
-      return Rank
-    },
-    // 正負評比例
-    commentData () {
-      let self = this
-      this.Commentcollection = {
-        labels: ['正評', '負評'],
-        datasets: [
-          {
-            backgroundColor: [
-              '#F75019',
-              '#178D8F'
-            ],
-            // 用data[]取 , 要以什麼為基準??
-            data: [self.todayData[0].data.labels.positive, self.todayData[0].data.labels.negative]
-          }
-        ]
-      }
-    },
-    // 正負評趨勢
-    fillData () {
-      let self = this
-      this.datacollection = {
+      var data = []
+      // var max1 = Math.max.apply(null, this.getData1(value))
+      this.negativeDatacollection = {
         labels: self.RangeLabelData,
         datasets: [
-          {
-            label: '正評',
-            borderColor: 'green',
-            borderWIdth: 1,
-            pointStrokeColor: 'green',
-            scaleShowGridLines: false,
-            backgroundcolor: 'none',
-            fill: false,
-            pointDotRadius: 4,
-            data: this.getData()
-          },
           {
             label: '負評',
             borderColor: 'red',
@@ -623,7 +800,7 @@ export default {
             scaleShowGridLines: false,
             fill: false,
             pointDotRadius: 4,
-            data: this.getData1()
+            data: this.getData1(value)
           }
         ]
       }
@@ -631,6 +808,13 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
+          yAxes: [{
+            ticks:{
+              // min: Math.max.apply(null, this.getData1(value))-5,
+              stepSize: 1,
+              max: Math.max.apply(null, this.getData1(value))+5
+            }
+          }],
           xAxes: [{
             gridLines: {
               display: false
@@ -646,13 +830,20 @@ export default {
         }
       }
     },
-    getData () {
+    getData (value) {
       let self = this
       var arr = []
       var data1 = []
-      arr = self.statisticAllData.filter((item) => {
-        return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
-      })
+      if(value === 1 || value === 2) {
+        arr = self.RankFilterData
+        // console.log('//')
+        console.log(self.RankFilterData)
+      }else{
+        // console.log('?/')
+        arr = self.statisticAllData.filter((item) => {
+          return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
+        })
+      }
       arr.filter((item) => {
         item.data.filter((child) => {
           if(child.hotelName === self.companyName){
@@ -660,15 +851,20 @@ export default {
           }
         })
       })
+      console.log(data1)
       return data1
     },
-    getData1 () {
+    getData1 (value) {
       let self = this
       var arr = []
       var data2 = []
-      arr = self.statisticAllData.filter((item) => {
-        return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
-      })
+      if(value === 1 || value === 2){
+        arr = self.RankFilterData
+      }else{
+        arr = self.statisticAllData.filter((item) => {
+          return (Date.parse(item.time) >= Date.parse(self.start._d)) && (Date.parse(item.time) <= Date.parse(self.end._d))
+        })
+      }
       arr.filter((item) => {
         item.data.filter((child) => {
           if(child.hotelName === self.companyName){
@@ -708,7 +904,7 @@ export default {
       return data
     },
     // 三個圓餅圖
-    webCommentData () {
+    webCommentData (value, data) {
       // 再改成顯示%數
       let self = this
       this.webCommentcollection = {
@@ -723,7 +919,7 @@ export default {
               '#AD3937',
               '#F53431'
             ],
-            data: [20, 30, 20, 30, 50, 70]
+            data: self.getWebsiteData(value, data)
           }
         ]
       }
@@ -737,9 +933,10 @@ export default {
               '#3591B0',
               '#872403',
               '#AD3937',
-              '#F53431'
+              '#F53431',
+              '#F53435'
             ],
-            data: self.getTripTypesData()
+            data: self.getTripTypesData(value, data)
           }
         ]
       }
@@ -760,27 +957,52 @@ export default {
         ]
       }
     },
-    getWebsiteData(){
+    getWebsiteData(value, data){
       let self = this
-      var data = []
-      // data = self.
-    },
-    getTripTypesData () {
-      let self = this
-      var data = []
-      data = self.todayData[0].data.travel_types.map((element) => {
-         return element.number 
+      console.log(value)
+      if(value === 2){
+        data = self.getSelfCompany(data)
+        console.log(data)
+
+        data = data.websites_count.map((element) => {
+          return element.number
+        })
+        return data
+      }
+      data = self.todayData[0].data.websites_count.map((element) => {
+        return element.number
       })
       return data
+      // console.log(data)
+    },
+    getTripTypesData (value, data) {
+      let self = this
+      var data1 = []
+      if(value === 2){
+        data = self.getSelfCompany(data)
+        console.log(data)
+        data = data.travel_types.map((element) => {
+          return element.rate
+        })
+        return data
+      }else{
+        data1 = self.todayData[0].data.travel_types.map((element) => {
+         return element.number 
+        })
+        return data1
+      }
     }
   }
 
 }
 </script>
 <style type="text/css">
+  #showmonthMenu{
+    display: none;
+  }
   .daterangepicker{
     width: 140px;
-    height: 130px;
+    height: 160px;
   }
   .daterangepicker .drp-calendar.left{
     display: none;
