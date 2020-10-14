@@ -18,32 +18,45 @@ label{
     height: 77vh;
     margin-right: 1%;
     padding: 1.5%;
-    background-color: #F4F5F8;
+    /* background-color: #F4F5F8; */
+    /* background-color: #fff; */
     border-radius: 3px;
-    border: 1px solid rgb(226, 226, 226);
+    /* border: 1px solid rgb(226, 226, 226); */
 }
 .CommentTtle{
     font-weight: bold;
     font-size: 20px;
     margin-top: 10px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
+    margin-left: 20px;
 }
 .Maincontent{
-    margin-top: 3%;
+    margin-top: 1%;
+    /* margin-top: 3%; */
+    height: 64vh;
     margin-bottom: 5%;
+    background-color: #fff;
+    padding: 2%;
+    border-radius: 3px;
+    border: 1px solid rgb(226, 226, 226);
+
 }
 .commentContent{
     line-height: 25px;
 }
 .subtitle{
-    font-weight: bold;
+    /* font-weight: bold; */
+    color: rgb(170, 170, 170);
     margin-right: 10px;
+    font-size: 14px;
 }
-.space{
+
+/* .space{
     margin-top: 20px;
-}
+} */
 .spaceRight{
     margin-right: 30px;
+    font-size: 14px;
 }
 .ReplyAddress{
     float: left;

@@ -5,7 +5,8 @@
           <span>評論列表</span>
         </div>
         <div class="editArea">
-          <button class="editButton" @click="editFUn"><img src="../assets/icon/edit.png"><span class="editSpan">編輯</span></button>
+          <!-- <span class="editSpan">編輯</span> -->
+          <button class="editButton" @click="editFUn"><img src="../assets/icon/edit.png"></button>
           <div class="edit">
             <p>編輯評論狀態</p>
             <el-select placeholder="評論狀態設定" class="editButton" v-model="conditionModify">
@@ -125,14 +126,14 @@
                   <el-button class="done" disabled="disabled">已完成</el-button>
                 </span>
               </template>
-              <template v-else-if="props.column.label === '回覆'">
+              <!-- <template v-else-if="props.column.label === '回覆'">
                 <span v-if="props.row.labels.reply === 1">
                   <el-button class="replyButton" @click="replyUpdate(props.row._id)">是</el-button>
                 </span>                
                 <span v-else-if="props.row.labels.reply === 0">
                   <el-button class="replyButton" @click="replyUpdate(props.row._id)">否</el-button>
                 </span>
-              </template>
+              </template> -->
               <template v-else-if="props.column.label === '評論'" v-bind:value="props.row._id">
                 <router-link :to="{ name: 'commentDetails' , params: { _id: props.row._id}}">{{props.row.title}}</router-link>
               </template>

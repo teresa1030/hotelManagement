@@ -2,6 +2,7 @@ label{
     font-size: 14px;
     padding-top: 5px;
 }
+
 /* .dataArea{
     position: relative;
     float: left;
@@ -13,22 +14,26 @@ label{
 .editArea{
     display: inline-block;
     position: relative;
-    margin-left: 81%;
+    margin-left: 84%;
+    width: 40px;
+    height: 35px;
+    text-align: center;
     vertical-align: middle;
     border-radius: 2px;
-    box-shadow: 0.3px 0.3px 1px 1px #5c5a6e8f;
+    border: 0.5px solid rgb(187, 187, 187)
+    /* box-shadow: 0.3px 0.3px 1px 1px #5c5a6e8f; */
 }
 .editButton{
     all: unset;
-    background-color: #F4F5F8;
+    /* background-color: #F4F5F8; */
     /* box-shadow: 0.3px 0.3px 1px 1px #5c5a6e8f; */
 }
 .editButton .editSpan{
-    display: block;
+    /* display: block; */
     float: right;
-    padding: 10px 10px 10px 3px;
+    padding: 5px 5px 5px 3px;
 }
-.editButton:hover{
+.editArea:hover{
     cursor: pointer;
     background-color: rgba(149, 188, 255, 0.425);
 }
@@ -277,4 +282,7 @@ tr:hover td{
 
 .el-select .el-input .el-select__caret{
     line-height: 25px;   
+}
+.el-table a{
+    color: rgb(39, 30, 165);
 }

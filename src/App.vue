@@ -4,18 +4,23 @@
         <div class="headerContent">
             <!-- <a class="showMenu" href="#"><img src="https://fakeimg.pl/15x15/" alt=""></a> -->
             <!-- <img class="companyImg" src="https://fakeimg.pl/50x50/" alt=""> -->
-            <div class="company">
+            <!-- <div class="company">
                 <p class="title">旅館評論管理系統</p>
                 <div class="clear"></div>
-            </div>
+            </div> -->
             <div class="menu" id="menu">
                 <p>功能列</p>
                 <ul>
-                    <li><router-link :to="{ name: 'accountList'}"><img src="./assets/icon/info9.svg" class="icons" alt="">帳號管理</router-link></li>
-                    <li><router-link :to="{ name: 'commentList', params: { collections: companyName }}"><img src="./assets/icon/comment.svg" class="icons" alt="">評論管理</router-link></li>
+                    <!-- <img src="./assets/icon/info9.svg" class="icons" alt=""> -->
+                    <li><router-link :to="{ name: 'accountList'}"><img src="https://fakeimg.pl/15x15/" alt="">帳號管理</router-link></li>
+                    <!-- <img src="./assets/icon/comment.svg" class="icons" alt=""> -->
+                    <li><router-link :to="{ name: 'commentList', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">評論管理</router-link></li>
                     <li><router-link :to="{ name: 'statistic', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
                     <li><router-link :to="{ name: 'competition', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
-                    <li><a href="#"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</a></li>
+                    <!-- <img src="./assets/icon/info9.svg" class="icons" alt=""> -->
+                    <li><router-link :to="{ name: 'history'}"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</router-link></li>
+                    <div class="clear"></div>
+
                 </ul>
                 <div class="clear"></div>
             </div>
@@ -260,6 +265,7 @@ a{
 }
 /* header */
 .headerContent{
+    width: 10.5%;
     height: 100vh;
     position: fixed;
     top: 0;
@@ -270,8 +276,8 @@ a{
     color: white;
 }
 
-.company{
-    /* margin-top: 25px; */
+/* .company{
+    margin-top: 25px;
     padding-top: 20px;
     margin-left: 10px;
     margin-right: 5px;
@@ -286,7 +292,7 @@ a{
     float: left;
     margin-top: 15px;
     font-size: 18px;
-}
+} */
 
 .menu{
     margin-top: 25px;
@@ -300,7 +306,7 @@ a{
 }
 .menu li a{
     font-size: 16px;
-    letter-spacing: 3px;
+    letter-spacing: 5px;
     padding: 15px 20px;
     color: white;
     display: block;

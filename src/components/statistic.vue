@@ -5,7 +5,7 @@
           <ul>
               <li class="flex-1">
                 <div>
-                  <span>總評論則數</span>
+                  <span class="subti">總評論則數</span>
                   <p>{{todayData[0].data.reviews_num}}
                     <span v-if="rise[0].value === 0">
                       <img src="../assets/icon/rise.png">
@@ -21,7 +21,7 @@
               </li>
               <li class="flex-1">
                 <div>
-                  <span>正評則數</span>
+                  <span class="subti">正評則數</span>
                   <p>{{todayData[0].data.labels.positive}}
                     <span v-if="rise[1].value === 0">
                       <img src="../assets/icon/rise.png">
@@ -37,7 +37,7 @@
               </li>
               <li class="flex-1">
                 <div>
-                  <span>負評則數</span>
+                  <span class="subti">負評則數</span>
                   <p>{{todayData[0].data.labels.negative}}
                     <span v-if="rise[2].value === 0">
                       <img src="../assets/icon/rise.png">
@@ -53,7 +53,7 @@
               </li>
               <li class="flex-1">
                 <div>
-                  <span>評分</span>
+                  <span class="subti">評分</span>
                   <p>{{todayData[0].data.avg_rating}}
                     <span v-if="rise[3].value === 0">
                       <img src="../assets/icon/rise.png">
@@ -69,7 +69,7 @@
               </li>
               <li class="flex-1">
                 <div>
-                  <span>總排名</span>
+                  <span class="subti">總排名</span>
                   <p>{{todayRank}}
                     <span v-if="rise[4].value === true">
                       <img src="../assets/icon/rise.png">
@@ -93,10 +93,24 @@
               <el-option v-for="(item, index) in months" :value="item.field" :key="index">{{item.field}}</el-option>
             </el-select>
           </div>
+          <div class="cancle">
+            <el-button @click="cancle">清除</el-button>
+          </div>
         </div>
+        <!-- <div class="demo-wrapper">
+        <div class="demo-container">
+          <div>
+    <button v-on:click="mapFun()">GDP</button>
+            <p class="allP">各國留言數量</p>
+          </div>
+            <div id="svgMapGPD"></div>
+
+        </div>
+
+        </div> -->
         <!-- <div id="world-map" style="width: 600px; height: 400px"></div> -->
         <div class="statisticTop">
-          <div class="main flex-2">
+          <!-- <div class="main flex-2">
             <ul>
               <li>
                 <div>
@@ -114,15 +128,15 @@
                 <div>
                   <span>總排名</span>
                   <p>{{avg_rank}}</p>
-                  <!-- <p>{{todayData[0].data.labels.positive + todayData[0].data.labels.negative}}</p> -->
+                  <p>{{todayData[0].data.labels.positive + todayData[0].data.labels.negative}}</p>
                 </div>
               </li>
             </ul>
-          </div>
+          </div> -->
           <div class="Rank flex-1">
             <div class="statisticRank">
               <p class="allP">總排名趨勢</p>
-              <line-chart :chart-data="Rankcollection" :options="options" style="width: 90%; height: 80%; margin-right: 2%; margin-left: 2%;"></line-chart>
+              <line-chart :chart-data="Rankcollection" :options="options" style="width: 95%; height: 80%; margin-right: 2%; margin-left: 2%;"></line-chart>
             </div>
             <div class="clear"></div>
           </div>
@@ -194,8 +208,8 @@ import lineChart from '../assets/js/lineChart'
 import barChart from '../assets/js/barChart'
 import doughnutChart from '../assets/js/doughnutChart'
 import $ from '../../node_modules/jquery'
-// import svgMap from '../assets/js/svgMap'
-// import svgMapDataGPD from '../assets/js/gdp'
+import worldMap from '../assets/js/map'
+// import WebsiteData from '../assets/js/mapData'
 // import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export default {
@@ -382,6 +396,7 @@ export default {
     let self = this
     var time = []
     var arr = []
+    var arr1 = []
     var moment = require('moment')
     var start = moment().subtract(7, 'days')
     var end = moment()
@@ -396,7 +411,6 @@ export default {
     }
     axios.get('/api/statistic').then(response => {
       self.statisticAllData = response.data
-      console.log(self.statisticAllData)
       self.statisticAllData.filter((item) => {
         item.data.filter((child) => {
          if(child.hotelName === self.companyName){
@@ -425,6 +439,7 @@ export default {
       self.negativeData(3)
       self.ServiceData()
       self.webCommentData(3, self.statisticData)
+      // self.mapFun(self.todayData[0].data.countries_count)
     }).catch((error) => {
       console.log(error)
     })
@@ -433,6 +448,25 @@ export default {
   },
 
   methods: {
+    cancle(){
+      let self = this
+      var moment = require('../../node_modules/moment')
+      var start = moment().subtract(7, 'days')
+      var end = moment()
+      self.RankFilterData = []
+      self.minDate = moment('2020/08/01')
+      self.start = start
+      self.end = end
+      self.RankData(3)
+      self.commentData(3)
+      self.positiveData(3)
+      self.negativeData(3)
+      self.ServiceData()
+      self.webCommentData(3, self.statisticData)
+      $('#reportrange span').html('時間')
+      $('#showmonthMenu').css('display', 'none')
+      self.chosenmonthData = ''
+    },
     getSelfCompany(arr){
       let self = this
       arr.filter((item) => {
@@ -460,6 +494,220 @@ export default {
       self.negativeData(2)
       
       // self.fillData(2)
+    },
+    mapFun(){
+      let self = this
+      var arr1 = self.todayData[0].data.countries_count
+      var  WebsiteData = {
+        data: {
+          websiteNum: {
+            name: 'Number per day',
+            // format: '{0} USD',
+            thousandSeparator: ',',
+            // thresholdMax: 50000,
+            // thresholdMin: 1000
+          }
+        // 11阿拉伯聯合大公國
+        // SY 42 敘利亞
+        // 冰島45
+        },
+        applyData: 'websiteNum',
+        values: {
+          // AF: {websiteNum: 0},
+          // AL: {websiteNum: 0},
+          // DZ: {websiteNum: 0},
+          // AO: {websiteNum: 0},
+          // AG: {websiteNum: 0},
+          // AR: {websiteNum: 0},
+          // AM: {websiteNum: 0},
+          AU: {websiteNum: arr1[2].number},
+          AT: {websiteNum: arr1[32].number},
+          // AZ: {websiteNum: 0},
+          // BS: {websiteNum: 0},
+          // BH: {websiteNum: 0},
+          // BD: {websiteNum: 0},
+          // BB: {websiteNum: 0},
+          // BY: {websiteNum: 0},
+          BE: {websiteNum: arr1[21].number},
+          // BZ: {websiteNum: 0},
+          // BJ: {websiteNum: 0},
+          // BT: {websiteNum: 0},
+          // BO: {websiteNum: 0},
+          // BA: {websiteNum: 0},
+          // BW: {websiteNum: 0},
+          BR: {websiteNum:  arr1[61].number},
+          // BN: {websiteNum: 0},
+          BG: {websiteNum:  arr1[50].number},
+          // BF: {websiteNum: 0},
+          // BI: {websiteNum: 0},
+          KH: {websiteNum:  arr1[29].number},
+          // CM: {websiteNum: 0},
+          CA: {websiteNum:  arr1[9].number},
+          // XK: {websiteNum: 0},
+          // CV: {websiteNum: 0},
+          // CF: {websiteNum: 0},
+          // TD: {websiteNum: 0},
+          // CL: {websiteNum: 0},
+          CN: {websiteNum: arr1[1].number},
+          CO: {websiteNum: arr1[28].number},
+          // KM: {websiteNum: 0},
+          // CG: {websiteNum: 0},
+          // CR: {websiteNum: 0},
+          // HR: {websiteNum: 0},
+          // CY: {websiteNum: 0},
+          CZ: {websiteNum: arr1[53].number},
+          // CD: {websiteNum: 0},
+          DK: {websiteNum: arr1[60].number},
+          // DJ: {websiteNum: 0},
+          // DM: {websiteNum: 0},
+          // DO: {websiteNum: 0},
+          // EC: {websiteNum: 0},
+          EG: {websiteNum: arr1[43].number},
+          // SV: {websiteNum: 0},
+          GQ: {websiteNum: arr1[47].number},
+          // ER: {websiteNum: 0},
+          EE: {websiteNum: arr1[49].number},
+          // ET: {websiteNum: 0},
+          // FM: {websiteNum: 0},
+          // FJ: {websiteNum: 0},
+          FI: {websiteNum: arr1[20].number},
+          FR: {websiteNum: arr1[22].number},
+          // GA: {websiteNum: 0},
+          GM: {websiteNum: arr1[14].number},
+          // GE: {websiteNum: 0},
+          // DE: {websiteNum: 0},
+          // GH: {websiteNum: 0},
+          GR: {websiteNum: arr1[52].number},
+          // GD: {websiteNum: 0},
+          // GT: {websiteNum: 0},
+          // GN: {websiteNum: 0},
+          // GW: {websiteNum: 0},
+          // GY: {websiteNum: 0},
+          // HT: {websiteNum: 0},
+          // HN: {websiteNum: 0},
+          HK: {websiteNum: arr1[0].number},
+          HU: {websiteNum: arr1[33].number},
+          IS: {websiteNum: arr1[16].number},
+          IN: {websiteNum: arr1[17].number},
+          ID: {websiteNum: arr1[30].number},
+          IR: {websiteNum: arr1[55].number},
+          // IQ: {websiteNum: 0},
+          IE: {websiteNum: arr1[15].number},
+          // IL: {websiteNum: 0},
+          IT: {websiteNum: arr1[57].number},
+          CI: {websiteNum: arr1[34].number},
+          JM: {websiteNum: arr1[31].number},
+          JP: {websiteNum: arr1[5].number},
+          // JO: {websiteNum: 0},
+          // KZ: {websiteNum: 0},
+          // KE: {websiteNum: 0},
+          // KI: {websiteNum: 0},
+          // KW: {websiteNum: 0},
+          // KG: {websiteNum: 0},
+          LA: {websiteNum: arr1[54].number},
+          // LV: {websiteNum: 0},
+          LB: {websiteNum: arr1[37].number},
+          // LS: {websiteNum: 0},
+          // LR: {websiteNum: 0},
+          // LY: {websiteNum: 0},
+          // LT: {websiteNum: 0},
+          LU: {websiteNum: arr1[36].number},
+          // MO: {websiteNum: 0},
+          // MK: {websiteNum: 0},
+          // MG: {websiteNum: 0},
+          // MW: {websiteNum: 0},
+          MY: {websiteNum: arr1[62].number},
+          MV: {websiteNum: arr1[58].number},
+          // ML: {websiteNum: 0},
+          // MT: {websiteNum: 0},
+          // MH: {websiteNum: 0},
+          // MR: {websiteNum: 0},
+          // MU: {websiteNum: 0},
+          MX: {websiteNum: arr1[38].number},
+          // MD: {websiteNum: 0},
+          // MN: {websiteNum: 0},
+          // ME: {websiteNum: 0},
+          // MA: {websiteNum: 0},
+          // MZ: {websiteNum: 0},
+          MM: {websiteNum: arr1[35].number},
+          // NA: {websiteNum: 0},
+          // NR: {websiteNum: 0},
+          // NP: {websiteNum: 0},
+          NL: {websiteNum: arr1[51].number},
+          NZ: {websiteNum: arr1[25].number},
+          // NI: {websiteNum: 0},
+          // NE: {websiteNum: 0},
+          // NG: {websiteNum: 0},
+          NO: {websiteNum: arr1[23].number},
+          // OM: {websiteNum: 0},
+          PK: {websiteNum: arr1[7].number},
+          // PW: {websiteNum: 0},
+          // PA: {websiteNum: 0},
+          // PG: {websiteNum: 0},
+          // PY: {websiteNum: 0},
+          PE: {websiteNum: arr1[40].number},
+          PH: {websiteNum: arr1[19].number},
+          PL: {websiteNum: arr1[44].number},
+          PT: {websiteNum: arr1[27].number},
+          // PR: {websiteNum: 0},
+          QA: {websiteNum: arr1[59].number},
+          RO: {websiteNum: arr1[48].number},
+          RU: {websiteNum: arr1[24].number},
+          // RW: {websiteNum: 0},
+          // KN: {websiteNum: 0},
+          // LC: {websiteNum: 0},
+          // VC: {websiteNum: 0},
+          // WS: {websiteNum: 0},
+          // SM: {websiteNum: 0},
+          // ST: {websiteNum: 0},
+          SA: {websiteNum: arr1[12].number},
+          SN: {websiteNum: arr1[10].number},
+          // RS: {websiteNum: 0},
+          // SC: {websiteNum: 0},
+          // SL: {websiteNum: 0},
+          // SG: {websiteNum: 0},
+          // SK: {websiteNum: 0},
+          // SI: {websiteNum: 0},
+          // SB: {websiteNum: 0},
+          // SO: {websiteNum: 0},
+          ZA: {websiteNum: arr1[3].number},
+          KR: {websiteNum: arr1[18].number},
+          // SS: {websiteNum: 0},
+          ES: {websiteNum: arr1[26].number},
+          LK: {websiteNum: arr1[4].number},
+          // SD: {websiteNum: 0},
+          // SR: {websiteNum: 0},
+          SZ: {websiteNum: arr1[13].number},
+          SE: {websiteNum: arr1[41].number},
+          CH: {websiteNum: arr1[1].number},
+          TW: {websiteNum: arr1[6].number},
+          // TJ: {websiteNum: 0},
+          // TZ: {websiteNum: 0},
+          TH: {websiteNum: arr1[56].number},
+          // TL: {websiteNum: 0},
+          // TG: {websiteNum: 0},
+          // TO: {websiteNum: 0},
+          // TT: {websiteNum: 0},
+          // TN: {websiteNum: 0},
+          TR: {websiteNum: arr1[39].number},
+          // TM: {websiteNum: 0},
+          // TV: {websiteNum: 0},
+          // UG: {websiteNum: 0},
+          // UA: {websiteNum: 0},
+          // AE: {websiteNum: 0},
+          GB: {websiteNum: arr1[8].number},
+          US: {websiteNum: arr1[63].number},
+          // UY: {websiteNum: 0},
+          // UZ: {websiteNum: 0},
+          // VU: {websiteNum: 0},
+          // VE: {websiteNum: 0},
+          VN: {websiteNum: arr1[46].number},
+          // YE: {websiteNum: 0},
+          // ZM: {websiteNum: 0},
+          // ZW: {websiteNum: 0}
+        }
+      }
+      worldMap.map(WebsiteData)
     },
     date(){
       let self = this
@@ -642,7 +890,9 @@ export default {
             yAxes: [{
               ticks:{
                 min: 1,
-                stepSize: 1
+                stepSize: 1,
+                reverse: true,
+                max: Math.max.apply(null, this.calculate(self.RankFilterData))+2
               }
             }],
             xAxes: [{
@@ -657,6 +907,7 @@ export default {
             labels: {
               padding: 20
             }
+           
           }
         }
       })
@@ -1012,6 +1263,23 @@ export default {
   }
   .daterangepicker.show-calendar .drp-buttons{
     display: none;
+  }
+  .svgMap-map-wrapper{
+    background: white;
+  }
+  .demo-wrapper{
+    width: 400px;
+    height: 300px;
+    /* padding: 2%; */
+  } 
+  #svgMapGPD{
+    width: 400px;
+    height: 300px;
+  }
+  
+  .svgMap-map-image{
+    width: 80%;
+    height: 100%;
   }
 </style>
 <style scoped src= '../assets/css/statistic.css'></style>

@@ -6,17 +6,17 @@
         </div>
       </div>
       <div class="dataArea">
+        <p class="CommentTtle">{{commentData.title}}</p>
         <div class="MainComment">
-          <p class="CommentTtle">{{commentData.title}}</p>
           <span class="subtitle">評分</span><span class="spaceRight">{{commentData.rating}}</span>
-          <span class="subtitle">評論日期</span><span>{{commentData.times.comment}}</span>
+          <span class="subtitle">評論日期</span><span class="spaceRight">{{commentData.times.comment}}</span>
+          <span class="subtitle">住客國家</span><span class="spaceRight">{{commentData.locale}}</span>
+          <span class="subtitle">入住時間</span><span class="spaceRight">{{commentData.times.checkin}}</span>
+          <span class="subtitle">房型</span><span class="spaceRight">{{commentData.room_type}}</span>
+          <span class="subtitle">來源網站</span><span>{{commentData.website}}</span>
           <div class="Maincontent">
             <span class="commentContent">{{commentData.text}}</span>
           </div>
-          <p class="space"><span class="subtitle">住客國家</span><span>{{commentData.locale}}</span></p>
-          <p class="space"><span class="subtitle">入住時間</span><span>{{commentData.times.checkin}}</span></p>
-          <p class="space"><span class="subtitle">房型</span><span>{{commentData.room_type}}</span></p>
-          <p class="space"><span class="subtitle">來源網站</span><span>{{commentData.website}}</span></p>
         </div>
 
         <div class="ReplyAddress">
@@ -60,18 +60,21 @@
                   <el-button>{{item.label}}</el-button>
                 </div>
               </template>
+              <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="replyArea">
+              <p>回覆內容</p>
+              <template v-if="commentData.response_body === '' || commentData.labels.reply === 0">
+                <p>尚未回覆</p>
+              </template>
+              <template v-else-if="commentData.response_body !== '' || commentData.labels.reply === 1">
+                <p>{{commentData.response_body}}</p>
+              </template>
             </div>
             <div class="clear"></div>
           </div>
-          <div class="replyArea">
-            <p>回覆內容</p>
-            <template v-if="commentData.response_body === '' || commentData.labels.reply === 0">
-              <p>尚未回覆</p>
-            </template>
-            <template v-else-if="commentData.response_body !== '' || commentData.labels.reply === 1">
-              <p>{{commentData.response_body}}</p>
-            </template>
-          </div>
+          
           <div class="addressArea">
             <p>address再看要不要</p>
 

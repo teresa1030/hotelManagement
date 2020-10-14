@@ -1,8 +1,5 @@
 .content{
-    /* background-color: #fff; */
-    /* padding-top: 10px; */
     width: 100%;
-    /* overflow: hidden; */
 }
 
 
@@ -10,37 +7,40 @@
 
 .RealTime{
     width: 100%;
-    background-color: rgb(11, 66, 122, 0.46);
-    /* height: 250px; */
-    height: 11vw;
-    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+    /* background-color: rgb(11, 66, 122, 0.46); */
+    height: 12vw;
+    /* box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1); */
 }
 .RealTime p{
-    color: white;
-    font-size: 18px;
+    font-size: 16px;
+    color: #8BA4BE;
     padding: 1% 2%;
 }
 .RealTime ul{
     display: flex;
-    width: 90%;
+    width: 95%;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 2.5%;
-    /* padding-left: 2.5%; */
-    /* margin-left: 1%; */
+    margin-left: 2%;
 }
-.RealTime li{
+.RealTime li+li{
     display: inline-flex;
     justify-content:space-around;
     margin-left: 2%;
     /* margin-right: 1%; */
 }
 
-.RealTime li span, .main li span{
-    color: #8E8DB7;
+.subti, .main li span{
+    color: #5f5f5f;
     font-size: 16px;
-    margin-left: 15px;
+    /* margin-left: 15px; */
+    display: block;
+    padding: 3%;
+    background-color: rgb(235, 235, 235);
 }
+
+
+
 .RealTime li p, .main li p{
     color: black;
     font-size: 28px;
@@ -49,11 +49,11 @@
     margin-left: 15px;
 }
 .RealTime div, .main div{
-    width: 75%;
-    height: 5vw;
+    width: 90%;
+    height: 6.5vw;
     border: 0.5px solid rgb(238, 238, 238);
     box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.3);
-    padding: 5%;
+    /* padding: 5%; */
     border-radius: 2px;
     background-color: #fff;
 }
@@ -62,8 +62,8 @@
     vertical-align: top;
 }
 
-.RealTime .equal img{
-    padding-top: 10px;
+.RealTime img{
+    padding: 3%;
 }
 
 .main ul{
@@ -160,4 +160,11 @@
 }
 .clear{
     clear: both;
+}
+
+.cancle{
+    display: inline-block;
+}
+.cancle .el-button{
+    padding: 7px 10px 5px 10px;
 }
