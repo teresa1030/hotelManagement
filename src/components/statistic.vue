@@ -224,6 +224,7 @@ export default {
   },
   data () {
     return {
+      timeout:null,
       companyName: '',
       // time: 'August',
       statisticAllData: [],
@@ -1246,9 +1247,14 @@ export default {
     }
   },
   created: function(){
-      setTimeout(function() {
+      this.timeout = setTimeout(function() {
         worldMap.map();
       }, 3000);
+  },
+  beforeDestroy: function(){    //換到別頁的時候把timeout清掉
+    // alert("beforeDestroy");  
+    // console.log("beforeDestroy");
+    clearTimeout(this.timeout);
   }
 
 }

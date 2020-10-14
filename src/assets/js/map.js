@@ -4018,7 +4018,7 @@ axios.get('/api/statistic').then(response => {
       PT: {websiteNum: arr1[0][27].number},
       PR: {websiteNum: 304835},
       QA: {websiteNum: arr1[0][59].number},
-      RO: {websiteNum: arr1[0][48]},
+      RO: {websiteNum: arr1[0][48].number},
       RU: {websiteNum: 1060850},
       RW: {websiteNum: 7720},
       KN: {websiteNum: 1621},
