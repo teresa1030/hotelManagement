@@ -12,13 +12,15 @@
     </div>
  
     <button v-on:click="GDP()">GDP</button>
-     <button v-on:click="record()">record</button>
+    <button v-on:click="record()">record</button>
+    <button v-on:click="DateTime()">Time</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import worldMap from '../assets/js/map';
+import dateTime from '../assets/js/dateTime';
 export default {
   name: 'HelloWorld',
   data () {
@@ -290,6 +292,13 @@ export default {
         .catch((error) => {
           console.log(error);
         })
+      },
+      DateTime:function(){
+        var date,Time;
+        date=dateTime.recordDate();
+        console.log(date);
+        Time=dateTime.recordTime();
+        console.log(Time);
       }
     }
   
