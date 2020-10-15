@@ -288,14 +288,36 @@ router.get('/competition/:collection', (req,res) => {
 // })
 
 
-//history
-router.get("/history",(req,res) =>{
-  historyData.find({}).sort({update_at: -1}).then(accounts =>{
+router.get("/history/:value",(req,res) =>{
+  if(req.params.value === '0'){
+    historyData.find({},{_id: 1, condition: 1, tags: 1}).sort({update_at: -1}).then(history => {
+      res.json(history)
+    }).catch(err => {
+      res.json(err)
+    })
+  }else if(req.params.value === '1'){
+    historyData.find({},{_id: 1, UserListModify: 1, favorite: 1, condition: 1, tags: 1}).sort({update_at: -1}).then(history => {
+      res.json(history)
+    }).catch(err => {
+      res.json(err)
+    })
+  }else{
+    historyData.find({}).sort({update_at: -1}).then(accounts =>{
       res.json(accounts);
-  }).catch(err =>{
+    }).catch(err =>{
       res.json(err);
-  });
+    });
+  }
 }); 
+
+// router.get('/history', (req,res) => {
+//   historyData.find({}).sort({update_at: -1}).then(accounts =>{
+//     res.json(accounts);
+//   }).catch(err =>{
+//     res.json(err);
+//   });
+// })
+
 //add new record
 router.put("/history/:record",(req,res) =>{
   // console.log(req.params.record);

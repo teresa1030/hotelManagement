@@ -567,13 +567,11 @@ export default {
       self.commentData.forEach((item) => {
         if (item._id === id) {
           if (item.labels.condition === 0) {
-            console.log(item.labels.condition)
             item.labels.condition = 1
           } else {
             item.labels.condition = 2
           }
           self.newComment = item
-          console.log(self.newComment)
           self.updateComment(id)
         }
       })

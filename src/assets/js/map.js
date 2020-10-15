@@ -3844,7 +3844,6 @@ axios.get('/api/statistic').then(response => {
   })
   arr.filter((item) => {
     if((Date.parse(item.time) >= Date.parse(today._d)) && (Date.parse(item.time) <= Date.parse(todayEnd._d))){
-      console.log(item.data.countries_count)
       arr1.push(item.data.countries_count)
     }
   })
