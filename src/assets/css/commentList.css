@@ -288,13 +288,16 @@ tr:hover td{
 }
 @media (max-width: 425px) {
     .display{
-    display: none;
-  }
-    .editArea{
         display: none;
     }
+    .editArea{
+        /* display: none; */
+        background: #000;
+    }
     .filter{
-        display: none;
+        /* display: none; */
+        background: orange;
+        margin: 0;
     }
     .dataArea{
         width: 100%;
@@ -302,7 +305,10 @@ tr:hover td{
         margin-bottom: 50px;
     }
     .MultiFilterArea{
-        display: none;
+        background: yellow;
+        width: 100%;
+        height: unset;
+        /* display: none; */
     }
     .dataRightArea{
         width: 90%;
