@@ -286,3 +286,29 @@ tr:hover td{
 .el-table a{
     color: rgb(39, 30, 165);
 }
+@media (max-width: 425px) {
+    .display{
+    display: none;
+  }
+    .editArea{
+        display: none;
+    }
+    .filter{
+        display: none;
+    }
+    .dataArea{
+        width: 100%;
+        margin: 0;
+        margin-bottom: 50px;
+    }
+    .MultiFilterArea{
+        display: none;
+    }
+    .dataRightArea{
+        width: 90%;
+        margin: 0 5%;
+    }
+    .el-table{
+        margin: 0;
+    }
+}
