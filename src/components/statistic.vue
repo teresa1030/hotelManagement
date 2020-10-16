@@ -80,9 +80,8 @@
                   </p>
                 </div>
               </li>
-              <span class="clear"></span>
+              
           </ul>
-        
         </div>
         <div class="filterTime">
           <p>篩選：</p>
@@ -148,7 +147,6 @@
               <div class="clear"></div>
             </div>
           </div>
-          <div class="clear"></div>
         </div>
         <div class="statisticCenter">
           <!-- <div class="statisticComment flex-2">
