@@ -584,10 +584,12 @@ a{
        display: block;
     }
     .contentTop{
-        position: absolute;
+        position: fixed;
         background-color: rgb(47, 58, 76);
-        height: 30px;
+        height: 39px;
         margin: 0;
+        padding: 0;
+        z-index: 2;
     }
     .content{
         width: 100%;
@@ -600,9 +602,12 @@ a{
         height: 0;
     }
     .headerContent{
-        background: #000;
+        background-color: rgb(47, 58, 76);
         width: 100%;
         height: 0;
+        padding: 0;
+        position: relative;
+        z-index: 1;
     }
     .company{
         display: none;
@@ -629,16 +634,17 @@ a{
         margin-top: 0px;
         margin-right: 0px;
     	/*絕對定位疊在網頁上*/
-    	position: relative;
+    	position: fixed;
     	/*權重*/
     	z-index: 100;
-    	/*header 80px+1px boder 線條*/
+    	/*header 40px-1px boder 線條*/
     	top: 39px;
     	/* left:0 right:0表示滿版 */
     	left: 0;
    		right: 0;
         background-color: rgb(192, 214, 250);
         margin: 0;
+        
     }
     .menu li{
         width: 100%;
@@ -667,7 +673,6 @@ a{
         width: 10%;
     	display: block;
         float: left;
-        padding-top: 10px;
         margin-left: 7%;
     }
     #logout{
@@ -675,7 +680,26 @@ a{
     }
     /*jQuery點擊後動態在 body 加上 class */
   	.menu-show .menu{
-        max-height: 500px;
+        /* max-height: 500px; */
+        /* z-index: 1; */
+        /* position: fixed; */
     }
+    /* footer */
+    .phoneMenu{
+        width: 100%;
+        display: block;
+        position: fixed;
+        bottom: 0;
+        text-align: center;
+        background-color: rgb(47, 58, 76);
+    }
+    .phoneMenu li{  
+        width: 25%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        float: left;
+        text-align: center;
+    }
+    
 }
 </style>

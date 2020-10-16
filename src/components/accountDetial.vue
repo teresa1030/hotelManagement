@@ -281,26 +281,48 @@ export default {
   
   }
   .rightContent li{
+    width: 80%;
+    margin: 0 10%;
+    padding: 5px 0;
     /* background: #000; */
-    margin: 10 15px;
   }
   .personalDetail{
     background: #FFFFFF;
     margin: 0;
+    padding: 5px 0;
   }
   .contactInfo{
     background: #FFFFFF;
     margin: 0;
+    padding: 5px 0;
   }
   .private{
     background: #FFFFFF;
     margin: 0;
+    padding: 5px 0;
   }
   .rightContent input{
     margin: 3px 0;
     padding: 3px 5px;
     font-weight:normal;
-    
+    width: 150px;
+  }
+  .contactInfo input{
+    width: 205px;
+  }
+}
+@media (max-width: 375px) {
+  .rightContent li{
+    width: 86%;
+    margin: 0 7%;
+    padding: 5px 0;
+  }
+}
+@media (max-width: 320px) {
+  .rightContent li{
+    width: 90%;
+    margin: 0 5%;
+    padding: 5px 0;
   }
 }
 </style>
