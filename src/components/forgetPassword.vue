@@ -112,4 +112,26 @@ export default {
     font-family: 微軟正黑體;
     outline:none;
 }
+@media (max-width: 768px) {
+    .page{
+        width: 100%;
+        margin: 0;
+        margin-top: 100px;
+    }
+    .page button{
+        width: 10%;
+        margin: 0 45%;
+    }
+}
+@media (max-width: 425px) {
+    .page{
+        width: 100%;
+        margin: 0;
+        margin-top: 100px;
+    }
+    .page button{
+        width: 16%;
+        margin: 0 42%;
+    }
+}
 </style>

@@ -567,8 +567,12 @@ a{
         display: block;
     }
     /*jQuery點擊後動態在 body 加上 class */
-  	.menu-show .menu{
+  	.menu-show{
         max-height: 500px;
+    }
+    .menu-hide{
+        display: none;
+        /* max-height: 500px; */
     }
     .phoneMenu{
         width: 100%;
@@ -638,6 +642,6 @@ a{
     	display: block;
         float: left;
         margin-left: 7%;
-    }
+    }    
 }
 </style>
