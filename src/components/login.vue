@@ -12,8 +12,11 @@
                 <label>密碼&nbsp;:&nbsp;</label>
                 <input type="password" v-model="passWord" required placeholder="請輸入密碼">
                 <div class="clear"></div>
-                <router-link :to="'../forgetPassword'" class="link">忘記密碼 ?</router-link>
-                <button type="submit">確&nbsp;認</button>
+                <div class="submit_btn">
+                    <router-link :to="'../forgetPassword'" class="link">忘記密碼 ?</router-link>
+                    <button type="submit">確&nbsp;認</button>
+                    <div class="clear"></div>
+                </div>
             </form>
         </div>
     </div>
@@ -200,7 +203,7 @@ export default {
     font-family: 微軟正黑體;
     outline:none;
 }
-@media (max-width: 425px) {
+@media (max-width: 768px) {
     .page input{
         margin-top: 10px;
     }
@@ -211,16 +214,40 @@ export default {
         /* background: #000; */
         width: 100%;
         margin: 0;
-        margin-top: 150px;
+        margin-top: 20%;
         height: auto;
         
     }
-    .link{
-        margin-left:30%;
+    .submit_btn{
+        /* background: #000; */
+        width: 40%;
+        margin: 0 auto;
+        text-align: center;
     }
-    .page button{
-        margin:0;
-        margin-left: 30px;
+    .submit_btn .link{
+        margin: 0;
+        width: 50%;
+        margin: 4% 0;
+    }
+    .submit_btn button{
+        margin:0 15%;
+        width: 20%;
+    }
+}
+@media (max-width: 425px) {
+    .submit_btn{
+        /* background: #000; */
+        width: 50%;
+        margin: 0 auto;
+        /* text-align: center; */
+    }
+    .submit_btn .link{
+        margin: 0;
+        width: 50%;
+    }
+    .submit_btn button{
+        margin:0 13%;
+        width: 24%;
     }
 }
 </style>
