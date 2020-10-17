@@ -189,5 +189,20 @@ export default {
     .page button{
         margin-top: 10px;
     }
+    .page{
+        /* background: #000; */
+        width: 100%;
+        margin: 0;
+        margin-top: 150px;
+        height: auto;
+        
+    }
+    .link{
+        margin-left:30%;
+    }
+    .page button{
+        margin:0;
+        margin-left: 30px;
+    }
 }
 </style>

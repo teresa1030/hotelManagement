@@ -102,3 +102,24 @@ button{
 .favDiv{
     display: none;
 }
+@media (max-width: 768px) {
+    .phone {
+        margin: 0 5%;
+        width: 90%;
+    }
+    .dataArea{
+        width: 100%;
+        margin: 0;
+        margin-bottom: 50px;
+    }
+    .contentCenter{
+        width: 100%;
+        margin-top: 30px;
+    }
+    .page{
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 30px;  
+        margin-right: 20%;
+    }
+}

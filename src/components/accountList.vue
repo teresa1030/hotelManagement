@@ -37,17 +37,52 @@
           <input id="userName" type="text" v-model="newAccount.userName" required><span>*姓名&nbsp;: &nbsp;</span>
           <div class="clear"></div>
         </div>       
-        <div class="clear"></div>       
+        <div class="clear"></div>  
+        <div class="add_btn">     
           <button class="functionButton" id="tableActionsBtn" type="submit">確認</button>
+        </div>
         </form>
-        <button class="functionButton"  v-on:click="close()" >取消</button>
+        <div class="add_btn"> 
+          <button class="functionButton" id="tableActionsBtn" v-on:click="close()" >取消</button>
+        </div>
       
       
       </div>
+
+      <!-- 手機版的選單 -->
+      
+      <div slot="table-actions" class="account_select_phone">  
+        <div class="right_select">
+          <div class="dep">所屬單位</div>
+          <div class="limit">員工權限</div>
+          <div>
+            <select v-model="chooseDepartment" class="selectBox" v-on:click="selection()" >
+              <option chooseDepartment>請選擇</option>
+              <option>資訊部</option>  
+              <option>行銷部</option>
+            </select>
+          </div>
+          <div>
+            <select v-model="chooseLimit" class="selectBox" v-on:click="selection()">
+              <option chooseLimit>請選擇</option>
+              <option>後台管理者</option>
+              <option>主管使用者</option>
+              <option>一般使用者</option>
+            </select>
+          </div>
+        </div>   
+        <div class="left_btn">
+          <div><button class="functionButton"  v-on:click="open()" >新增</button></div>
+          <div><button class="functionButton"  v-on:click="deleteAccount()">刪除</button></div>
+        </div>
+      </div>
+      
+      <!-- 手機版的選單 -->
+
       <vue-good-table class="el-table" styleClass="vgt-table striped" :columns="columns" :rows="accountList" 
         max-height="500px" :fixed-header="true" :search-options="{ enabled: true }" text-align="center"
         @on-selected-rows-change="selectionChanged" :select-options="{ enabled: true }" @on-cell-click="linkAccountDetial" >
-        <div slot="table-actions">      
+        <div slot="table-actions" class="account_select">      
           <span>所屬單位</span>
           <select v-model="chooseDepartment" class="selectBox" v-on:click="selection()" >
             <option chooseDepartment>請選擇</option>
@@ -117,8 +152,8 @@ export default {
         {
           label:'信箱',
           field:'email',
-          tdClass: 'display',
-          thClass: 'display'
+          tdClass: 'display_ipad',
+          thClass: 'display_ipad'
         },
         {
           label:'權限等級',
@@ -273,6 +308,7 @@ export default {
       //return this.accountList;     
     },
     close:function(){
+      console.log("close")
       document.getElementById("addNewUser").style.visibility="hidden";
       document.getElementById('employeeNumber').removeAttribute("required");
       document.getElementById('email').removeAttribute("required");
@@ -317,7 +353,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-
 
 /* function */
 .function{
@@ -383,6 +418,7 @@ export default {
   margin-left: 20px;
   /* margin-top: 20px; */
   position: relative;
+  /* display: none; */
   z-index: 0;
 }
 /* increasing User */
@@ -393,11 +429,12 @@ export default {
   height: 446px;
   background-color: #FFFFFFE8;
   position: absolute;
-  z-index: 1;
+  /* z-index: 1; */
 }
 #addNewUser{
   /* display: none; */
   visibility:hidden;
+  z-index:1;
 }
 .addAccount{
   float: left;
@@ -439,24 +476,32 @@ export default {
   font-family: "微軟正黑體";
   margin-bottom: 60px;
 }
-@media (max-width: 425px) {
+.account_select_phone{
+  display: none;
+}
+@media (max-width: 768px) {
   .insideContent{
     width: 100%;
-    
+    margin-bottom: 50px;
   }
-  .display{
-    display: none;
+  .display_ipad{
+        display: none;
   }
   .vueGoodTable{
-    width: 100%;
+    width: 90%;
     margin: 0;
-    background: #000;
+    /* background: #000; */
     /* display: none; */
+    position: relative;
+    z-index: 0;
+    margin:auto;
+    /* max-height:none; */
   }
   .contentCenter{
     /* background: blue; */
     width: 100%;
     margin-top: 30px;
+    
   }
   .page{
     font-size: 25px;
@@ -464,8 +509,104 @@ export default {
     margin-top: 30px;  
     margin-right: 20%;
   }
-  .vgt-global-search__input vgt-pull-left{
-    background: #000;
+  .account_select{
+    display: none;
   }
+  .vgt-input{
+    width: 100%;
+  }
+  .el-table{
+    margin: 0;
+    z-index: 0;
+  }
+  /* 篩選＋按鈕 */
+  .account_select_phone{
+    margin-bottom: 10px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-column-gap:10px;
+    color: #61656e;
+  }
+  .right_select{
+    background: #F4F5F8;
+    border: 1px solid rgba(221, 219, 219, 0.76);
+    padding: 10px 10px;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap:5px;
+    grid-row-gap:5px;
+  }
+  .right_select div{
+    align-self: center;
+    justify-self: center;
+  }
+  .left_btn{
+    background: #F4F5F8;
+    border: 1px solid rgba(221, 219, 219, 0.76);
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    padding: 10px 0px;
+    grid-row-gap:10px;
+  }
+  .left_btn div{
+    align-self: center;
+    justify-self: center;
+  }
+  .account_select_phone .selectBox{
+    margin: 0;
+  }
+  .functionButton{
+    padding: 0;
+    margin: 0;
+  }
+  /* 新增帳號 */
+  .addUser{
+    margin:3%;
+    /* z-index: 1; */
+    width: 84%;
+    position: fixed;
+    height: auto;
+    background-color:#ffffffe8;
+  }
+  .addAccount{
+    margin-bottom: 20px;
+  }
+  .input{
+    margin: 0px 10% ;
+    float: none;
+  }
+  .input input{
+    margin: 5px 0;
+    width: 150px;
+    /* float: none; */
+  }
+  .input span{
+    float: none;
+  }
+  .inputBox{
+    float: none;
+  }
+  .addSelect{
+    /* float: none; */
+    margin: 5px 0;
+    width: 158px;
+  }
+  #tableActionsBtn{
+    margin: 0;
+    float: none;
+  }
+  .add_btn{
+    width: 50%;
+    /* background: #000; */
+    float: left;
+    text-align: center;
+    margin: 10px 0 20px;
+  }
+}
+@media (max-width: 425px) {
+    .display{
+        display: none;
+    }
 }
 </style>

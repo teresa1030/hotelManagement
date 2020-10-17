@@ -6,6 +6,7 @@
         </div>
       </div>
       <div class="dataArea">
+        <div class="phone">
         <template >
           <span>
             <vue-good-table ref="competitionTable" class="el-table" styleClass="vgt-table striped" :rows="companyData"  :columns="columns"
@@ -63,6 +64,7 @@
         <!-- :select-options="{enabled: true ,selectOnCheckboxOnly: true, disableSelectInfo: true}" -->
         <!-- <template > -->
         </template>
+        </div>
       </div>
           <!-- <div class="clear"></div>
           <div v-for="item in companyData" :key="item._id" class="competitionList">

@@ -160,6 +160,7 @@
 }
 .clear{
     clear: both;
+    display: block;
 }
 
 .cancle{
@@ -167,4 +168,134 @@
 }
 .cancle .el-button{
     padding: 7px 10px 5px 10px;
+}
+
+@media (max-width: 768px) {
+    .RealTime{
+        display: block;
+        margin-top: 50px;
+        height: unset; 
+    }
+    .RealTime p {
+        font-size: 25px;
+        padding: 2% 5%;
+    }
+    .RealTime ul{
+        display: block;
+        width: 90%;
+        margin: 1% auto;
+        border-bottom: 0.5px dashed rgb(202, 197, 197);
+    }
+    .RealTime li+li{
+        margin-left: 0;
+    }
+    .RealTime li div{
+        display: inline-table;
+        width: 100%;
+    }
+    .flex-1{
+        width: 30%;
+        margin-right: 3%;
+        margin-bottom: 5%;
+        float: left;
+    }
+    .flex-1 p {
+        text-align: center;
+    }
+    .subti{
+        padding: 5px;
+        border-radius: 2px;
+    }
+    .RealTime li p{
+        margin: 2px 0 2px 10px;
+    }
+    .filterTime{
+        text-align: center;
+        height: unset;
+    }
+    .filterTime p{
+        margin: 0;
+    }
+    .demo-wrapper{
+        display: none;
+        background: yellow;
+    }
+    .statisticTop{
+        display: block;
+        height: unset;
+        padding: 0;
+    }
+    .Rank{
+        width: 90%;
+        margin: 0 5%;
+    }
+    .flex-3{
+        float: left;
+    }
+    .statisticRank{
+        width: 100%;
+        margin: 0;
+    }
+    .statisticComment{
+        width: 90%;
+        margin: 5% 5%;
+    }
+    .statisticCenter{
+        display: block;
+        height: unset;
+        padding: 0;
+    }
+    .statistic,.statisticService{
+        margin: 0;
+        width: 90%;
+        margin: 0 5% 5%;
+    }
+    .allP1{
+        text-align: center;
+    }
+    .statisticBottom{
+        display: block;
+        height: unset;
+        padding: 0;
+        padding-bottom: 50px;
+        /* background: orange; */
+    }  
+    .statisticWeb{
+        margin: 0;
+        width: 90%;
+        margin: 0 5% 5%;
+    }
+}
+@media (max-width: 425px) {
+    .flex-1{
+        width: 45%;
+        margin-right: 5%;
+        margin-bottom: 5%;
+        float: left;
+    }
+    .Rank{
+        width: 90%;
+        margin: 0 5%;
+    }
+    .statistic,.statisticService{
+        margin: 0;
+        width: 90%;
+        margin: 0 5% 5%;
+    }
+    .statisticWeb{
+        margin: 0;
+        width: 90%;
+        margin: 0 5% 5%;
+    }
+
+}
+@media (max-width: 320px) {
+    .RealTime .flex-1{
+        width: 100%;
+        /* margin-right: 5%; */
+        margin-bottom: 5%;
+        float: left;
+        text-align: center;
+    }
+    
 }

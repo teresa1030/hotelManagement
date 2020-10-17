@@ -179,7 +179,9 @@ export default {
         },
         {
           label: '回覆',
-          field: this.fieldFn1
+          field: this.fieldFn1,
+          tdClass: 'display',
+          thClass: 'display'
         },
 
         {
@@ -198,7 +200,9 @@ export default {
         },
         {
           label: '網站來源',
-          field: 'website'
+          field: 'website',
+          tdClass: 'display',
+          thClass: 'display'
         }
       ],
       // currentPage: 1,
