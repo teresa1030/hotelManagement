@@ -404,110 +404,6 @@ a{
     display: none;
 }
 
-/* 這裡改版過還沒重寫!!!! */
-
-@media (max-width: 768px){
-    .page{
-        font-size: 18px;
-        margin-top: 0px;
-        margin-left: 20px;
-        margin-right: 20px;
-    }
-    .header{
-        height: 0;
-    }
-    .headerContent{
-        width: 100%;
-        height: 0;
-    }
-    .companyImg{
-        display: none;
-    }
-    .title{
-        font-size: 16px;
-        margin: 5 auto;
-        width: 65%;
-        padding: 10px;
-        text-align: center;
-    }
-    .photo{
-        display: none;
-    }
-    .identity{
-        display: none;
-    }
-    .breadcrumb{
-        display: none;
-    }
-    .menu{
-		/*隱藏選單開始*/
-		max-height: 0;
-		overflow: hidden;
-		/*隱藏選單結束*/
-		/*漸變效果*/
-    	transition: max-height 0.5s;
-        margin-top: 0px;
-        margin-right: 0px;
-    	/*絕對定位疊在網頁上*/
-    	position: absolute;
-    	/*權重*/
-    	z-index: 100;
-    	/*header 80px+1px boder 線條*/
-    	top: 35px;
-    	/* left:0 right:0表示滿版 */
-    	left: 0;
-   		right: 0;
-    	background: black;
-    }
-    .menu li{
-        width: 100%;
-        float: none;
-        text-align: center;
-        border-top: #ccaf6f solid 1px;    
-	}
-	.menu li a{
-        padding: 15px;
-        transition: all 0.3s;
-        font-size: 14px;
-  	}
-	.menu li a:hover{
-    	background: rgb(182, 96, 96) ;
-    	color: #fff;
-  	}
-	.showMenu{
-        width: 10%;
-    	display: block;
-        float: right;
-        padding-top: 12px;
-        margin-left: 7%;
-    }
-    #logout{
-        display: block;
-    }
-    /*jQuery點擊後動態在 body 加上 class */
-  	.menu-show .menu{
-        max-height: 500px;
-    }
-    .phoneMenu{
-        width: 100%;
-        display: block;
-        position: fixed;
-        bottom: 0;
-        text-align: center;
-        background-color: rgb(47, 58, 76);
-    }
-    .phoneMenu li{  
-        width: 25%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        float: left;
-        text-align: center;
-    }
-    .content{
-        padding-top: 20px;
-    }
-}
-
 /* 個人資料 */
 .loginingInfo{
     background-color: #fff;
@@ -576,32 +472,18 @@ a{
 .clear{
     clear: both;
 }
-@media (max-width: 425px) {
-    .headerContent{
-       display: inline;
-    }
-    .showMenu{
-       display: block;
-    }
-    .contentTop{
-        position: fixed;
-        background-color: rgb(47, 58, 76);
-        height: 39px;
-        margin: 0;
-        padding: 0;
-        z-index: 2;
-    }
-    .content{
-        width: 100%;
-        padding: 0;
-    }
-    .personalInfo{
-        display: none;
+@media (max-width: 768px){
+    .page{
+        font-size: 18px;
+        margin-top: 50px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
     .header{
         height: 0;
     }
     .headerContent{
+        display: inline;
         background-color: rgb(47, 58, 76);
         width: 100%;
         height: 0;
@@ -609,11 +491,15 @@ a{
         position: relative;
         z-index: 1;
     }
-    .company{
-        display: none;
-    }
     .companyImg{
         display: none;
+    }
+    .title{
+        font-size: 16px;
+        margin: 5 auto;
+        width: 65%;
+        padding: 10px;
+        text-align: center;
     }
     .photo{
         display: none;
@@ -644,8 +530,10 @@ a{
    		right: 0;
         background-color: rgb(192, 214, 250);
         margin: 0;
-        
     }
+    .menu p{
+         display: none;
+	}
     .menu li{
         width: 100%;
         /* float: none; */
@@ -655,36 +543,30 @@ a{
         padding: 20px 0 ; 
         float: left;
         margin: 0;
-    }
-    .menu p{
-         display: none;
 	}
 	.menu li a{
-        padding: 0px;
+        padding: 10px;
         transition: all 0.3s;
-        font-size: 20px;
-        /* border: none; */
+        font-size: 24px;
   	}
 	.menu li a:hover{
-    	background-color: rgb(182, 96, 96);
+    	background: rgb(182, 96, 96) ;
     	color: #fff;
   	}
 	.showMenu{
-        width: 10%;
-    	display: block;
+        display: block;
+        width: 20%;
+        line-height: 39px;
+        text-align: center;
         float: left;
-        margin-left: 7%;
     }
     #logout{
         display: block;
     }
     /*jQuery點擊後動態在 body 加上 class */
   	.menu-show .menu{
-        /* max-height: 500px; */
-        /* z-index: 1; */
-        /* position: fixed; */
+        max-height: 500px;
     }
-    /* footer */
     .phoneMenu{
         width: 100%;
         display: block;
@@ -700,6 +582,59 @@ a{
         float: left;
         text-align: center;
     }
+    .content{
+        width: 100%;
+        padding: 0;
+    }
+    .contentTop{
+        position: fixed;
+        background-color: rgb(47, 58, 76);
+        height: 39px;
+        margin: 0;
+        padding: 0;
+        z-index: 2;
+    }
+    .personalInfo{
+        /* background: red; */
+        color: white;
+        width: 20%;
+        height: 100%;
+        line-height: 39px;
+        text-align: center;
+        float: right;
+    }
     
+}
+@media (max-width: 425px) {
+    .personalInfo{
+        width: 30%;
+    }
+    
+    .company{
+        display: none;
+    }
+    .companyImg{
+        display: none;
+    }
+    .photo{
+        display: none;
+    }
+    .identity{
+        display: none;
+    }
+    .breadcrumb{
+        display: none;
+    }
+    
+	.menu li a{
+        padding: 0px;
+        font-size: 20px;
+  	}
+	.showMenu{
+        width: 10%;
+    	display: block;
+        float: left;
+        margin-left: 7%;
+    }
 }
 </style>

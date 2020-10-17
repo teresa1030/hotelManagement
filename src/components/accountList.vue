@@ -152,8 +152,8 @@ export default {
         {
           label:'信箱',
           field:'email',
-          tdClass: 'display',
-          thClass: 'display'
+          tdClass: 'display_ipad',
+          thClass: 'display_ipad'
         },
         {
           label:'權限等級',
@@ -479,13 +479,13 @@ export default {
 .account_select_phone{
   display: none;
 }
-@media (max-width: 425px) {
+@media (max-width: 768px) {
   .insideContent{
     width: 100%;
     margin-bottom: 50px;
   }
-  .display{
-    display: none;
+  .display_ipad{
+        display: none;
   }
   .vueGoodTable{
     width: 90%;
@@ -495,6 +495,7 @@ export default {
     position: relative;
     z-index: 0;
     margin:auto;
+    /* max-height:none; */
   }
   .contentCenter{
     /* background: blue; */
@@ -602,5 +603,10 @@ export default {
     text-align: center;
     margin: 10px 0 20px;
   }
+}
+@media (max-width: 425px) {
+    .display{
+        display: none;
+    }
 }
 </style>

@@ -286,16 +286,16 @@ tr:hover td{
 .el-table a{
     color: rgb(39, 30, 165);
 }
-@media (max-width: 425px) {
-    .display{
+@media (max-width: 768px) {
+    /* .display_ipad{
         display: none;
-    }
+    } */
     .editArea{
-        /* display: none; */
+        display: none;
         background: #000;
     }
     .filter{
-        /* display: none; */
+        display: none;
         background: orange;
         margin: 0;
     }
@@ -308,7 +308,7 @@ tr:hover td{
         background: yellow;
         width: 100%;
         height: unset;
-        /* display: none; */
+        display: none;
     }
     .dataRightArea{
         width: 90%;
@@ -316,5 +316,10 @@ tr:hover td{
     }
     .el-table{
         margin: 0;
+    }
+}
+@media (max-width: 425px) {
+    .display{
+        display: none;
     }
 }

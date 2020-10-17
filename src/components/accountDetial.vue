@@ -251,7 +251,7 @@ export default {
 	margin-top: 26.5px;
 	margin-right: 95px;
 }
-@media (max-width: 425px) {
+@media (max-width: 768px) {
   .contentCenter{
     /* background: blue; */
     width: 100%;
