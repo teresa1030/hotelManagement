@@ -288,92 +288,88 @@ router.get('/competition/:collection', (req,res) => {
 // })
 
 
-router.get("/history/:value",(req,res) =>{
-  if(req.params.value === '0'){
-    historyData.find({},{_id: 1, condition: 1, tags: 1}).sort({update_at: -1}).then(history => {
-      res.json(history)
-    }).catch(err => {
-      res.json(err)
-    })
-  }else if(req.params.value === '1'){
-    historyData.find({},{_id: 1, UserListModify: 1, favorite: 1, condition: 1, tags: 1}).sort({update_at: -1}).then(history => {
-      res.json(history)
-    }).catch(err => {
-      res.json(err)
-    })
-  }else{
-    historyData.find({}).sort({update_at: -1}).then(accounts =>{
+// router.get("/history/:company",(req,res) =>{
+//   if(req.params.value === '0'){
+//     historyData.find({name: req.params.company},{_id: 1, name: 1, dataset: 1, 'dataset.data[0]': 1}).sort({update_at: -1}).then(history => {
+//       res.json(history)
+//     }).catch(err => {
+//       res.json(err)
+//     })
+//   }else if(req.params.value === '1'){
+//     historyData.find({},{_id: 1, UserListModify: 1, favorite: 1, condition: 1, tags: 1}).sort({update_at: -1}).then(history => {
+//       res.json(history)
+//     }).catch(err => {
+//       res.json(err)
+//     })
+//   }else{
+//     historyData.find({}).sort({update_at: -1}).then(accounts =>{
+//       res.json(accounts);
+//     }).catch(err =>{
+//       res.json(err);
+//     });
+//   }
+// }); 
+router.get("/history/:company",(req,res) =>{
+  historyData.findOne({name: req.params.company}).sort({update_at: -1}).then(accounts =>{
       res.json(accounts);
-    }).catch(err =>{
+  }).catch(err =>{
       res.json(err);
-    });
-  }
+  });
 }); 
-
-// router.get('/history', (req,res) => {
-//   historyData.find({}).sort({update_at: -1}).then(accounts =>{
-//     res.json(accounts);
-//   }).catch(err =>{
-//     res.json(err);
-//   });
-// })
-
 //add new record
-router.put("/history/:record",(req,res) =>{
-  // console.log(req.params.record);
-  // console.log(req.body);
+router.put("/history/:company/:record",(req,res) =>{
 
   if(req.params.record==='condition'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      { name: req.params.company },
       { $push: { condition : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='reply'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      { name: req.params.company},
       { $push: { reply : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='tags'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      { name: req.params.company},
       { $push: { tags : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='favorite'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      { name: req.params.company },
       { $push: { favorite : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='login'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      { name: req.params.company },
       { $push: { login : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='logout'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      {name: req.params.company},
       { $push: { logout : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='user'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      { name: req.params.company },
       { $push: { user : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='userDetailModify'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      {name: req.params.company },
       { $push: { userDetailModify : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));
   }else if(req.params.record==='UserListModify'){
     historyData.findOneAndUpdate(
-      { _id: '5f82a5d43919bc830de24980' },
+      {name: req.params.company},
       { $push: { UserListModify : req.body  } },
       {  new: true }
       ).then(records => res.json(records)).catch(err => res.json(err));

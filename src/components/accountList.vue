@@ -152,8 +152,8 @@ export default {
         {
           label:'信箱',
           field:'email',
-          tdClass: 'display',
-          thClass: 'display'
+          tdClass: 'display_ipad',
+          thClass: 'display_ipad'
         },
         {
           label:'權限等級',
@@ -173,7 +173,7 @@ export default {
   mounted(){
     let self = this
     // var r = 0;
-    axios.get('/api/account')
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/account')
     .then((response) => {
       //console.log(response.data);
       self.hotels = response.data;
@@ -231,7 +231,7 @@ export default {
               self.hotels.splice(index,1);
               console.log(k+":"+self.checkedAccount[k]);
               console.log("delete:"+self.checkedAccount[k]);
-              axios.delete('/api/account/'+self.checkedAccount[k])
+              axios.delete('https://hotelapi.im.nuk.edu.tw/api/account/'+self.checkedAccount[k])
               .then((response) => {
                 self.checkedAccount=[];   
               // console.log("delete successed:");    
@@ -267,7 +267,7 @@ export default {
           break;
           
         }else if(i === this.hotels.length-1){
-          axios.post('/api/account',newUser) 
+          axios.post('https://hotelapi.im.nuk.edu.tw/api/account',newUser) 
           .then((response) => {
             // this.accountList.push(newUser);
             this.hotels.push(newUser);
@@ -479,13 +479,13 @@ export default {
 .account_select_phone{
   display: none;
 }
-@media (max-width: 425px) {
+@media (max-width: 768px) {
   .insideContent{
     width: 100%;
     margin-bottom: 50px;
   }
-  .display{
-    display: none;
+  .display_ipad{
+        display: none;
   }
   .vueGoodTable{
     width: 90%;
@@ -495,6 +495,7 @@ export default {
     position: relative;
     z-index: 0;
     margin:auto;
+    /* max-height:none; */
   }
   .contentCenter{
     /* background: blue; */
@@ -602,5 +603,10 @@ export default {
     text-align: center;
     margin: 10px 0 20px;
   }
+}
+@media (max-width: 425px) {
+    .display{
+        display: none;
+    }
 }
 </style>

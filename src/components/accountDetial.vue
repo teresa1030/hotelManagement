@@ -64,7 +64,7 @@ export default {
   },
   mounted(){
     let self = this 
-    axios.get('/api/account/'+self.userID)
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/account/'+self.userID)
     .then((response) => {
       console.log(response.data); 
       self.userAccountDetail = response.data;
@@ -81,7 +81,7 @@ export default {
     updateAccount:function(){
       let updateUser = this.userAccountDetail;
       let id = this.userID;
-      axios.put('/api/account/'+id,updateUser) 
+      axios.put('https://hotelapi.im.nuk.edu.tw/api/account/'+id,updateUser) 
       .then((response) => {
         //this.userAccountDetail=updateUser;
         //寫在mounted的如果數據改會自動更著改且不會重新整理
@@ -251,7 +251,7 @@ export default {
 	margin-top: 26.5px;
 	margin-right: 95px;
 }
-@media (max-width: 425px) {
+@media (max-width: 768px) {
   .contentCenter{
     /* background: blue; */
     width: 100%;

@@ -97,15 +97,20 @@ export default new Router({
       name: 'statistic',
       component: statistic
     },
-    // {
-    //   path: '/history',
-    //   name: 'history',
-    //   component: history
-    // },
     {
-      path: '/history/:value',
+      path: '/history/:company',
+      name: 'history',
+      component: history
+    },
+    {
+      path: '/history/:company/:record',
       name: 'history',
       component: history
     }
+    // {
+    //   path: '/history/:value',
+    //   name: 'history',
+    //   component: history
+    // }
   ]
 })

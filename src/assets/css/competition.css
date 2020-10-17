@@ -102,7 +102,7 @@ button{
 .favDiv{
     display: none;
 }
-@media (max-width: 425px) {
+@media (max-width: 768px) {
     .phone {
         margin: 0 5%;
         width: 90%;
