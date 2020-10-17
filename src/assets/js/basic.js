@@ -10,7 +10,7 @@ $(document).ready(function () {
 
   $(document).click(function (event) {
     event.stopPropagation()
-    event.preventDefault()
+    // event.preventDefault()
     var showMenu = $('.showMenu img')
     if (!showMenu.is(event.target)) {
       $('.menu').toggleClass('menu-hide')
