@@ -21,6 +21,7 @@
 
 <script>
 import axios from 'axios';
+import dateTime from '../assets/js/dateTime';
 export default {
     name: 'login',
     data () {
@@ -29,7 +30,6 @@ export default {
         passWord: '',
         accountInfo:[],
         logingAccount:{},
-        userAccountDetail:{},
         login:{
             employeeNumber: "",
             loginTime: ""
@@ -60,12 +60,13 @@ export default {
                     this.logingAccount = this.accountInfo[i];
                     //var userID = this.accountInfo[i]._id;
                     var currentTime = new Date().getTime(); //取得從 1970-01-01 00:00:00 UTC 累計的毫秒數
-                    this.recordLogingTime();               
+                    this.recordLogingTime(); 
                     localStorage.setItem('token', JSON.stringify({id: this.logingAccount._id,time: currentTime, companyName: this.logingAccount.companyName}));
                     document.getElementById('menu').style.visibility="visible";
                     document.getElementById('breadcrumb').style.visibility="visible";
                     this.updateAccount();
                     this.loginRecord();
+                    
                     if(this.accountInfo[i].firstLogin){
                         this.$router.push({ name: 'changePassword'});
                         break;
@@ -97,46 +98,22 @@ export default {
         },
         loginRecord:function(){
             let record = 'login';
+            let company = this.logingAccount.companyName;
             this.login.employeeNumber = this.logingAccount.employeeNumber;
             this.login.loginTime = this.logingAccount.lastLoginDate +' '+this.logingAccount.lastLoginTime;
             console.log(this.login);
-            axios.put('/api/history/'+record,this.login)
+            console.log(company);
+            axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+company+'/'+record,this.login)
             .then((response) => {
-            console.log(response);
-            })
-            .catch((error) => {
-            console.log(error);
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
             })
         },
         recordLogingTime:function(){
-            var today = new Date();
-            var ampm = 'AM';
-            var year = today.getFullYear();
-            var month = today.getMonth()+1;
-            var date = today.getDate();
-            var minutes = today.getMinutes();
-            var hour = today.getHours();
-            if(month.toString().length == 1){
-                month = '0'+month;
-            }
-            if(date.toString().length == 1){
-                date = '0'+date;
-            }
-            if(hour.toString().length == 1){
-                hour = '0'+hour;
-            }else if(hour > 12){
-                ampm = 'PM';
-                hour -= 12;
-                if(hour.toString().length == 1){
-                    hour = '0'+hour;
-                }
-            }
-            if(minutes.toString().length == 1){
-                minutes = '0'+minutes;
-            }
-
-            this.logingAccount.lastLoginDate = year+'/'+month+'/'+date;
-            this.logingAccount.lastLoginTime = ampm+' '+hour+':'+minutes;
+            this.logingAccount.lastLoginDate = dateTime.recordDate();
+            this.logingAccount.lastLoginTime = dateTime.recordTime();
+            console.log(this.logingAccount);
         }
 
     }

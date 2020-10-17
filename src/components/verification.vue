@@ -24,6 +24,7 @@
 <script>
 import axios from 'axios';
 import emailjs from 'emailjs-com';
+import dateTime from '../assets/js/dateTime';
 export default {
     name: 'verification',
     data () {
@@ -31,7 +32,11 @@ export default {
         userID:this.$route.params.userID,
         userAccountDetail:{},
         certification:'',
-        check:''
+        check:'',
+        login:{
+            employeeNumber: "",
+            loginTime: ""
+        }
       }
     },
     mounted(){
@@ -78,6 +83,7 @@ export default {
                 // localStorage.setItem('token', JSON.stringify({id:this.userID,time:currentTime}));
                 localStorage.setItem('token', JSON.stringify({id: this.userAccountDetail._id,time: currentTime, companyName: this.userAccountDetail.companyName}));
                 this.updateAccount();
+                this.loginRecord();
                 this.$router.push({ name: 'changePassword'});
                 window.location.reload(); 
             }else{
@@ -103,35 +109,21 @@ export default {
                 console.log(error);
             });  
         },
+        loginRecord:function(){
+            let record = 'login';
+            let company = this.userAccountDetail.companyName;
+            this.login.employeeNumber = this.userAccountDetail.employeeNumber;
+            this.login.loginTime = this.userAccountDetail.lastLoginDate +' '+this.userAccountDetail.lastLoginTime;
+            axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+company+'/'+record,this.login)
+            .then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            })
+        },
         recordLogingTime:function(){
-            var today = new Date();
-            var ampm = 'AM';
-            var year = today.getFullYear();
-            var month = today.getMonth()+1;
-            var date = today.getDate();
-            var minutes = today.getMinutes();
-            var hour = today.getHours();
-            if(month.toString().length == 1){
-                month = '0'+month;
-            }
-            if(date.toString().length == 1){
-                date = '0'+date;
-            }
-            if(hour.toString().length == 1){
-                hour = '0'+hour;
-            }else if(hour > 12){
-                ampm = 'PM';
-                hour -= 12;
-                if(hour.toString().length == 1){
-                    hour = '0'+hour;
-                }
-            }
-            if(minutes.toString().length == 1){
-                minutes = '0'+minutes;
-            }
-
-            this.userAccountDetail.lastLoginDate = year+'/'+month+'/'+date;
-            this.userAccountDetail.lastLoginTime = ampm+' '+hour+':'+minutes;
+            this.userAccountDetail.lastLoginDate = dateTime.recordDate();
+            this.userAccountDetail.lastLoginTime = dateTime.recordTime();
         }
     }
 }

@@ -108,7 +108,7 @@ export default {
         document.getElementById('menu').style.visibility="visible";
         document.getElementById('breadcrumb').style.visibility="visible";
 
-        axios.get('/api/account/'+self.userID).then((response) => {
+        axios.get('https://hotelapi.im.nuk.edu.tw/api/account/'+self.userID).then((response) => {
             console.log(response.data); 
             self.userAccountDetail = response.data;
         }).catch((error) => {
@@ -144,10 +144,11 @@ export default {
     },
     logoutRecord:function(){
         let record = 'logout';
+        let company = this.userAccountDetail.companyName;
         this.logout.employeeNumber = this.userAccountDetail.employeeNumber;
         this.logout.logoutTime = dateTime.recordDate()+' '+dateTime.recordTime();
         console.log(this.logout);
-        axios.put('/api/history/'+record,this.logout)
+        axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+company+'/'+record,this.logout)
         .then((response) => {
             console.log(response);
         }).catch((error) => {

@@ -80,7 +80,7 @@
       <!-- 手機版的選單 -->
 
       <vue-good-table class="el-table" styleClass="vgt-table striped" :columns="columns" :rows="accountList" 
-        max-height="500px" :fixed-header="true" :search-options="{ enabled: true }" text-align="center"
+         :fixed-header="true" :search-options="{ enabled: true }" text-align="center"
         @on-selected-rows-change="selectionChanged" :select-options="{ enabled: true }" @on-cell-click="linkAccountDetial" >
         <div slot="table-actions" class="account_select">      
           <span>所屬單位</span>
@@ -101,7 +101,6 @@
         </div>
       </vue-good-table>
       <div class="clear"></div>
-      <!-- <button v-on:click="logout()">Log out</button> -->
     </div>
     <div class="clear"></div>
   </div>
@@ -109,6 +108,7 @@
 
 <script>
 import axios from 'axios';
+import dateTime from '../assets/js/dateTime';
 export default { 
   name: 'accountList',
   components: {
@@ -130,7 +130,7 @@ export default {
         email: "",
         userName: "",
         password: "",
-        lastLoginDate: "",
+        lastLoginDate: "New User",
         lastLoginTime: "",    
         firstLogin:true
       },
@@ -167,7 +167,17 @@ export default {
         }
       ],
     
-      rowSelection: []
+      rowSelection: [],
+      UserListModify: 
+        {
+          modify: "",
+          employeeNumber: "",
+          time: ""
+        },
+      logingAccount:{},   //登入者的資訊
+      company:"",
+      record:"UserListModify",
+      deleteRecord:[]
     }  
   },
   mounted(){
@@ -178,15 +188,19 @@ export default {
       //console.log(response.data);
       self.hotels = response.data;
       self.accountList=self.hotels;
-      //self.accountList=self.hotels;
-
-      // self.id=response.data.id;
-      // self.name=response.data.name;
     })
     .catch((error) => {
       console.log(error);
     })
-    
+    var loginData = JSON.parse(localStorage.getItem('token'));
+    var userID =loginData.id;
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/account/'+userID).then((response) => {
+      this.logingAccount = response.data;
+      this.newAccount.companyName = this.logingAccount.companyName;
+      this.company=this.logingAccount.companyName;
+    }).catch((error) => {
+        console.log(error);
+    })
   },
   methods:{
     selectionChanged(params){
@@ -196,7 +210,9 @@ export default {
       this.rowSelection = params.selectedRows;
       for(k=0;k<self.rowSelection.length;k++){
         this.checkedAccount.push(this.rowSelection[k]._id)
+        console.log("selectionChanged")
         console.log(this.checkedAccount);
+        console.log(this.rowSelection);
        // console.log(this.checkedAccount._id);
       }
 
@@ -219,23 +235,27 @@ export default {
         confirmButtonText: '對!刪掉!!',
         cancelButtonText:'取消'
       }).then((result) => {
+        this.deleteRecord = this.rowSelection ; 
+        this.deletedRecord();
         if (result.value) {
             for(k=0;k<self.checkedAccount.length;k++){
               //console.log("id:"+self.checkedAccount[k])
               //var check = new String(self.checkedAccount[k]);
               let check = self.checkedAccount[k];
+              console.log(self.checkedAccount[k]+':'+self.checkedAccount[k].employeeNumber);
               //console.log(typeof(check));
               //找陣列裡的物件中的值
               var index = self.hotels.findIndex( s => s._id == check )
               console.log(index);
+              console.log(self.hotels[index]);
               self.hotels.splice(index,1);
               console.log(k+":"+self.checkedAccount[k]);
               console.log("delete:"+self.checkedAccount[k]);
-              axios.delete('https://hotelapi.im.nuk.edu.tw/api/account/'+self.checkedAccount[k])
+              axios.delete('https://hotelapi.im.nuk.edu.tw/api/account/'+self.checkedAccount[k])  //會等前面跑完才跑
               .then((response) => {
                 self.checkedAccount=[];   
-              // console.log("delete successed:");    
-              // console.log(this.checkedAccount);
+               console.log("delete successed:");    
+               console.log(this.checkedAccount);
                                               
               });
             } 
@@ -254,13 +274,13 @@ export default {
       let i;
       let newUser = this.newAccount;
       for(i=0;i<this.hotels.length;i++){
-        console.log("newAccount: "+this.newAccount.userName);
-        console.log("hotels: "+this.hotels[i].userName);
+        // console.log("newAccount: "+this.newAccount.userName);
+        // console.log("hotels: "+this.hotels[i].userName);
         if(this.newAccount.employeeNumber === this.hotels[i].employeeNumber){
           
           this.$fire({
               title: "Warning !!",
-              text: "員工編號(帳號) "+this.newAccount.userName+" 已經有人用了，換一個吧!!",
+              text: "員工編號(帳號) "+this.newAccount.employeeNumber+" 已經有人用了，換一個吧!!",
               type: "warning",
             }); 
           this.newAccount.employeeNumber="";
@@ -276,17 +296,24 @@ export default {
               title: "Success !!",
               text: "成功新增使用者: "+newUser.userName,
               type: "success",
-            });     
+            });
+            this.UserListModify.modify = "新增";
+            this.UserListModify.employeeNumber = newUser.employeeNumber;
+            this.UserListModify.time = dateTime.recordDate()+' '+dateTime.recordTime();
+            console.log(this.UserListModify);
+            axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+this.company+'/'+this.record,this.UserListModify)
+            .then((responseRecord) => {
+                console.log(responseRecord);
+            }).catch((errorRecord) => {
+                console.log(errorRecord);
+            })   
           }).catch((error) => {
                 console.log(error);
           });  
           this.close();
         }
       }
-      console.log(newUser);
-      
-      
-      
+      // console.log(newUser);      
     },
       selection:function(){
       let j;
@@ -329,10 +356,19 @@ export default {
       document.getElementById("addNewUser").style.visibility="visible";
       console.log("open")
     },
-    logout(){
-    localStorage.removeItem('token');
-    this.$router.push('/login');
-    } 
+    deletedRecord:function(){
+      
+      this.UserListModify.modify = "刪除";
+      this.UserListModify.employeeNumber = newUser.employeeNumber;
+      this.UserListModify.time = dateTime.recordDate()+' '+dateTime.recordTime();
+      console.log(this.UserListModify);
+      axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+this.company+'/'+this.record,this.UserListModify)
+      .then((responseRecord) => {
+          console.log(responseRecord);
+      }).catch((errorRecord) => {
+          console.log(errorRecord);
+      }) 
+    }
   }
   // compoted:{
   //   countID:function(){

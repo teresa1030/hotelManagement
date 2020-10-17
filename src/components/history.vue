@@ -41,7 +41,7 @@ export default {
         var value = 0
         //  + value
         var logining = localStorage.getItem('token')
-        axios.get('/api/history/' + JSON.parse(logining).companyName).then((response) => {
+        axios.get('https://hotelapi.im.nuk.edu.tw/api/history/' + JSON.parse(logining).companyName).then((response) => {
           self.historyData = response.data
           console.log(self.historyData)
         }).catch((error) => {
@@ -61,7 +61,7 @@ export default {
         let record = 'logout';
         
         var logining = localStorage.getItem('token')
-        axios.put('/api/history/'+ JSON.parse(logining).companyName + '/' + record, this.logout)
+        axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+ JSON.parse(logining).companyName + '/' + record, this.logout)
         .then((response) => {
           console.log(response);
         })

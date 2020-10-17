@@ -23,7 +23,7 @@ import { faEye ,faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import './assets/css/svgMap.css'
 import './assets/css/demo.css'
-
+import dateTime from '../src/assets/js/dateTime'
 
 import {
   Select,
@@ -62,26 +62,51 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 
 
-
-
+var logout = {
+    employeeNumber: "",
+    logoutTime: ""
+}
+var userAccountDetail ={}
+var companyName ='' ;
+var userID ='';
+var loginData = JSON.parse(localStorage.getItem('token'))
+if(localStorage.getItem('token')){
+  companyName = loginData.companyName;
+  userID = loginData.id;
+  axios.get('https://hotelapi.im.nuk.edu.tw/api/account/'+userID).then((response) => {
+    userAccountDetail = response.data;
+  }).catch((error) => {
+      console.log(error);
+  })
+}
 //檢查是否為登入狀態
 router.beforeEach((to, from, next)=>{
   // console.log(to);
   // console.log("fullPath:"+to.fullPath);
   // console.log("name:"+to.name);  //路徑名稱
-   
-  //const isLogin = localStorage.getItem('token') == 'logining' ;
+
   // 判斷token是否存在
   if( localStorage.getItem('token') ){
-    var logining = localStorage.getItem('token');
-    var loginData = JSON.parse(logining);
+    
     //判斷當前時間與登入時間差異
     var currentTime = new Date().getTime();
-    if( (currentTime - loginData.time) > 7200000){
+    if( (currentTime - loginData.time) > 7200000){  
       localStorage.removeItem('token');
-      alert('連線愈時，請重新登入');
-      next('/login');
-      window.location.reload(); 
+      let record = 'logout';
+      let company = companyName;
+      logout.employeeNumber = userAccountDetail.employeeNumber;
+      logout.logoutTime = dateTime.recordDate()+' '+dateTime.recordTime();
+      console.log(logout);
+      axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+company+'/'+record,logout)
+      .then((response) => {
+          console.log(response);
+          alert('連線愈時，請重新登入');
+          next('/login');
+          window.location.reload(); 
+      }).catch((error) => {
+          console.log(error);
+      }) 
+      
     }else{
       next();
     }   
@@ -99,3 +124,4 @@ router.beforeEach((to, from, next)=>{
     }     
   }
 });
+

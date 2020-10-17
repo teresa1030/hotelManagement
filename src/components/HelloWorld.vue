@@ -38,14 +38,14 @@ export default {
   
     mounted(){
       let self = this
-      axios.get('/api/account')
+      axios.get('https://hotelapi.im.nuk.edu.tw/api/account')
       .then((response) => {
         self.hotels=response.data;
       })
       .catch((error) => {
         console.log(error);
       })
-      axios.get('/api/history')
+      axios.get('https://hotelapi.im.nuk.edu.tw/api/history')
       .then((response) => {
         console.log(response);
         self.historyData = response;
@@ -285,7 +285,7 @@ export default {
       },
       record:function(){
         let record = 'logout';
-        axios.put('/api/history/'+record,this.logout)
+        axios.put('https://hotelapi.im.nuk.edu.tw/api/history/'+record,this.logout)
         .then((response) => {
           console.log(response);
         })
