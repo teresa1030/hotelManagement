@@ -5,7 +5,7 @@
             <div class="clear"></div>
             <h1>登入</h1>
         <!-- the submit event will no longer reload the page -->
-            <form v-on:submit.prevent="login">   
+            <form v-on:submit.prevent="logging">   
                 <label>帳號&nbsp;:&nbsp;</label>
                 <input type="text" v-model="userName" required placeholder="請輸入員工號碼">
                 <div class="clear"></div>
@@ -29,7 +29,11 @@ export default {
         passWord: '',
         accountInfo:[],
         logingAccount:{},
-        userAccountDetail:{}
+        userAccountDetail:{},
+        login:{
+            employeeNumber: "",
+            loginTime: ""
+        }
       }
     },
     mounted(){
@@ -48,7 +52,7 @@ export default {
     })  
   },
     methods:{
-        login(){
+        logging:function(){
             console.log("login");
             let i;
             for(i=0; i<this.accountInfo.length;i++){
@@ -61,6 +65,7 @@ export default {
                     document.getElementById('menu').style.visibility="visible";
                     document.getElementById('breadcrumb').style.visibility="visible";
                     this.updateAccount();
+                    this.loginRecord();
                     if(this.accountInfo[i].firstLogin){
                         this.$router.push({ name: 'changePassword'});
                         break;
@@ -89,6 +94,19 @@ export default {
             }).catch((error) => {
                 console.log(error);
             });  
+        },
+        loginRecord:function(){
+            let record = 'login';
+            this.login.employeeNumber = this.logingAccount.employeeNumber;
+            this.login.loginTime = this.logingAccount.lastLoginDate +' '+this.logingAccount.lastLoginTime;
+            console.log(this.login);
+            axios.put('/api/history/'+record,this.login)
+            .then((response) => {
+            console.log(response);
+            })
+            .catch((error) => {
+            console.log(error);
+            })
         },
         recordLogingTime:function(){
             var today = new Date();

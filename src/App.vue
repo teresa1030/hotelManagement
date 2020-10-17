@@ -55,7 +55,7 @@
                 <ul>
                     <li><button v-on:click="link('accountDetial')"><img src="https://fakeimg.pl/20x20/" alt="">個人資料</button></li>
                     <li><button v-on:click="link('')"><img src="https://fakeimg.pl/20x20/" alt="">歷史紀錄</button></li>
-                    <li><img src="https://fakeimg.pl/20x20/" alt=""><button  v-on:click="logout()" >登出</button></li>
+                    <li><img src="https://fakeimg.pl/20x20/" alt=""><button  v-on:click="logouted()" >登出</button></li>
                 </ul>
             </div>
             <div class="clear"></div>
@@ -85,6 +85,7 @@
 <script>
 import axios from 'axios';
 import $ from '../node_modules/jquery'
+import dateTime from '../src/assets/js/dateTime';
 export default {
   name: 'App',
   data(){
@@ -92,6 +93,10 @@ export default {
         userID:'',
         companyName:'',
         userAccountDetail:{},
+        logout:{
+            employeeNumber: "",
+            logoutTime: ""
+        }
     }
   },
   mounted(){
@@ -115,12 +120,6 @@ export default {
       }
   },
   methods:{
-    // openPersonalInfo:function(){
-    //     document.getElementById("logining").style.visibility="visible";
-    // },
-    // closePersonalInfo:function(){
-    //     document.getElementById("logining").style.visibility="hidden";
-    // },
     editWindow: function(){
         event.stopPropagation()
         $('#logining').toggle('fast')
@@ -132,15 +131,28 @@ export default {
             }
         })
     },
-    logout:function(){
+    logouted:function(){
         $('#logining').hide(100) // 淡出消失
         localStorage.removeItem('token');
+        this.logoutRecord();
         this.userID='';
         this.companyName='';
         this.userAccountDetail={};
         document.getElementById('menu').style.visibility="hidden";
         document.getElementById('breadcrumb').style.visibility="hidden";
         this.$router.push('/login');
+    },
+    logoutRecord:function(){
+        let record = 'logout';
+        this.logout.employeeNumber = this.userAccountDetail.employeeNumber;
+        this.logout.logoutTime = dateTime.recordDate()+' '+dateTime.recordTime();
+        console.log(this.logout);
+        axios.put('/api/history/'+record,this.logout)
+        .then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            console.log(error);
+        })
     },
     login:function(){
         this.$router.push('/login');
@@ -160,11 +172,6 @@ export default {
                 $('#logining').hide(100) // 淡出消失
                 }
             })
-            // if(document.getElementById("logining").style.visibility=="visible"){
-            //     this.closePersonalInfo();
-            // }else{
-            //     this.openPersonalInfo();
-            // }
         }else{
             event.stopPropagation()
             $('#logoutInfo').toggle('fast')
@@ -175,11 +182,6 @@ export default {
                 $('#logoutInfo').hide(100) // 淡出消失
                 }
             })
-            // if(document.getElementById("logoutInfo").style.visibility=="visible"){
-            //     document.getElementById("logoutInfo").style.visibility="hidden";
-            // }else{
-            //     document.getElementById("logoutInfo").style.visibility="visible";
-            // }
         }
     },
     link:function(page){
