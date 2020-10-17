@@ -1,6 +1,6 @@
 var dateTime = {
     
-    recordTime:function(){
+    recordDate:function(){
         var today = new Date();
         var year = today.getFullYear();
         var month = today.getMonth()+1;
@@ -14,7 +14,7 @@ var dateTime = {
         }
         return year+'/'+month+'/'+date
     },
-    recordDate:function(){
+    recordTime:function(){
         var today = new Date();
         var ampm = 'AM';
         var minutes = today.getMinutes();
