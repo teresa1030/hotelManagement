@@ -138,7 +138,7 @@ export default {
   mounted(){
     let self = this
     // var r = 0;
-    axios.get('/api/account')
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/account')
     .then((response) => {
       //console.log(response.data);
       self.hotels = response.data;
@@ -196,7 +196,7 @@ export default {
               self.hotels.splice(index,1);
               console.log(k+":"+self.checkedAccount[k]);
               console.log("delete:"+self.checkedAccount[k]);
-              axios.delete('/api/account/'+self.checkedAccount[k])
+              axios.delete('https://hotelapi.im.nuk.edu.tw/api/account/'+self.checkedAccount[k])
               .then((response) => {
                 self.checkedAccount=[];   
               // console.log("delete successed:");    
@@ -232,7 +232,7 @@ export default {
           break;
           
         }else if(i === this.hotels.length-1){
-          axios.post('/api/account',newUser) 
+          axios.post('https://hotelapi.im.nuk.edu.tw/api/account',newUser) 
           .then((response) => {
             // this.accountList.push(newUser);
             this.hotels.push(newUser);

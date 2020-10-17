@@ -149,7 +149,7 @@ export default {
   mounted () {
     let self = this
     // console.log(self.commentDetailsID)
-    axios.get('/api/commentDetails/' + self.companyName + '/' + self.commentDetailsID).then(response => {
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/commentDetails/' + self.companyName + '/' + self.commentDetailsID).then(response => {
       self.commentData = response.data
       console.log(self.commentData)
       if(self.commentData.title === ''){

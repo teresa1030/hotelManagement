@@ -34,7 +34,7 @@ export default {
     },
     mounted(){
     let self = this
-    axios.get('/api/account')
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/account')
     .then((response) => {
       self.accountInfo = response.data; 
       if(localStorage.getItem('token')){
@@ -83,7 +83,7 @@ export default {
         updateAccount:function(){
             let updateUser = this.logingAccount;
             let id = this.logingAccount._id;
-            axios.put('/api/account/'+id,updateUser) 
+            axios.put('https://hotelapi.im.nuk.edu.tw/api/account/'+id,updateUser) 
             .then((response) => {
                 console.log(response)        
             }).catch((error) => {

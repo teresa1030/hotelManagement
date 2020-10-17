@@ -27,7 +27,7 @@ export default {
     },
     mounted(){
         let self = this
-        axios.get('/api/account')
+        axios.get('https://hotelapi.im.nuk.edu.tw/api/account')
         .then((response) => {
         self.accountInfo = response.data; 
         })

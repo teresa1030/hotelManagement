@@ -18,7 +18,7 @@
                     <li><router-link :to="{ name: 'statistic', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">統計結果</router-link></li>
                     <li><router-link :to="{ name: 'competition', params: { collections: companyName }}"><img src="https://fakeimg.pl/15x15/" alt="">競爭對手</router-link></li>
                     <!-- <img src="./assets/icon/info9.svg" class="icons" alt=""> -->
-                    <li><router-link :to="{ name: 'history', params: { value: 0 }}"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</router-link></li>
+                    <li><router-link :to="{ name: 'history', params: { company: companyName}}"><img src="https://fakeimg.pl/15x15/" alt="">歷史紀錄</router-link></li>
                     <div class="clear"></div>
 
                 </ul>

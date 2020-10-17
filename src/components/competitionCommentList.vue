@@ -195,7 +195,7 @@ export default {
     var start = moment().subtract(6, 'month')
     var end = moment()
     // console.log(self.companyID)
-    axios.get('/api/comment/' + self.companyName).then(response => {
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/comment/' + self.companyName).then(response => {
       self.competitionCommentList = response.data
       self.selectedArr = response.data
     }).catch((error) => {

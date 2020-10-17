@@ -308,7 +308,7 @@ export default {
       var loginData = JSON.parse(logining)
       self.companyName = loginData.companyName
     }
-    axios.get('/api/comment/' + self.companyName).then(response => {
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/comment/' + self.companyName).then(response => {
       self.commentData = response.data
       self.selectedArr = response.data
     }).catch((error) => {
@@ -643,7 +643,7 @@ export default {
       let self = this
       let updateData = self.newComment
       let updateId = id
-      axios.put('/api/comment/'+ self.companyName + '/' + updateId, updateData)
+      axios.put('https://hotelapi.im.nuk.edu.tw/api/comment/'+ self.companyName + '/' + updateId, updateData)
         .then((response) => {
         }).catch((err) => {
           console.log(err)

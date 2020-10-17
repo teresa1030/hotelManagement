@@ -163,7 +163,7 @@ export default {
       var loginData = JSON.parse(logining)
       self.companyName = loginData.companyName
     }
-    axios.get('/api/commentDetails/' + self.companyName + '/' + self.commentDetailsID).then(response => {
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/commentDetails/' + self.companyName + '/' + self.commentDetailsID).then(response => {
       self.commentData = response.data
       self.newComment = response.data
       if(self.commentData.title === ''){
@@ -249,7 +249,7 @@ export default {
     updateComment: function () {
       let self = this
       let updateData = self.newComment
-      axios.put('/api/comment/' + self.companyName + '/' + self.commentDetailsID, updateData)
+      axios.put('https://hotelapi.im.nuk.edu.tw/api/comment/' + self.companyName + '/' + self.commentDetailsID, updateData)
         .then((response) => {
         }).catch((err) => {
           console.log(err)

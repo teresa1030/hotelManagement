@@ -409,7 +409,7 @@ export default {
       var loginData = JSON.parse(logining)
       self.companyName = loginData.companyName
     }
-    axios.get('/api/statistic').then(response => {
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/statistic').then(response => {
       self.statisticAllData = response.data
       self.statisticAllData.filter((item) => {
         item.data.filter((child) => {

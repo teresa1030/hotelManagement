@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 
 
 const historyDataSchema = mongoose.Schema({
-
-    condition:[],
+    name: String,
+    condition: [],
     reply:[],
-    tags:[],
-    favorite:[],
-    login:[],
-    logout:[],
-    user:[],
-    userDetailModify:[],
-    UserListModify:[]   
+    tags: [],
+    favorite: [],
+    login: [],
+    logout: [],
+    user: [],
+    userDetailModify: [],
+    UserListModify: []
 
 },{collection: 'history'})
 

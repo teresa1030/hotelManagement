@@ -163,13 +163,13 @@ export default {
     if(!self.companyName){
       self.companyName = self.loginData.companyName
     }
-    axios.get('/api/account/'+ self.loginData.id).then(response => {
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/account/'+ self.loginData.id).then(response => {
       self.account = response.data
       console.log(self.account)
     }).catch((error) => {
       console.log(error)
     })
-    axios.get('/api/competition/' + self.companyName).then(response => {
+    axios.get('https://hotelapi.im.nuk.edu.tw/api/competition/' + self.companyName).then(response => {
       self.companyData = response.data
       self.selectedArr = self.companyData.data.filter((item) => {
         return item.hotelName !== self.companyName
@@ -228,7 +228,7 @@ export default {
         if(item.hotelName === $event.target.value){
           item["favorite"] = $event.target.checked
           self.account.favorite = self.favoriteList
-          axios.put('/api/account/' + self.loginData.id, self.account).then((response) => {
+          axios.put('https://hotelapi.im.nuk.edu.tw/api/account/' + self.loginData.id, self.account).then((response) => {
           }).catch((err) => {
             console.log(err)
           })

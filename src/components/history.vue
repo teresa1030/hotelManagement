@@ -2,6 +2,7 @@
     <div>
         <button @click="changePage(0)">評論動態</button>
         <button @click="changePage(1)">個人動態</button>
+        <button @click="record()">態</button>
         <div>
             <template>
                 <span v-if="page === 0">
@@ -24,9 +25,13 @@ export default {
     data(){
         return{
             // msg: 'hello',
-            // historyData:[],
+            historyData:[],
             commentFilter: [],
             personFilter: [],
+            logout: {
+             "employeeNumber": "info01",
+            "logoutTime":"2020/10/11"
+            },
             // page === 0 顯示評論動態，page === 1顯示個人動態
             page: 0
         }
@@ -34,27 +39,29 @@ export default {
     mounted(){
         let self = this
         var value = 0
-        axios.get('/api/history/' + value).then((response) => {
-          self.commentFilter = response.data
+        //  + value
+        var logining = localStorage.getItem('token')
+        axios.get('/api/history/' + JSON.parse(logining).companyName).then((response) => {
+          self.historyData = response.data
+          console.log(self.historyData)
         }).catch((error) => {
           console.log(error)
         })
     },
     methods:{
       changePage: function(value){
-        axios.get('/api/history/' + value).then((response) => {
-          if(value === '0'){
-            self.commentFilter = response.data
-          }else{
-            self.personFilter = response.data
-          }
-        }).catch((error) => {
-          console.log(error)
-        })
+        let self = this
+        // self.commentFilter = self.historyData.dataset.data.filter((item) => {
+        //   var x = Object.keys(item)
+        //   return x[0] === 'user'
+        // })          
+        // console.log(self.commentFilter)
       },
       record:function(){
         let record = 'logout';
-        axios.put('/api/history/'+record,this.logout)
+        
+        var logining = localStorage.getItem('token')
+        axios.put('/api/history/'+ JSON.parse(logining).companyName + '/' + record, this.logout)
         .then((response) => {
           console.log(response);
         })

@@ -33,7 +33,7 @@ export default {
     },
     mounted(){
         let self = this
-        axios.get('/api/account')
+        axios.get('https://hotelapi.im.nuk.edu.tw/api/account')
         .then((response) => {
         self.accountInfo = response.data; 
         })
@@ -73,7 +73,7 @@ export default {
         updateAccount:function(){
             let updateUser = this.logingAccount;
             let id = this.logingAccount._id;
-            axios.put('/api/account/'+id,updateUser) 
+            axios.put('https://hotelapi.im.nuk.edu.tw/api/account/'+id,updateUser) 
             .then((response) => {
                 //this.userAccountDetail=updateUser;
                 //寫在mounted的如果數據改會自動更著改且不會重新整理

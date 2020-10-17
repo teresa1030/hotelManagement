@@ -38,7 +38,7 @@ export default {
         let self = this;
         // this.certification = Math.round(Math.random()*1000000);    //取六位整數
         // console.log(self.certification);
-        axios.get('/api/account/'+self.userID)
+        axios.get('https://hotelapi.im.nuk.edu.tw/api/account/'+self.userID)
         .then((response) => {
             self.userAccountDetail = response.data;
             console.log(self.userAccountDetail);
@@ -94,7 +94,7 @@ export default {
         updateAccount:function(){
             let updateUser = this.userAccountDetail;
             let id = this.userID;
-            axios.put('/api/account/'+id,updateUser) 
+            axios.put('https://hotelapi.im.nuk.edu.tw/api/account/'+id,updateUser) 
             .then((response) => {
                 //this.userAccountDetail=updateUser;
                 //寫在mounted的如果數據改會自動更著改且不會重新整理
